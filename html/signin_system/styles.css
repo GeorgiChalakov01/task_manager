@@ -1,0 +1,12 @@
+body {
+  padding-top: 100px;
+}
+
+.cust-dark1 {
+	background-color: #2A2A2A;
+}
+
+.signin-img {
+	border-top-right-radius: .25rem;
+	border-bottom-right-radius: .25rem;
+}

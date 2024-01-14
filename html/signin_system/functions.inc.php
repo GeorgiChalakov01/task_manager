@@ -3,8 +3,7 @@ function execute_query($con, $query, $params, $types) {
 	$stmt = mysqli_stmt_init($con);
 
 	if(!mysqli_stmt_prepare($stmt, $query)) {
-		$error_message = urlencode("No connection with the DataBase! Statement not prepared.");
-		header("location: home.php?error=$error_message");
+		header("location: signin.php?language_code=en&error=error-no-db-connection");
 		exit();
 	}
 
@@ -21,7 +20,7 @@ function execute_query($con, $query, $params, $types) {
 		return $data;
 	}
 	else {
-		header("location: home.php?error=" . mysqli_stmt_error($stmt));
+		header("location: signin.php?language_code=en&error=" . mysqli_stmt_error($stmt));
 		exit();
 	}
 }
@@ -63,4 +62,33 @@ function get_languages($con) {
 	$result=execute_query($con, $query, $params, $types);
 
     return $result;
+}
+
+function signin_user($con, $email, $password) {
+	$query="
+	SELECT 
+		ID,
+		PASSWORD_HASH
+	FROM 
+		USERS
+	WHERE
+		EMAIL = ?;
+	";
+
+	$params=array($email);
+	$types="s";
+	$user_details=execute_query($con, $query, $params, $types);
+
+	$user_id=$user_details['ID'];
+	$password_hash=$user_details['PASSWORD_HASH'];
+
+	if(password_verify($password, $password_hash) === false) {
+		return false;
+    }
+    else {
+        session_start();
+        $_SESSION['id'] = $user_id;
+        $_SESSION['signedin'] = true;
+		return true;
+    }
 }

@@ -39,4 +39,17 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, 'categories', 'Кат
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, 'notes', 'Notes');
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, 'notes', 'Бележки');
 
+/*
+Used for statuserror in the signin_system/functions.inc.php
+ */
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, 'error-no-db-connection', 'No connection with the DataBase! Statement not prepared.');
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, 'error-no-db-connection', 'Няма връзка с базата данни.');
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, 'error-signin-wrong-credentials', 'Wrong credentials!');
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, 'error-signin-wrong-credentials', 'Грешни входни данни!');
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, 'error-field-is-manditory', 'This field is manditory!');
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, 'error-field-is-manditory', 'Това поле е задължително!');
+
+
 

@@ -18,7 +18,7 @@ require 'includes/php_auth_check.php';
 			<div class="col-12 col-lg-7 p-5" style="overflow: auto;">
 				<h1 class="col-12 text-center"><?php echo $phrases['signin-form-title'];?></h1>
 				<?php require '../common/statuserror/statuserror.php';?>
-				<form action="signin.inc.php?language_code=<?php echo $_GET['language_code'];?>" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+				<form action="signin.inc.php" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
 					<div class="form-group">
 						<label for="email"><?php echo $phrases['signin-form-email-label'];?></label>
 						<input 
@@ -28,6 +28,7 @@ require 'includes/php_auth_check.php';
 							id="email" 
 							placeholder="<?php echo $phrases['signin-form-email-placeholder'];?>" 
 							autocomplete="email"
+							value="<?php echo $_SESSION['signin-form']['email'];?>"
 							required
 						>
 						<div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
@@ -41,13 +42,14 @@ require 'includes/php_auth_check.php';
 							class="form-control" 
 							id="password" 
 							placeholder="<?php echo $phrases['signin-form-password-placeholder'];?>" 
-							autocomplete="new-password"
+							autocomplete="current-password"
 							required
 						>
 						<div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
 					</div>
 					<br/>
-					<button type="submit" class="col-12 btn btn-secondary"><?php echo $phrases['signin-form-submit-button'];?></button>
+					<br/>
+					<button type="submit" name="submit" class="col-12 btn btn-secondary"><?php echo $phrases['signin-form-submit-button'];?></button>
 				</form>
 			</div>
 			<div class="col-0 col-lg-5">

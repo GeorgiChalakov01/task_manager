@@ -5,18 +5,34 @@
 	<div class="collapse navbar-collapse" id="navbarNavDropdown">
 	<?php
 		if(isset($_SESSION["signedin"]) && $_SESSION["signedin"] === true) {
-		echo '
-		<ul class="navbar-nav">
-			<li class="nav-item active d-flex justify-content-center">
-				<a class="nav-link" href="#">' . $phrases['home'] . '</a>
-			</li>
-			<li class="nav-item active d-flex justify-content-center">
-				<a class="nav-link" href="#">' . $phrases['categories'] . '</a>
-			</li>
-			<li class="nav-item active d-flex justify-content-center">
-				<a class="nav-link" href="#">' . $phrases['notes'] . '</a>
-			</li>
-		</ul>';
+			echo '
+			<ul class="navbar-nav">
+				<li class="nav-item active d-flex justify-content-center">
+					<a class="nav-link" href="#">' . $phrases['home'] . '</a>
+				</li>
+				<li class="nav-item active d-flex justify-content-center">
+					<a class="nav-link" href="#">' . $phrases['categories'] . '</a>
+				</li>
+				<li class="nav-item active d-flex justify-content-center">
+					<a class="nav-link" href="#">' . $phrases['notes'] . '</a>
+				</li>
+			</ul>';
+		}
+		else {
+			if(basename($_SERVER['PHP_SELF']) == "signin.php")
+				echo '
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item active d-flex justify-content-center">
+						<a class="nav-link" href="signup.php">' . $phrases['signup-link-text'] . '</a>
+					</li>
+				</ul>';
+			else
+				echo '
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item active d-flex justify-content-center">
+						<a class="nav-link" href="signin.php">' . $phrases['signin-link-text'] . '</a>
+					</li>
+				</ul>';
 		}
 		?>
 		<ul class="navbar-nav ms-auto">

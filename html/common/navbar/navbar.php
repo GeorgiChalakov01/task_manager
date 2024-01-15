@@ -4,7 +4,7 @@
 	</button>
 	<div class="collapse navbar-collapse" id="navbarNavDropdown">
 	<?php
-		if(isset($_SESSION["signedin"]) && $_SESSION["signedin"] === true) {
+		if(isset($_SESSION['user-details'])) {
 			echo '
 			<ul class="navbar-nav">
 				<li class="nav-item active d-flex justify-content-center">
@@ -37,31 +37,41 @@
 		?>
 		<ul class="navbar-nav ms-auto">
 			<li class="nav-item ">
-				<a class="nav-link dropdown-toggle text-center" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					&nbsp;&nbsp;&nbsp;&nbsp;🌎
+				<a class="nav-link dropdown-toggle text-center" href="#" id="settingsDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					    ⚙️
 				</a>
-				<div 
-				class="dropdown-menu" 
-				style="left: auto; right: 0;"
-				aria-labelledby="navbarDropdownMenuLink"
+				<div
+					class="dropdown-menu text-center"
+					style="left: auto; right: 0;"
+					aria-labelledby="settingsDropdownMenuLink"
 				>
+
 				<?php
+				if(isset($_SESSION['user-details'])) {
+					echo '
+					<a class="dropdown-item" href="#">'. $phrases['navbar-profile'] . '</a>
+					<a class="dropdown-item" href="/common/navbar/signout.inc.php">'. $phrases['navbar-signout'] . '</a>
+					<div class="dropdown-divider"></div>
+					';
+				}
+
+				echo '<h6 class="dropdown-header">'. $phrases['navbar-languages'] . '</h6>';
+
 				$languages=get_languages($con);
 				foreach($languages as $language) {
 					$return_url = urlencode($_SERVER['REQUEST_URI']);
-
-					// Not a best practice to have the root directory exposed.
 					echo '
-					<a 
-							class="dropdown-item" 
-							href="/common/navbar/change_language.php?language_code=' .  $language['code']. '&return=' . $return_url . '"
-					>' . 
+					<a
+						class="dropdown-item"
+						href="/common/navbar/change_language.inc.php?language_code=' .  $language['code']. '&return=' . $return_url . '"
+				   >' .
 						$language['name'] . '
 					</a>';
-					}
-				?>
+				 }
+				 ?>
 				</div>
 			</li>
 		</ul>
+
 	</div>
 </nav>

@@ -4,7 +4,7 @@ if(!isset($_POST["submit"])) {
 	exit;
 }
 
-require 'includes/php_start.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
 require 'includes/php_auth_check.php';
 
 $email=$_POST['email'];

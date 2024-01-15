@@ -1,5 +1,5 @@
 <?php
-require 'includes/php_start.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
 require 'includes/php_auth_check.php';
 ?>
 
@@ -7,7 +7,8 @@ require 'includes/php_auth_check.php';
 <html>
 	<head>
 
-		<?php include 'includes/head.php';?>
+		<title><?php echo $phrases['signin-page-title'];?></title>
+		<?php include $_SERVER['DOCUMENT_ROOT'] . '/common/php/head.php';?>
 
 	</head>
 	<body class="cust-dark1">
@@ -22,30 +23,30 @@ require 'includes/php_auth_check.php';
 					<div class="form-group">
 						<label for="email"><?php echo $phrases['signin-form-email-label'];?></label>
 						<input 
-							type="email" 
-							name="email" 
-							class="form-control" 
-							id="email" 
-							placeholder="<?php echo $phrases['signin-form-email-placeholder'];?>" 
-							autocomplete="email"
-							value="<?php echo $_SESSION['signin-form']['email'];?>"
-							required
-						>
-						<div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
+							   type="email" 
+							   name="email" 
+							   class="form-control" 
+							   id="email" 
+							   placeholder="<?php echo $phrases['signin-form-email-placeholder'];?>" 
+							   autocomplete="email"
+							   value="<?php echo $_SESSION['signin-form']['email'];?>"
+							   required
+							   >
+							   <div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
 
 					</div>
 					<div class="form-group">
 						<label for="password"><?php echo $phrases['signin-form-password-label'];?></label>
 						<input 
-							type="password" 
-							name="password" 
-							class="form-control" 
-							id="password" 
-							placeholder="<?php echo $phrases['signin-form-password-placeholder'];?>" 
-							autocomplete="current-password"
-							required
-						>
-						<div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
+							   type="password" 
+							   name="password" 
+							   class="form-control" 
+							   id="password" 
+							   placeholder="<?php echo $phrases['signin-form-password-placeholder'];?>" 
+							   autocomplete="current-password"
+							   required
+							   >
+							   <div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
 					</div>
 					<br/>
 					<br/>
@@ -54,8 +55,8 @@ require 'includes/php_auth_check.php';
 			</div>
 			<div class="col-0 col-lg-5">
 				<img 
-					class="img-fluid d-none d-sm-block signin-img" 
-					src="/signin_system/images/signin.png" style="object-fit: cover; height: 100%; width: 100%;"/>
+				 class="img-fluid d-none d-sm-block signin-img" 
+				 src="/signin_system/images/signin.png" style="object-fit: cover; height: 100%; width: 100%;"/>
 			</div>
 		</div>
 

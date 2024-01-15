@@ -79,6 +79,12 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "signup-form-submit-b
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "signup-form-submit-button", "Въведи");
 
 /*
+Used in the home.php. 
+ */
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "home-page-title", "Home");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "home-page-title", "Начало");
+
+/*
 Used in signup.inc.php to indicate errors.
 */
 
@@ -105,6 +111,15 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "signin-link-text", "
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "signup-link-text", "Sign Up");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "signup-link-text", "Регистрация");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "navbar-profile", "My Profile");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "navbar-profile", "Моят Профил");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "navbar-signout", "Sign Out");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "navbar-signout", "Изход");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "navbar-languages", "Languages");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "navbar-languages", "Езици");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "home", "Home");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "home", "Начало");

@@ -1,5 +1,5 @@
 <?php
-require 'includes/php_start.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
 require 'includes/php_auth_check.php';
 ?>
 
@@ -7,13 +7,13 @@ require 'includes/php_auth_check.php';
 <html>
 	<head>
 
-		<?php include 'includes/head.php';?>
+		<title><?php echo $phrases['signup-page-title'];?></title>
+		<?php include $_SERVER['DOCUMENT_ROOT'] . '/common/php/head.php';?>
 
 	</head>
 	<body class="cust-dark1">
 
 		<?php require '../common/navbar/navbar.php';?>
-
 		<div class="container p-0 col-10 bg-light d-flex justify-content-center rounded" style="height: 80vh;">
 			<div class="col-12 col-lg-7 p-5" style="overflow: auto;">
 				<h1 class="col-12 text-center"><?php echo $phrases['signup-form-title'];?></h1>

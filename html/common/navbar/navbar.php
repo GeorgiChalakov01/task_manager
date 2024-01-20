@@ -11,10 +11,13 @@
 					<a class="nav-link" href="#">' . $phrases['home'] . '</a>
 				</li>
 				<li class="nav-item active d-flex justify-content-center">
-					<a class="nav-link" href="#">' . $phrases['categories'] . '</a>
+					<a class="nav-link" href="/tasks/categories.php">' . $phrases['categories'] . '</a>
 				</li>
 				<li class="nav-item active d-flex justify-content-center">
-					<a class="nav-link" href="#">' . $phrases['notes'] . '</a>
+					<a class="nav-link" href="/tasks/files.php">' . $phrases['files'] . '</a>
+				</li>
+				<li class="nav-item active d-flex justify-content-center">
+					<a class="nav-link" href="/tasks/notes.php">' . $phrases['notes'] . '</a>
 				</li>
 			</ul>';
 		}

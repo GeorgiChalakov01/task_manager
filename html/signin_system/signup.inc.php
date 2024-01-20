@@ -77,8 +77,10 @@ if($password != $password_repeat) {
 }
 
 
-if(signup_user($con, $first_name, $last_name, $username, $email, $hashed_password, $profile_picture_path)) {
+if($user_id=signup_user($con, $first_name, $last_name, $username, $email, $hashed_password, $profile_picture_path)) {
     move_uploaded_file($file_tmp_name, $file_destination);
+	create_category($con, $user_id, 'default-category', '1');
+
 	header("location: signin.php?status=success-account-created");
 	exit;
 }

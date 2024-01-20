@@ -15,12 +15,12 @@ require 'includes/php_auth_check.php';
 
 		<?php require '../common/navbar/navbar.php';?>
 
-		<div class="container p-0 col-10 bg-light d-flex justify-content-center rounded" style="height: 80vh;">
+		<div class="container p-0 bg-light d-flex justify-content-center rounded" style="height: 80vh;">
 			<div class="col-12 col-lg-7 p-5" style="overflow: auto;">
 				<h1 class="col-12 text-center"><?php echo $phrases['signin-form-title'];?></h1>
 				<?php require '../common/statuserror/statuserror.php';?>
 				<form action="signin.inc.php" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-					<div class="form-group">
+					<div class="form-group mb-3">
 						<label for="email"><?php echo $phrases['signin-form-email-label'];?></label>
 						<input 
 							   type="email" 
@@ -35,7 +35,7 @@ require 'includes/php_auth_check.php';
 							   <div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
 
 					</div>
-					<div class="form-group">
+					<div class="form-group mb-3">
 						<label for="password"><?php echo $phrases['signin-form-password-label'];?></label>
 						<input 
 							   type="password" 

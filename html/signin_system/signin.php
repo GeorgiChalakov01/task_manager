@@ -15,7 +15,8 @@ require 'includes/php_auth_check.php';
 
 		<?php require '../common/navbar/navbar.php';?>
 
-		<div class="container p-0 bg-light d-flex justify-content-center rounded" style="height: 80vh;">
+		<br/>
+		<div class="container p-0 bg-light d-flex justify-content-center rounded" style="height: 85vh;">
 			<div class="col-12 col-lg-7 p-5" style="overflow: auto;">
 				<h1 class="col-12 text-center"><?php echo $phrases['signin-form-title'];?></h1>
 				<?php require '../common/statuserror/statuserror.php';?>

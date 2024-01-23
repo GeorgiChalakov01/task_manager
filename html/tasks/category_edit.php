@@ -3,7 +3,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
 require 'includes/php_auth_check.php';
 
 $edit=false;
-$chosen_category;
+$chosen_category='';
 if(isset($_GET['id'])) {
     $edit=true;
 	$chosen_category=get_category_info($con, $_GET['id'], $_SESSION['user-details']['id']);
@@ -14,7 +14,7 @@ if(isset($_GET['id'])) {
 <html>
 	<head>
 
-		<title><?php echo $phrases['home-page-title'];?></title>
+		<title><?php if($edit)echo $phrases['category-edit-page-title'];else echo $phrases['category-create-page-title'];?></title>
 		<?php include $_SERVER['DOCUMENT_ROOT'] . '/common/php/head.php';?>
 
 	</head>
@@ -23,7 +23,8 @@ if(isset($_GET['id'])) {
 		<?php require '../common/navbar/navbar.php';?>
 
 
-		<div class="container p-0 bg-light d-flex justify-content-center rounded" style="height: 80vh;">
+		<br/>
+		<div class="container p-0 bg-light d-flex justify-content-center rounded" style="height: 85vh;">
 			<div class="col-12 col-lg-7 p-5" style="overflow: auto;">
 				<h1 class="col-12 text-center">
 					<?php echo $edit? $phrases['category-edit-title'] : $phrases['category-create-title'];?>
@@ -39,7 +40,7 @@ if(isset($_GET['id'])) {
 						<?php 
 						echo 'placeholder="' . $phrases['category-create-name-placeholder'] . '"';
 						if($edit)
-							echo 'value=' . $chosen_category['name'];
+							echo 'value="' . $chosen_category['name'] . '"';
 						?> 
 							required
 						>

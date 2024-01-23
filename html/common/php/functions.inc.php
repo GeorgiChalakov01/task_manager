@@ -233,6 +233,33 @@ function delete_category($con, $category_id, $user_id) {
 	return true;
 }
 
+function append_category($con, $category_id, $object_id, $object_type, $user_id) {
+	$query="
+	CALL P_APPEND_CATEGORY(?,?,?,?);
+	";
+
+	$params=array($category_id, $object_id, $object_type, $user_id);
+	$types="iisi";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}
+
+function upload_file ($con, $original_name, $server_name, $extension, $title, $description, $user_id) {
+	$query="
+	CALL P_UPLOAD_FILE(?,?,?,?,?,?,@FILE_ID);
+	";
+
+	$params=array($original_name, $server_name, $extension, $title, $description, $user_id);
+	$types="sssssi";
+	$out_params=["@FILE_ID"];
+	$result=execute_query($con, $query, $params, $types, $out_params);
+
+	$file_id=$result['@FILE_ID'];
+
+	return $file_id;
+}
+
 function get_default_category_id($con, $user_id) {
 	$query="
 	SELECT 
@@ -291,3 +318,117 @@ function get_color_schemes($con) {
 
 	return $result;
 }
+
+function get_files($con, $user_id) {
+	$query="
+	SELECT 
+		F.ID AS id,
+		F.ORIGINAL_NAME AS original_name,
+		F.SERVER_NAME AS server_name,
+		F.EXTENSION AS extension,
+		F.TITLE AS title,
+		F.DESCRIPTION AS description,
+		F.UPLOADED_ON AS uploaded_on
+	FROM 
+		FILES F INNER JOIN FILE_PRIVILEGES FP ON F.ID = FP.FILE_ID
+	WHERE
+		FP.USER_ID = ? AND
+		FP.PRIVILEGE = 'VIEW'
+	ORDER BY
+		F.ID;
+	";
+
+	$params=array($user_id);
+	$types="i";
+	$result=execute_query($con, $query, $params, $types);
+
+	return $result;
+}
+
+function get_files_from_category($con, $user_id, $category_id) {
+	$query="
+	SELECT 
+		F.ID AS id,
+		F.ORIGINAL_NAME AS original_name,
+		F.SERVER_NAME AS server_name,
+		F.EXTENSION AS extension,
+		F.TITLE AS title,
+		F.DESCRIPTION AS description,
+		F.UPLOADED_ON AS uploaded_on
+	FROM 
+		FILES F 
+		INNER JOIN FILE_PRIVILEGES FP ON F.ID = FP.FILE_ID
+		INNER JOIN FILES_HAVE_CATEGORIES FC ON F.ID = FC.FILE_ID
+	WHERE
+		FP.USER_ID = ? AND
+		FP.PRIVILEGE = 'VIEW' AND
+		FC.CATEGORY_ID = ?
+	ORDER BY
+		F.ID;
+	";
+
+	$params=array($user_id, $category_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return $result;
+}
+
+function get_file_info($con, $file_id, $user_id) {
+	$query="
+	SELECT 
+		F.ID AS id,
+		F.ORIGINAL_NAME AS original_name,
+		F.SERVER_NAME AS server_name,
+		F.EXTENSION AS extension,
+		F.TITLE AS title,
+		F.DESCRIPTION AS description,
+		F.UPLOADED_ON AS uploaded_on
+	FROM 
+		FILES F INNER JOIN FILE_PRIVILEGES FP ON F.ID = FP.FILE_ID
+	WHERE
+		FP.FILE_ID = ? AND
+		FP.USER_ID = ? AND
+		FP.PRIVILEGE = 'VIEW'
+	ORDER BY
+		F.ID;
+	";
+
+	$params=array($file_id, $user_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return $result[0];
+}
+
+function save_file($file, $destination_directory) {
+	// File information
+	$file_info = pathinfo($file['name']);
+	$file_name = $file_info['filename'];
+	$file_extension = $file_info['extension'];
+
+	// Get the target destination for the file.
+	$file_destination;
+	$file_tmp_name = $file['tmp_name'];
+	$next_file_number='';
+	if($file_name) {
+		$files_in_directory = glob($destination_directory . '*.*');
+		$file_numbers = array_map(
+				function($file) {
+				return intval(pathinfo($file, PATHINFO_FILENAME));
+				},
+				$files_in_directory
+				);
+		$next_file_number = empty($file_numbers) ? 1 : max($file_numbers) + 1;
+
+		$file_destination = $destination_directory . $next_file_number . '.' . $file_extension;
+	}
+
+	// Move the uploaded file to the target destination.
+	if(move_uploaded_file($file_tmp_name, $file_destination)) {
+		return $next_file_number;
+	} else {
+		return false;
+	}
+}
+

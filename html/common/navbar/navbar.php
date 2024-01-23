@@ -8,7 +8,7 @@
 			echo '
 			<ul class="navbar-nav">
 				<li class="nav-item active d-flex justify-content-center">
-					<a class="nav-link" href="#">' . $phrases['home'] . '</a>
+					<a class="nav-link" href="/tasks/home.php">' . $phrases['home'] . '</a>
 				</li>
 				<li class="nav-item active d-flex justify-content-center">
 					<a class="nav-link" href="/tasks/categories.php">' . $phrases['categories'] . '</a>
@@ -77,4 +77,12 @@
 		</ul>
 
 	</div>
+</nav>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<ul class="navbar-nav ms-auto">
+		<li class="nav-item active d-flex justify-content-center">
+			<a class="nav-link" href="">space</a>
+		</li>
+	</ul>
 </nav>

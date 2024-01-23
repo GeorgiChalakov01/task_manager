@@ -15,6 +15,7 @@ require 'includes/php_auth_check.php';
 
 			<?php require '../common/navbar/navbar.php';?>
 
+			<br/>
 			<div class="container">
 				<div class="row">
 					<?php

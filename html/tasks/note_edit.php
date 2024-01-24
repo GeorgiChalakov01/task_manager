@@ -3,12 +3,12 @@ require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
 require 'includes/php_auth_check.php';
 
 $edit=false;
-$chosen_file='';
-$file_categories=array();
+$chosen_note='';
+$note_categories=array();
 if(isset($_GET['id'])) {
 	$edit=true;
-	$chosen_file=get_file_info($con, $_GET['id'], $_SESSION['user-details']['id']);
-	$file_categories=get_file_categories($con, $_GET['id'], $_SESSION['user-details']['id']);
+	$chosen_note=get_note_info($con, $_GET['id'], $_SESSION['user-details']['id']);
+	$note_categories=get_note_categories($con, $_GET['id'], $_SESSION['user-details']['id']);
 }
 ?>
 
@@ -16,7 +16,7 @@ if(isset($_GET['id'])) {
 <html>
 	<head>
 
-		<title><?php if($edit)echo $phrases['file-edit-page-title']; else echo $phrases['file-create-page-title'];?></title>
+		<title><?php if($edit)echo $phrases['note-edit-page-title']; else echo $phrases['note-create-page-title'];?></title>
 		<?php include $_SERVER['DOCUMENT_ROOT'] . '/common/php/head.php';?>
 
 	</head>
@@ -29,45 +29,39 @@ if(isset($_GET['id'])) {
 		<div class="container p-0 bg-light d-flex justify-content-center rounded" style="height: 85vh;">
 			<div class="col-12 col-lg-7 p-5" style="overflow: auto;">
 				<h1 class="col-12 text-center">
-					<?php echo $edit? $phrases['file-edit-title'] : $phrases['file-create-title'];?>
+					<?php echo $edit? $phrases['note-edit-title'] : $phrases['note-create-title'];?>
 				</h1>
 				<?php require '../common/statuserror/statuserror.php';?>
-				<form action="<?php echo $edit?'file_edit.inc.php':'file_create.inc.php';?>" method="post" enctype="multipart/form-data" id="fileForm" class="needs-validation" novalidate>
+				<form action="<?php echo $edit?'note_edit.inc.php':'note_create.inc.php';?>" method="post" enctype="multipart/form-data" id="fileForm" class="needs-validation" novalidate>
 					<div class="form-group mb-3">
-						<label for="fileName"><?php echo $phrases['file-edit-title-label'];?></label>
+						<label for="name"><?php echo $phrases['note-edit-title-label'];?></label>
 						<input 
 							type="text" 
-							id="fileName" 
+							id="name" 
 							name="title" class="form-control" 
 							required
 							<?php 
-							echo 'placeholder="' . $phrases['file-edit-title-placeholder'] . '"';
+							echo 'placeholder="' . $phrases['note-edit-title-placeholder'] . '"';
 							if($edit)
-								echo 'value="' . $chosen_file['title'] . '"';
+								echo 'value="' . $chosen_note['title'] . '"';
 							?> 
 						>
 						<div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
 					</div>
 
 					<div class="form-group mb-3">
-						<label for="fileDescription"><?php echo $phrases['file-edit-description-label'];?></label>
+						<label for="description"><?php echo $phrases['note-edit-description-label'];?></label>
 						<textarea 
-							id="fileDescription" 
+							id="description" 
 							name="description" 
 							class="form-control" 
 							style="min-height: 100px; width: 100%; resize: none;" 
 							<?php 
-							echo 'placeholder="' . $phrases['file-edit-description-placeholder'] . '"';
+							echo 'placeholder="' . $phrases['note-edit-description-placeholder'] . '"';
 						?> 
-						><?php if($edit) echo $chosen_file['description'];?></textarea>
+						><?php if($edit) echo $chosen_note['description'];?></textarea>
 						<div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
 					</div>
-	
-					<div class="mb-3">
-						<label for="formFile" class="form-label"><?php echo $phrases['file-edit-upload-label'];?></label>
-						<input class="form-control" type="file" name="file" id="formFile" <?php if(!$edit)echo 'required'; ?>>
-					</div>
-
 					<div class="form-group mb-3">
 						<label for="categories">Categories</label>
 						<div id="categories" style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; border-radius: 10px; background-color: #f8f9fa;">
@@ -84,11 +78,20 @@ if(isset($_GET['id'])) {
 								if($category['id'] == $default_id)
 									$name=$phrases['default-category-name'];
 
-								if(in_array($category['id'], $file_categories))
+								if(in_array($category['id'], $note_categories))
 									$checked='checked';
 								
 								echo '
-								<div style="display: flex; align-items: center; margin-bottom: 10px; background-color: ' . $category['background_color'] . '; color: ' . $category['text_color'] . '; padding: 10px; border-radius: 10px;">
+								<div 
+									style="
+										display: flex; 
+										align-items: center; 
+										margin-bottom: 10px; 
+										background-color: ' . $category['background_color'] . '; 
+										color: ' . $category['text_color'] . '; 
+										padding: 10px; 
+										border-radius: 10px;"
+								>
 									<input 
 										type="checkbox" 
 										id="category_' . $category['id'] . '" 
@@ -113,7 +116,7 @@ if(isset($_GET['id'])) {
 					</div>
 					<br/>
 					<br/>
-					<button type="submit" name="submit" class="col-12 btn btn-secondary"><?php echo $phrases['file-edit-form-submit-button'];?></button>
+					<button type="submit" name="submit" class="col-12 btn btn-secondary"><?php echo $phrases['note-edit-form-submit-button'];?></button>
 				</form>
 			</div>
 			<div class="col-0 col-lg-5 bg-dark text-white p-4 d-none d-lg-block">

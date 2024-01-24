@@ -209,6 +209,21 @@ function create_category($con, $owner_id, $name, $color_scheme_id) {
 	return $category_id;
 }
 
+function create_note($con, $title, $description, $user_id) {
+	$query="
+	CALL P_CREATE_NOTE(?,?,?,@NOTE_ID);
+	";
+
+	$params=array($title, $description, $user_id);
+	$types="ssi";
+	$out_params=["@NOTE_ID"];
+	$result=execute_query($con, $query, $params, $types, $out_params);
+
+	$category_id=$result['@NOTE_ID'];
+
+	return $category_id;
+}
+
 function edit_category($con, $category_id, $owner_id, $name, $color_scheme_id) {
 	$query="
 	CALL P_EDIT_CATEGORY(?,?,?,?);
@@ -233,6 +248,18 @@ function edit_file($con, $file_id, $original_name, $server_name, $extension, $ti
 	return true;
 }
 
+function edit_note($con, $note_id, $title, $description, $user_id) {
+	$query="
+	CALL P_EDIT_NOTE(?,?,?,?);
+	";
+
+	$params=array($note_id, $title, $description, $user_id);
+	$types="issi";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}
+
 function delete_category($con, $category_id, $user_id) {
 	$query="
 	CALL P_DELETE_CATEGORY(?,?);
@@ -251,6 +278,18 @@ function delete_file($con, $file_id, $user_id) {
 	";
 
 	$params=array($file_id, $user_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}
+
+function delete_note($con, $note_id, $user_id) {
+	$query="
+	CALL P_DELETE_NOTE(?,?);
+	";
+
+	$params=array($note_id, $user_id);
 	$types="ii";
 	$result=execute_query($con, $query, $params, $types);
 
@@ -369,6 +408,29 @@ function get_files($con, $user_id) {
 	return $result;
 }
 
+function get_notes($con, $user_id) {
+	$query="
+	SELECT 
+		N.ID AS id,
+		N.TITLE AS title,
+		N.DESCRIPTION AS description,
+		N.CREATED_ON AS created_on
+	FROM 
+		NOTES N INNER JOIN NOTE_PRIVILEGES NP ON N.ID = NP.NOTE_ID
+	WHERE
+		NP.USER_ID = ? AND
+		NP.PRIVILEGE = 'VIEW'
+	ORDER BY
+		N.ID;
+	";
+
+	$params=array($user_id);
+	$types="i";
+	$result=execute_query($con, $query, $params, $types);
+
+	return $result;
+}
+
 function get_files_from_category($con, $user_id, $category_id) {
 	$query="
 	SELECT 
@@ -389,6 +451,32 @@ function get_files_from_category($con, $user_id, $category_id) {
 		FC.CATEGORY_ID = ?
 	ORDER BY
 		F.ID;
+	";
+
+	$params=array($user_id, $category_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return $result;
+}
+
+function get_notes_from_category($con, $user_id, $category_id) {
+	$query="
+	SELECT 
+		N.ID AS id,
+		N.TITLE AS title,
+		N.DESCRIPTION AS description,
+		N.CREATED_ON AS created_on
+	FROM 
+		NOTES N 
+		INNER JOIN NOTE_PRIVILEGES NP ON N.ID = NP.NOTE_ID
+		INNER JOIN NOTES_HAVE_CATEGORIES NC ON N.ID = NC.NOTE_ID
+	WHERE
+		NP.USER_ID = ? AND
+		NP.PRIVILEGE = 'VIEW' AND
+		NC.CATEGORY_ID = ?
+	ORDER BY
+		N.ID;
 	";
 
 	$params=array($user_id, $category_id);
@@ -425,6 +513,30 @@ function get_file_info($con, $file_id, $user_id) {
 	return $result[0];
 }
 
+function get_note_info($con, $note_id, $user_id) {
+	$query="
+	SELECT 
+		N.ID AS id,
+		N.TITLE AS title,
+		N.DESCRIPTION AS description,
+		N.CREATED_ON AS created_on
+	FROM 
+		NOTES N INNER JOIN NOTE_PRIVILEGES NP ON N.ID = NP.NOTE_ID
+	WHERE
+		NP.NOTE_ID = ? AND
+		NP.USER_ID = ? AND
+		NP.PRIVILEGE = 'VIEW'
+	ORDER BY
+		N.ID;
+	";
+
+	$params=array($note_id, $user_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return $result[0];
+}
+
 function get_file_categories($con, $file_id, $user_id) {
 	$query="
 	SELECT 
@@ -449,19 +561,44 @@ function get_file_categories($con, $file_id, $user_id) {
 	return $ids;
 }
 
-function unappend_categories($con, $file_id, $user_id) {
+function get_note_categories($con, $note_id, $user_id) {
 	$query="
-	DELETE 
-		FC
+	SELECT 
+		C.ID AS id
 	FROM 
-		FILES_HAVE_CATEGORIES FC
-		INNER JOIN CATEGORIES C ON C.ID = FC.CATEGORY_ID
-	WHERE 
-		C.OWNER_ID = ? AND 
-		FC.FILE_ID = ?;
+		CATEGORIES C INNER JOIN NOTES_HAVE_CATEGORIES NC ON C.ID = NC.CATEGORY_ID
+	WHERE
+		C.OWNER_ID = ? AND
+		NC.NOTE_ID = ?
+	ORDER BY
+		C.ID;
 	";
 
-	$params=array($user_id, $file_id);
+	$params=array($user_id, $note_id);
+	$types="ii";
+	$categories=execute_query($con, $query, $params, $types);
+
+	$ids = array();
+	foreach($categories as $category)
+		$ids[] = $category['id'];
+
+	return $ids;
+}
+
+
+function unappend_categories($con, $object_id, $object_type, $user_id) {
+	$query="
+	DELETE 
+		OC
+	FROM " .
+		$object_type . "S_HAVE_CATEGORIES OC
+		INNER JOIN CATEGORIES C ON C.ID = OC.CATEGORY_ID
+	WHERE 
+		C.OWNER_ID = ? AND 
+		OC." . $object_type . "_ID = ?;
+	";
+
+	$params=array($user_id, $object_id);
 	$types="ii";
 	$categories=execute_query($con, $query, $params, $types);
 
@@ -502,4 +639,3 @@ function save_file($file, $destination_directory) {
 		return false;
 	}
 }
-

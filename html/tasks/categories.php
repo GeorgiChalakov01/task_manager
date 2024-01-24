@@ -9,6 +9,7 @@ require 'includes/php_auth_check.php';
 
 		<title><?php echo $phrases['home-page-title'];?></title>
 		<?php include $_SERVER['DOCUMENT_ROOT'] . '/common/php/head.php';?>
+		<?php require '../common/php/hidden_menu.php';?>
 
 		</head>
 		<body class="cust-dark1">
@@ -74,8 +75,6 @@ require 'includes/php_auth_check.php';
 						</a>
 					</div>
 				</div>
-
-				<?php require '../common/php/hidden_menu.php';?>
 
 				<script src="/common/scripts/form_mandatory_fields.js"></script>
 				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

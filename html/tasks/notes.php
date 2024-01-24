@@ -7,7 +7,7 @@ require 'includes/php_auth_check.php';
 <html>
 <head>
 
-	<title><?php echo $phrases['files-page-title'];?></title>
+	<title><?php echo $phrases['notes-page-title'];?></title>
 	<?php include $_SERVER['DOCUMENT_ROOT'] . '/common/php/head.php';?>
 
 </head>
@@ -49,10 +49,10 @@ require 'includes/php_auth_check.php';
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 					<?php
 					echo "
-					<li><a class='dropdown-item' href='files.php'>{$phrases['dropdown-all-categories']}</a></li>";
+					<li><a class='dropdown-item' href='notes.php'>{$phrases['dropdown-all-categories']}</a></li>";
 					foreach($categories as $category) {
 						echo "
-						<li><a class='dropdown-item' href='files.php?category_id={$category['id']}'>{$category['name']}</a></li>
+						<li><a class='dropdown-item' href='notes.php?category_id={$category['id']}'>{$category['name']}</a></li>
 						";
 					}
 					?>
@@ -61,47 +61,44 @@ require 'includes/php_auth_check.php';
 				<button 
 					type="button" 
 					class="btn btn-secondary col-3"
-					onclick="window.location.href = 'file_edit.php';"
+					onclick="window.location.href = 'note_edit.php';"
 				>
-					<?php echo $phrases['files-upload-button']?>
+					<?php echo $phrases['notes-create-button']?>
 				</button>
 			</div>
 		</div>
 		<div class="row">
 			<?php
 			if(isset($_GET['category_id']))
-				$files=get_files_from_category($con, $_SESSION['user-details']['id'], $_GET['category_id']);
+				$notes=get_notes_from_category($con, $_SESSION['user-details']['id'], $_GET['category_id']);
 			else
-				$files=get_files($con, $_SESSION['user-details']['id']);
+				$notes=get_notes($con, $_SESSION['user-details']['id']);
 
-			foreach($files as $file) {
-				if($file['description']) {
-					$description = $file['description'];
-				}
+			foreach($notes as $note) {
+				if($note['description']) {
+					$description = $note['description'];
+			}
 				else {
 					$description = $phrases['text-no-description'];
-				}
+			}
 
-				$source_image = '/common/images/file.png';
-				if(in_array($file['extension'], ['jpg', 'jpeg', 'png', 'gif', 'ico', 'webp'])) {
-					$source_image = '/common/uploaded_files/' . $file['server_name'] . '.' . $file['extension'];
-				}
-				
-				echo '
-				<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-					<div class="card rounded" style="height: 700px;">
-						<div class="h-50" style="background-color: #f7f7f7">
-							<img src="' . $source_image . '" style="cursor: pointer; width: 100%; height: 100%; object-fit: cover;" alt="File image" onclick="show_menu(' . $file['id'] . ', \'file\');">
-						</div>
-						<div class="card-body">
-							<h5 class="card-title" style="height: 40px; overflow: auto;">' . $file['title'] . '</h5>
-							<p class="card-text" style="height: 60px; overflow: scroll;">' . $description . '</p>
-							<p class="card-text" style="height: 40px; overflow: scroll;">' . $file['original_name'] . '.' . $file['extension'] . '</p>
-							<p class="card-text" style="height: 40px; overflow: scroll;">' . $file['uploaded_on'] . '</p>
-							<a href="file_download.inc.php?id=' . $file['id'] . '" class="btn btn-secondary">' . $phrases['files-file-download-button'] . '</a>
-						</div>
+			echo '
+			<div 
+				class="col-lg-4 col-md-6 col-sm-12 mb-4" 
+				style="cursor: pointer;" 
+				onclick="show_menu(' . $note['id'] . ', \'note\');"
+			>
+				<div class="card rounded" style="height: 400px;">
+					<div class="card-body" style="background-color: #f7f7f7;">
+						<h2 class="card-title" style="height: 50px; overflow: auto;">' . $note['title'] . '</h2>
 					</div>
-				</div>';
+					<div class="card-body">
+						<p class="card-text" style="height: 200px; overflow: scroll;">' . $description . '</p>
+						<p class="card-text" style="height: 40px; overflow: scroll;">' . $note['created_on'] . '</p>
+					</div>
+				</div>
+			</div>';
+
 			}
 			?>
 		</div>

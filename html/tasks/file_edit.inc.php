@@ -43,7 +43,7 @@ if($_FILES['file']['name']) {
 
 
 if(edit_file($con, $file_id, $original_name, $server_name, $extension, $title, $description, $_SESSION['user-details']['id'])) {
-	unappend_categories($con, $file_id, $_SESSION['user-details']['id']);
+	unappend_categories($con, $file_id, 'FILE', $_SESSION['user-details']['id']);
 	foreach($categories as $category_id)
 		append_category($con, $category_id, $file_id, 'FILE', $_SESSION['user-details']['id']);
 	header("location: /tasks/files.php?status=success-file-edited");

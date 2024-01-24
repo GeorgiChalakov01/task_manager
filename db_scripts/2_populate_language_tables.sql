@@ -90,14 +90,14 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "files-page-title", "
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "files-upload-button", "Upload");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "files-upload-button", "Качване");
 
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "files-dropdown-filter-categories", "Category");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "files-dropdown-filter-categories", "Категория");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "dropdown-filter-categories", "Category");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "dropdown-filter-categories", "Категория");
 
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "files-dropdown-all-categories", "All Categories");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "files-dropdown-all-categories", "Всички Категории");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "dropdown-all-categories", "All Categories");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "dropdown-all-categories", "Всички Категории");
 
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "files-file-no-description", "No Description");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "files-file-no-description", "Няма Описание");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "text-no-description", "No Description");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "text-no-description", "Няма Описание");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "files-file-download-button", "Download");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "files-file-download-button", "Изтегляне");
@@ -125,6 +125,15 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "categories-hidden-me
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "categories-hidden-menu-delete", "Delete");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "categories-hidden-menu-delete", "Изтриване");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-category-created", "Category Created Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-category-created", "Категорията е създадена успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-category-deleted", "Category Deleted Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-category-deleted", "Категорията е изтрита успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-category-edited", "Category Edited Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-category-edited", "Категорията е променена успешно!");
 
 /*
 Used in the category_edit.php. 
@@ -205,6 +214,12 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "file-edit-info-parag
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-file-uploaded", "File Uploaded Successfully!");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-file-uploaded", "Файлът е качен успешно!");
 
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-file-edited", "File Edited Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-file-edited", "Файлът е променен успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-file-deleted", "File Deleted Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-file-deleted", "Файлът е изтрит успешно!");
+
 
 /*
 Used in the home.php. 
@@ -279,4 +294,50 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "error-field-is-mandi
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "error-file-upload", "File was not uploaded!");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "error-file-upload", "Файлът не беше качен!");
 
+/*Used in notes.php*/
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "notes-page-title", "Notes");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "notes-page-title", "Бележки");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "notes-create-button", "Create");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "notes-create-button", "Създай");
+
+/*Used in note_edit.php*/
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-page-title", "Edit Note");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-page-title", "Промяна на Бележка");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-create-page-title", "Create Note");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-create-page-title", "Създаване на Бележка");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-title", "Edit Note");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-title", "Промяна на Бележка");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-create-title", "Create Note");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-create-title", "Създаване на Бележка");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-title-label", "Title");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-title-label", "Заглавие");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-title-placeholder", "Shopping List");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-title-placeholder", "Списък с покупки");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-description-label", "Description");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-description-label", "Описание");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-description-placeholder", "Milk, Eggs ...");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-description-placeholder", "Мляко, Яйца ...");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-form-submit-button", "Create");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-form-submit-button", "Създаване");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-note-created", "Note Created Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-note-created", "Бележката е създадена успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-note-edited", "Note Edited Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-note-edited", "Бележката е променена успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-note-deleted", "Note Deleted Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-note-deleted", "Бележката е изтрита успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "", "");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "", "");
 

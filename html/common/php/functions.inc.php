@@ -221,12 +221,36 @@ function edit_category($con, $category_id, $owner_id, $name, $color_scheme_id) {
 	return true;
 }
 
+function edit_file($con, $file_id, $original_name, $server_name, $extension, $title, $description, $user_id) {
+	$query="
+	CALL P_EDIT_FILE(?,?,?,?,?,?,?);
+	";
+
+	$params=array($file_id, $original_name, $server_name, $extension, $title, $description, $user_id);
+	$types="isssssi";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}
+
 function delete_category($con, $category_id, $user_id) {
 	$query="
 	CALL P_DELETE_CATEGORY(?,?);
 	";
 
 	$params=array($category_id, $user_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}
+
+function delete_file($con, $file_id, $user_id) {
+	$query="
+	CALL P_DELETE_FILE(?,?);
+	";
+
+	$params=array($file_id, $user_id);
 	$types="ii";
 	$result=execute_query($con, $query, $params, $types);
 
@@ -389,7 +413,7 @@ function get_file_info($con, $file_id, $user_id) {
 	WHERE
 		FP.FILE_ID = ? AND
 		FP.USER_ID = ? AND
-		FP.PRIVILEGE = 'VIEW'
+		FP.PRIVILEGE = 'EDIT'
 	ORDER BY
 		F.ID;
 	";
@@ -399,6 +423,53 @@ function get_file_info($con, $file_id, $user_id) {
 	$result=execute_query($con, $query, $params, $types);
 
 	return $result[0];
+}
+
+function get_file_categories($con, $file_id, $user_id) {
+	$query="
+	SELECT 
+		C.ID AS id
+	FROM 
+		CATEGORIES C INNER JOIN FILES_HAVE_CATEGORIES FC ON C.ID = FC.CATEGORY_ID
+	WHERE
+		C.OWNER_ID = ? AND
+		FC.FILE_ID = ?
+	ORDER BY
+		C.ID;
+	";
+
+	$params=array($user_id, $file_id);
+	$types="ii";
+	$categories=execute_query($con, $query, $params, $types);
+
+	$ids = array();
+	foreach($categories as $category)
+		$ids[] = $category['id'];
+
+	return $ids;
+}
+
+function unappend_categories($con, $file_id, $user_id) {
+	$query="
+	DELETE 
+		FC
+	FROM 
+		FILES_HAVE_CATEGORIES FC
+		INNER JOIN CATEGORIES C ON C.ID = FC.CATEGORY_ID
+	WHERE 
+		C.OWNER_ID = ? AND 
+		FC.FILE_ID = ?;
+	";
+
+	$params=array($user_id, $file_id);
+	$types="ii";
+	$categories=execute_query($con, $query, $params, $types);
+
+	$ids = array();
+	foreach($categories as $category)
+		$ids[] = $category['id'];
+
+	return $ids;
 }
 
 function save_file($file, $destination_directory) {

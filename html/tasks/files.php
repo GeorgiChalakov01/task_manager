@@ -18,6 +18,7 @@ require 'includes/php_auth_check.php';
 
 	<br/>
 	<div class="container">
+		<?php require '../common/statuserror/statuserror.php';?>
 		<div class="d-flex justify-content-center">
 			<div class="row col-12 d-flex justify-content-between rounded" style="padding: 10px; background-color: #333333">
 				<div class="dropdown col-3">
@@ -87,13 +88,15 @@ require 'includes/php_auth_check.php';
 				
 				echo '
 				<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-					<div class="card h-100 rounded">
-						<img src="' . $source_image . '" class="card-img-top" alt="File image">
+					<div class="card rounded" style="height: 700px;">
+						<div class="h-50" style="background-color: #f7f7f7">
+							<img src="' . $source_image . '" style="cursor: pointer; width: 100%; height: 100%; object-fit: cover;" alt="File image" onclick="show_menu(' . $file['id'] . ', \'file\');">
+						</div>
 						<div class="card-body">
-							<h5 class="card-title">' . $file['title'] . '</h5>
-							<p class="card-text">' . $description . '</p>
-							<p class="card-text">' . $file['original_name'] . '.' . $file['extension'] . '</p>
-							<p class="card-text">' . $file['uploaded_on'] . '</p>
+							<h5 class="card-title" style="height: 40px; overflow: scroll;">' . $file['title'] . '</h5>
+							<p class="card-text" style="height: 60px; overflow: scroll;">' . $description . '</p>
+							<p class="card-text" style="height: 40px; overflow: scroll;">' . $file['original_name'] . '.' . $file['extension'] . '</p>
+							<p class="card-text" style="height: 40px; overflow: scroll;">' . $file['uploaded_on'] . '</p>
 							<a href="file_download.inc.php?id=' . $file['id'] . '" class="btn btn-secondary">' . $phrases['files-file-download-button'] . '</a>
 						</div>
 					</div>
@@ -103,6 +106,7 @@ require 'includes/php_auth_check.php';
 		</div>
 	</div>
 
+	<?php require '../common/php/hidden_menu.php';?>
 	<script src="/common/scripts/form_mandatory_fields.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 

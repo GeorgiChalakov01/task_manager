@@ -41,6 +41,6 @@ if($file_id=upload_file($con, $original_name, $server_name, $extension, $title, 
 	exit;
 }
 else {
-	header("location: category_edit.php?error=error-category-not-created");
+	header("location: file_edit.php?error=error-file-not-created");
 	exit;
 }

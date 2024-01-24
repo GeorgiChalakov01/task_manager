@@ -4,9 +4,11 @@ require 'includes/php_auth_check.php';
 
 $edit=false;
 $chosen_file='';
+$file_categories=array();
 if(isset($_GET['id'])) {
 	$edit=true;
-	$chosen_file=get_category_info($con, $_GET['id'], $_SESSION['user-details']['id']);
+	$chosen_file=get_file_info($con, $_GET['id'], $_SESSION['user-details']['id']);
+	$file_categories=get_file_categories($con, $_GET['id'], $_SESSION['user-details']['id']);
 }
 ?>
 
@@ -56,16 +58,14 @@ if(isset($_GET['id'])) {
 							style="min-height: 100px; width: 100%; resize: none;" 
 							<?php 
 							echo 'placeholder="' . $phrases['file-edit-description-placeholder'] . '"';
-							if($edit)
-								echo 'value="' . $chosen_file['description'] . '"';
-							?> 
-						></textarea>
+						?> 
+						><?php if($edit) echo $chosen_file['description'];?></textarea>
 						<div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
 					</div>
 	
 					<div class="mb-3">
 						<label for="formFile" class="form-label"><?php echo $phrases['file-edit-upload-label'];?></label>
-						<input class="form-control" type="file" name="file" id="formFile" required>
+						<input class="form-control" type="file" name="file" id="formFile" <?php if(!$edit)echo 'required'; ?>>
 					</div>
 
 					<div class="form-group mb-3">
@@ -74,11 +74,19 @@ if(isset($_GET['id'])) {
 							<?php
 							$categories = get_categories($con, $_SESSION['user-details']['id']);
 							$default_id=get_default_category_id($con, $_SESSION['user-details']['id']);
-							$first = true;
+
+							if(!$edit)
+								$first = true;
+
 							foreach($categories as $category) {
 								$name=$category['name'];
+								$checked='';
 								if($category['id'] == $default_id)
 									$name=$phrases['default-category-name'];
+
+								if(in_array($category['id'], $file_categories))
+									$checked='checked';
+								
 								echo '
 								<div style="display: flex; align-items: center; margin-bottom: 10px; background-color: ' . $category['background_color'] . '; color: ' . $category['text_color'] . '; padding: 10px; border-radius: 10px;">
 									<input 
@@ -86,7 +94,8 @@ if(isset($_GET['id'])) {
 										id="category_' . $category['id'] . '" 
 										name="category_' . $category['id'] . '" 
 										style="width: 20px; height: 20px; margin-right: 10px;" 
-										'.($first ? "checked" : "").'
+										'.($first ? "checked" : "") . ' ' .
+										$checked . '
 									>
 									<label for="category_' . $category['id'] . '">
 										' . $name . '
@@ -100,7 +109,7 @@ if(isset($_GET['id'])) {
 					</div>
 
 					<div class="form-group mb-3">
-						<input type="hidden" id="id" name="id" value="<?php echo '"' . $_GET['id'] . '"';?>" required>
+						<input type="hidden" id="id" name="id" value="<?php echo $_GET['id'];?>" required>
 					</div>
 					<br/>
 					<br/>

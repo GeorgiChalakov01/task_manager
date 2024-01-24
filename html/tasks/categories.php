@@ -17,12 +17,13 @@ require 'includes/php_auth_check.php';
 
 			<br/>
 			<div class="container">
+				<?php require '../common/statuserror/statuserror.php';?>
 				<div class="row">
 					<?php
 					$default_id=get_default_category_id($con, $_SESSION['user-details']['id']);
 					$categories=get_categories($con, $_SESSION['user-details']['id']);
 					foreach($categories as $category) {
-						$onclick='onclick="showMenu(\'' . $category['id'] . '\')"';
+						$onclick='onclick="show_menu(\'' . $category['id'] . '\', \'category\')"';
 						$cursor='pointer';
 						if($category['id'] == $default_id) {
 							$category['name'] = $phrases['default-category-name'];
@@ -74,36 +75,7 @@ require 'includes/php_auth_check.php';
 					</div>
 				</div>
 
-				<div id="overlay" class="overlay"></div>
-
-				<div id="menu" class="hidden-menu">
-				<p><?php echo $phrases['categories-hidden-menu-question'];?></p>
-					<a id="edit" href=""><?php echo $phrases['categories-hidden-menu-edit'];?></a>
-					<a id="delete" href=""><?php echo $phrases['categories-hidden-menu-delete'];?></a>
-				</div>
-
-			   <script>
-				function showMenu(id) {
-					var overlay = document.getElementById('overlay');
-					var menu = document.getElementById('menu');
-					document.getElementById('edit').href = "category_edit.php?id=" + id;
-					document.getElementById('delete').href = "category_delete.inc.php?id=" + id;
-					overlay.style.display = "block";
-					menu.style.display = "block";
-				}
-
-				// Close the dropdown menu if the user clicks outside of it
-				window.onclick = function(event) {
-					if (!event.target.matches('.rounded')) {
-						var overlay = document.getElementById('overlay');
-						var menu = document.getElementById("menu");
-						if (menu.style.display === "block") {
-							overlay.style.display = "none";
-							menu.style.display = "none";
-						}
-					}
-				}
-				</script>
+				<?php require '../common/php/hidden_menu.php';?>
 
 				<script src="/common/scripts/form_mandatory_fields.js"></script>
 				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

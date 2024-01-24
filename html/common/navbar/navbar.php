@@ -19,6 +19,9 @@
 				<li class="nav-item active d-flex justify-content-center">
 					<a class="nav-link" href="/tasks/notes.php">' . $phrases['notes'] . '</a>
 				</li>
+				<li class="nav-item active d-flex justify-content-center">
+					<a class="nav-link" href="/tasks/projects.php">' . $phrases['projects'] . '</a>
+				</li>
 			</ul>';
 		}
 		else {

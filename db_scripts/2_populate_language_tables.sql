@@ -120,6 +120,9 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "categories-page-titl
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "categories-hidden-menu-question", "What would you like to do with this category?");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "categories-hidden-menu-question", "Какво бихте искали да направите с тази категория?");
 
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "categories-hidden-menu-open", "Open");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "categories-hidden-menu-open", "Отвори");
+
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "categories-hidden-menu-edit", "Edit");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "categories-hidden-menu-edit", "Промяна");
 
@@ -340,6 +343,69 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-note-edited"
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-note-deleted", "Note Deleted Successfully!");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-note-deleted", "Бележката е изтрита успешно!");
+
+/*projects.php*/
+/* Used in projects.php */
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "projects-page-title", "Projects");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "projects-page-title", "Проекти");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "projects-create-button", "Create");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "projects-create-button", "Създай");
+
+
+/* Used in project_edit.php */
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-create-page-title", "Create a Project");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-create-page-title", "Създаване на Проект");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-page-title", "Edit a Project");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-page-title", "Промяна на Проект");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-create-title", "Create a Project");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-create-title", "Създаване на Проект");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-title", "Edit a Project");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-title", "Промяна на Проект");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-title-label", "Project Title");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-title-label", "Заглавие на Проекта");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-title-placeholder", "Project Title");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-title-placeholder", "Заглавие на Проекта");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-description-label", "Project Description");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-description-label", "Описание на Проекта");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-description-placeholder", "Project Description");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-description-placeholder", "Описание на Проекта");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-categories-label", "Choose Categories");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-categories-label", "Изберете Категории");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-form-submit-button", "Submit");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-form-submit-button", "Въведи");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-project-created", "Project Created Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-project-created", "Проектът е създаден успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-project-edited", "Project Edited Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-project-edited", "Проектът е променен успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-project-deleted", "Project Deleted Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-project-deleted", "Проектът е изтрит успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-deadline-label", "Deadline");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-deadline-label", "Краен Срок");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-endedOn-label", "End Date");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-endedOn-label", "Дата на Завършване");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-info-header", "Project Details");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-info-header", "Детайли за Проекта");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-info-paragraph", "Use this section to add details about your project. Make sure to set a clear title and description to keep everything organized.");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-info-paragraph", "Използвайте тази секция, за да добавите детайли за вашия проект. Уверете се, че сте задали ясно заглавие и описание, за да поддържате всичко организирано.");
+
+
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "", "");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "", "");

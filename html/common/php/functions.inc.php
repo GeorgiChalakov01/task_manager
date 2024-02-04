@@ -224,6 +224,21 @@ function create_note($con, $title, $description, $user_id) {
 	return $category_id;
 }
 
+function create_project($con, $title, $description, $deadline, $user_id) {
+	$deadline = !empty($deadline) ? date('Y-m-d H:i:s', strtotime($deadline)) : NULL;
+
+	$query = "CALL P_CREATE_PROJECT(?,?,?,?,@PROJECT_ID);";
+
+	$params = array($title, $description, $deadline, $user_id);
+	$types = "sssi";
+	$out_params = ["@PROJECT_ID"];
+	$result = execute_query($con, $query, $params, $types, $out_params);
+
+	$project_id = $result['@PROJECT_ID'];
+
+	return $project_id;
+}
+
 function edit_category($con, $category_id, $owner_id, $name, $color_scheme_id) {
 	$query="
 	CALL P_EDIT_CATEGORY(?,?,?,?);
@@ -431,6 +446,32 @@ function get_notes($con, $user_id) {
 	return $result;
 }
 
+function get_projects($con, $user_id) {
+	$query = "
+	SELECT 
+		P.ID AS id,
+		P.TITLE AS title,
+		P.DESCRIPTION AS description,
+		P.CREATED_ON AS created_on,
+		P.ENDED_ON AS ended_on,
+		P.DEADLINE AS deadline
+	FROM 
+		PROJECTS P INNER JOIN PROJECT_PRIVILEGES PP ON P.ID = PP.PROJECT_ID
+	WHERE
+		PP.USER_ID = ? AND
+		PP.PRIVILEGE = 'VIEW'
+	ORDER BY
+		P.ID;
+	";
+
+	$params = array($user_id);
+	$types = "i";
+	$result = execute_query($con, $query, $params, $types);
+
+	return $result;
+}
+
+
 function get_files_from_category($con, $user_id, $category_id) {
 	$query="
 	SELECT 
@@ -535,6 +576,32 @@ function get_note_info($con, $note_id, $user_id) {
 	$result=execute_query($con, $query, $params, $types);
 
 	return $result[0];
+}
+
+function get_project_info($con, $project_id, $user_id) {
+    $query = "
+    SELECT 
+        P.ID AS id,
+        P.TITLE AS title,
+        P.DESCRIPTION AS description,
+        P.CREATED_ON AS created_on,
+        P.DEADLINE AS deadline,
+        P.ENDED_ON AS ended_on
+    FROM 
+        PROJECTS P INNER JOIN PROJECT_PRIVILEGES PP ON P.ID = PP.PROJECT_ID
+    WHERE
+        PP.PROJECT_ID = ? AND
+        PP.USER_ID = ? AND
+        PP.PRIVILEGE = 'VIEW'
+    ORDER BY
+        P.ID;
+    ";
+
+    $params = array($project_id, $user_id);
+    $types = "ii";
+    $result = execute_query($con, $query, $params, $types);
+
+    return $result[0];
 }
 
 function get_file_categories($con, $file_id, $user_id) {

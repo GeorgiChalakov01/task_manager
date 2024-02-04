@@ -2,15 +2,23 @@
 
 <div id="menu" class="hidden-menu">
 <p><?php echo $phrases['categories-hidden-menu-question'];?></p>
-	<a id="edit" href=""><?php echo $phrases['categories-hidden-menu-edit'];?></a>
-	<a id="delete" href=""><?php echo $phrases['categories-hidden-menu-delete'];?></a>
+	<a id="open" href="" class="btn btn-secondary"><?php echo $phrases['categories-hidden-menu-open'];?></a>
+	<a id="edit" href="" style="background-color: green;"><?php echo $phrases['categories-hidden-menu-edit'];?></a>
+	<a id="delete" href="" style="background-color: red;"><?php echo $phrases['categories-hidden-menu-delete'];?></a>
 </div>
 
 <script>
 function show_menu(id, object_type) {
 	var overlay = document.getElementById('overlay');
 	var menu = document.getElementById('menu');
+	var open_btn = document.getElementById('open');
 
+	if(object_type == 'project')
+		open_btn.style.display = 'block';
+	else
+		open_btn.style.display = 'none';
+
+	open_btn.href = object_type + "_view.php?id=" + id;
 	document.getElementById('edit').href = object_type + "_edit.php?id=" + id;
 	document.getElementById('delete').href = object_type + "_delete.inc.php?id=" + id;
 

@@ -46,11 +46,3 @@ body {
 	margin: 10px 0;
 	text-align: center;
 }
-
-.hidden-menu a#edit {
-	background-color: green;
-}
-
-.hidden-menu a#delete {
-	background-color: red;
-}

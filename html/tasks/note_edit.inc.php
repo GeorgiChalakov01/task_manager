@@ -36,6 +36,6 @@ if(edit_note($con, $note_id, $title, $description, $_SESSION['user-details']['id
 	exit;
 }
 else {
-	header("location: category_edit.php?error=error-note-not-edited");
+	header("location: note_edit.php?error=error-note-not-edited");
 	exit;
 }

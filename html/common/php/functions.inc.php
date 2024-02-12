@@ -275,6 +275,18 @@ function edit_note($con, $note_id, $title, $description, $user_id) {
 	return true;
 }
 
+function edit_project($con, $project_id, $title, $description, $deadline, $user_id) {
+	$query="
+	CALL P_EDIT_PROJECT(?,?,?,?,?);
+	";
+
+	$params=array($project_id, $title, $description, $deadline, $user_id);
+	$types="isssi";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}
+
 function delete_category($con, $category_id, $user_id) {
 	$query="
 	CALL P_DELETE_CATEGORY(?,?);
@@ -652,6 +664,29 @@ function get_note_categories($con, $note_id, $user_id) {
 	return $ids;
 }
 
+function get_project_categories($con, $project_id, $user_id) {
+	$query="
+	SELECT 
+		C.ID AS id
+	FROM 
+		CATEGORIES C INNER JOIN PROJECTS_HAVE_CATEGORIES PC ON C.ID = PC.CATEGORY_ID
+	WHERE
+		C.OWNER_ID = ? AND
+		PC.PROJECT_ID = ?
+	ORDER BY
+		C.ID;
+	";
+
+	$params=array($user_id, $project_id);
+	$types="ii";
+	$categories=execute_query($con, $query, $params, $types);
+
+	$ids = array();
+	foreach($categories as $category)
+		$ids[] = $category['id'];
+
+	return $ids;
+}
 
 function unappend_categories($con, $object_id, $object_type, $user_id) {
 	$query="

@@ -323,6 +323,18 @@ function delete_note($con, $note_id, $user_id) {
 	return true;
 }
 
+function delete_project($con, $project_id, $user_id) {
+	$query="
+	CALL P_DELETE_PROJECT(?,?);
+	";
+
+	$params=array($project_id, $user_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}
+
 function append_category($con, $category_id, $object_id, $object_type, $user_id) {
 	$query="
 	CALL P_APPEND_CATEGORY(?,?,?,?);
@@ -530,6 +542,34 @@ function get_notes_from_category($con, $user_id, $category_id) {
 		NC.CATEGORY_ID = ?
 	ORDER BY
 		N.ID;
+	";
+
+	$params=array($user_id, $category_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return $result;
+}
+
+function get_projects_from_category($con, $user_id, $category_id) {
+	$query="
+	SELECT 
+		P.ID AS id,
+		P.TITLE AS title,
+		P.DESCRIPTION AS description,
+		P.CREATED_ON AS created_on,
+		P.ENDED_ON AS ended_on,
+		P.DEADLINE AS deadline
+	FROM 
+		PROJECTS P
+		INNER JOIN PROJECT_PRIVILEGES PP ON P.ID = PP.PROJECT_ID
+		INNER JOIN PROJECTS_HAVE_CATEGORIES PC ON P.ID = PC.PROJECT_ID
+	WHERE
+		PP.USER_ID = ? AND
+		PP.PRIVILEGE = 'VIEW' AND
+		PC.CATEGORY_ID = ?
+	ORDER BY
+		P.ID;
 	";
 
 	$params=array($user_id, $category_id);

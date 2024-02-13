@@ -90,10 +90,10 @@ require 'includes/php_auth_check.php';
 			>
 				<div class="card rounded" style="height: 400px;">
 					<div class="card-body" style="background-color: #f7f7f7;">
-						<h2 class="card-title" style="height: 50px; overflow: auto;">' . $note['title'] . '</h2>
+						<h2 class="card-title" style="height: 80px; overflow: auto;">' . $note['title'] . '</h2>
 					</div>
 					<div class="card-body">
-						<p class="card-text" style="height: 200px; overflow: scroll;">' . $description . '</p>
+						<p class="card-text" style="height: 200px; overflow: scroll;">' . nl2br($description) . '</p>
 						<p class="card-text" style="height: 40px; overflow: scroll;">' . $note['created_on'] . '</p>
 					</div>
 				</div>

@@ -112,6 +112,37 @@ if(isset($_GET['id'])) {
 					</div>
 
 					<div class="form-group mb-3">
+						<label for="files">Attach Files</label>
+						<div id="files" style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; border-radius: 10px; background-color: #f8f9fa;">
+							<?php
+							$files = get_files($con, $_SESSION['user-details']['id']);
+							$attached_file_ids = array_column(get_attached_files_to_note($con, $_GET['id'], $_SESSION['user-details']['id']), 'id');
+
+
+							foreach($files as $file) {
+								$checked='';
+								if(in_array($file['id'], $attached_file_ids))
+									$checked='checked';
+								$description=$file['description'] ? $file['description'] : $phrases['text-no-description'];
+								echo '
+								<div style="display: flex; align-items: center; margin-bottom: 10px; ' . $file['background_color'] . '; padding: 10px; border-radius: 10px;">
+									<input 
+										type="checkbox" 
+										id="file_' . $file['id'] . '"  
+										name="file_' . $file['id'] . '"  ' . 
+										$checked . '
+										style="width: 20px; height: 20px; margin-right: 10px;" 
+									>
+									<label for="file_' . $file['id'] . '" style="color: ' . $file['text_color'] . '">' . 
+										$file['title']. ': ' . $description . '
+									</label>
+								</div>';
+							}   
+							?>  
+						</div>
+					</div>
+
+					<div class="form-group mb-3">
 						<input type="hidden" id="id" name="id" value="<?php echo $_GET['id'];?>" required>
 					</div>
 					<br/>

@@ -430,12 +430,24 @@ function get_files($con, $user_id) {
 		F.EXTENSION AS extension,
 		F.TITLE AS title,
 		F.DESCRIPTION AS description,
-		F.UPLOADED_ON AS uploaded_on
+		F.UPLOADED_ON AS uploaded_on,
+		CASE 
+		WHEN INSTR(GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ',') > 0 
+		THEN CONCAT('background: linear-gradient(to right, ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ');')
+		ELSE CONCAT('background-color: ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ';')
+		END AS background_color,
+		MAX(CS.TEXT_COLOR) AS text_color
 	FROM 
-		FILES F INNER JOIN FILE_PRIVILEGES FP ON F.ID = FP.FILE_ID
+		FILES F 
+		INNER JOIN FILE_PRIVILEGES FP ON F.ID = FP.FILE_ID
+		INNER JOIN FILES_HAVE_CATEGORIES FC ON FC.FILE_ID = F.ID
+		INNER JOIN CATEGORIES C ON C.ID = FC.CATEGORY_ID
+		INNER JOIN COLOR_SCHEMES CS ON CS.ID = C.COLOR_SCHEME_ID
 	WHERE
 		FP.USER_ID = ? AND
 		FP.PRIVILEGE = 'VIEW'
+	GROUP BY
+		F.ID, F.ORIGINAL_NAME, F.SERVER_NAME, F.EXTENSION, F.TITLE, F.DESCRIPTION, F.UPLOADED_ON
 	ORDER BY
 		F.ID;
 	";
@@ -751,6 +763,26 @@ function unappend_categories($con, $object_id, $object_type, $user_id) {
 	return $ids;
 }
 
+function unattach_files_from_note($con, $note_id, $user_id) {
+	$query="
+	CALL P_UNATTACH_FILES_FROM_NOTE(?,?);
+	";
+
+	$params=array($note_id, $user_id);
+	$types="ii";
+	execute_query($con, $query, $params, $types);
+}
+
+function attach_file_to_note($con, $file_id, $note_id, $user_id) {
+	$query="
+	CALL P_ATTACH_FILE_TO_NOTE(?,?,?);
+	";
+
+	$params=array($file_id, $note_id, $user_id);
+	$types="iii";
+	execute_query($con, $query, $params, $types);
+}
+
 function save_file($file, $destination_directory) {
 	// File information
 	$file_info = pathinfo($file['name']);
@@ -780,4 +812,44 @@ function save_file($file, $destination_directory) {
 	} else {
 		return false;
 	}
+}
+
+function get_attached_files_to_note($con, $note_id, $user_id) {
+	$query="
+	SELECT 
+		F.ID AS id,
+		F.ORIGINAL_NAME AS original_name,
+		F.SERVER_NAME AS server_name,
+		F.EXTENSION AS extension,
+		F.TITLE AS title,
+		F.DESCRIPTION AS description,
+		F.UPLOADED_ON AS uploaded_on,
+		CASE 
+		WHEN INSTR(GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ',') > 0 
+		THEN CONCAT('background: linear-gradient(to right, ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ');')
+		ELSE CONCAT('background-color: ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ';')
+		END AS background_color,
+		MAX(CS.TEXT_COLOR) AS text_color
+	FROM 
+		NOTES_ATTACH_FILES NF
+		INNER JOIN FILES F ON F.ID = NF.FILE_ID
+		INNER JOIN FILE_PRIVILEGES FP ON F.ID = FP.FILE_ID
+		INNER JOIN FILES_HAVE_CATEGORIES FC ON FC.FILE_ID = F.ID
+		INNER JOIN CATEGORIES C ON C.ID = FC.CATEGORY_ID
+		INNER JOIN COLOR_SCHEMES CS ON CS.ID = C.COLOR_SCHEME_ID
+	WHERE
+		FP.USER_ID = ? AND
+		NF.NOTE_ID = ? AND
+		FP.PRIVILEGE = 'VIEW'
+	GROUP BY
+		F.ID, F.ORIGINAL_NAME, F.SERVER_NAME, F.EXTENSION, F.TITLE, F.DESCRIPTION, F.UPLOADED_ON
+	ORDER BY
+		F.ID;
+	";
+
+	$params=array($user_id, $note_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return $result;
 }

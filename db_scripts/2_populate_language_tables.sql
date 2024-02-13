@@ -332,8 +332,8 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-descriptio
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-description-placeholder", "Milk, Eggs ...");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-description-placeholder", "Мляко, Яйца ...");
 
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-form-submit-button", "Create");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-form-submit-button", "Създаване");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-form-submit-button", "Submit");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-form-submit-button", "Въведи");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-note-created", "Note Created Successfully!");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-note-created", "Бележката е създадена успешно!");

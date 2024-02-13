@@ -13,7 +13,7 @@ function show_menu(id, object_type) {
 	var menu = document.getElementById('menu');
 	var open_btn = document.getElementById('open');
 
-	if(object_type == 'project')
+	if (['project', 'note'].includes(object_type)) 
 		open_btn.style.display = 'block';
 	else
 		open_btn.style.display = 'none';

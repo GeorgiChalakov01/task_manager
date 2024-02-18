@@ -82,6 +82,8 @@ require 'includes/php_auth_check.php';
 					$description = $phrases['text-no-description'];
 			}
 
+			$attached_files=get_attached_files_to_note($con, $note['id'], $_SESSION['user-details']['id']);
+
 			echo '
 			<div 
 				class="col-lg-4 col-md-6 col-sm-12 mb-4" 
@@ -93,8 +95,20 @@ require 'includes/php_auth_check.php';
 						<h2 class="card-title" style="height: 80px; overflow: auto;">' . $note['title'] . '</h2>
 					</div>
 					<div class="card-body">
-						<p class="card-text" style="height: 200px; overflow: scroll;">' . nl2br($description) . '</p>
-						<p class="card-text" style="height: 40px; overflow: scroll;">' . $note['created_on'] . '</p>
+						<p class="card-text" style="height: 150px; overflow: scroll;">' . nl2br($description) . '</p>';
+
+					echo	'<div style="height: 50px; width: 100%; overflow-x: auto; white-space: nowrap;
+							<div style="width: 2000px; height: 50px;">';
+							foreach($attached_files as $file){
+								$source_image = '/common/images/file.png';
+								if(in_array($file['extension'], ['jpg', 'jpeg', 'png', 'gif', 'ico', 'webp'])) {
+									$source_image = '/common/uploaded_files/' . $file['server_name'] . '.' . $file['extension'];
+								}
+								echo '<img src="' . $source_image . '" style="cursor: pointer; width: 50px; height: 100%; object-fit: cover; border-radius: 10px;" alt="File image" onclick="show_menu(' . $file['id'] . ', \'file\');">&nbsp;';
+							}
+						echo   '</div>';
+					echo   '</div>';
+					echo   '<p class="card-text" style="height: 40px; overflow: scroll;">' . $note['created_on'] . '</p>
 					</div>
 				</div>
 			</div>';

@@ -90,8 +90,8 @@ require 'includes/php_auth_check.php';
 				echo '
 				<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
 					<div class="card rounded" style="height: 700px;">
-						<div class="h-50" style="background-color: #f7f7f7">
-							<img src="' . $source_image . '" style="cursor: pointer; width: 100%; height: 100%; object-fit: cover;" alt="File image" onclick="show_menu(' . $file['id'] . ', \'file\');">
+						<div class="h-50" style="background-color: #f7f7f7; cursor: pointer;" onclick="show_menu(' . $file['id'] . ', \'file\');">
+							<img src="' . $source_image . '" style="width: 100%; height: 100%; object-fit: cover;" alt="File image">
 						</div>
 						<div class="card-body">
 							<h5 class="card-title" style="height: 40px; overflow: auto;">' . $file['title'] . '</h5>

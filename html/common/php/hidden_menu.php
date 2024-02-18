@@ -3,8 +3,9 @@
 <div id="menu" class="hidden-menu">
 <p><?php echo $phrases['categories-hidden-menu-question'];?></p>
 	<a id="open" href="" class="btn btn-secondary"><?php echo $phrases['categories-hidden-menu-open'];?></a>
-	<a id="edit" href="" style="background-color: green;"><?php echo $phrases['categories-hidden-menu-edit'];?></a>
-	<a id="delete" href="" style="background-color: red;"><?php echo $phrases['categories-hidden-menu-delete'];?></a>
+	<a id="unattach" href="" class="btn" style="background-color: #7CB9E8;"><?php echo $phrases['categories-hidden-menu-unattach'];?></a>
+	<a id="edit" href="" class="btn" style="background-color: green;"><?php echo $phrases['categories-hidden-menu-edit'];?></a>
+	<a id="delete" href="" class="btn" style="background-color: red;"><?php echo $phrases['categories-hidden-menu-delete'];?></a>
 </div>
 
 <script>
@@ -12,11 +13,24 @@ function show_menu(id, object_type) {
 	var overlay = document.getElementById('overlay');
 	var menu = document.getElementById('menu');
 	var open_btn = document.getElementById('open');
+	var unattach_btn = document.getElementById('unattach');
 
-	if (['project', 'note'].includes(object_type)) 
+	if(['project', 'note'].includes(object_type)) 
 		open_btn.style.display = 'block';
 	else
 		open_btn.style.display = 'none';
+
+	if(object_type == 'attached_file'){
+		object_type = 'file';
+		unattach_btn.style.display = 'block';
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const note_id = urlParams.get('id');
+
+		unattach_btn.href = "note_unattach_file.inc.php?note_id=" + note_id + "&file_id=" + id;
+	}
+	else
+		unattach_btn.style.display = 'none';
 
 	open_btn.href = object_type + "_view.php?id=" + id;
 	document.getElementById('edit').href = object_type + "_edit.php?id=" + id;

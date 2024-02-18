@@ -773,6 +773,16 @@ function unattach_files_from_note($con, $note_id, $user_id) {
 	execute_query($con, $query, $params, $types);
 }
 
+function unattach_file_from_note($con, $file_id, $note_id, $user_id) {
+	$query="
+	CALL P_UNATTACH_FILE_FROM_NOTE(?,?,?);
+	";
+
+	$params=array($file_id, $note_id, $user_id);
+	$types="iii";
+	execute_query($con, $query, $params, $types);
+}
+
 function attach_file_to_note($con, $file_id, $note_id, $user_id) {
 	$query="
 	CALL P_ATTACH_FILE_TO_NOTE(?,?,?);

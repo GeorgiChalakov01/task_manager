@@ -110,9 +110,7 @@ require 'includes/php_auth_check.php';
 					echo   '</div>';
 					echo   '<p class="card-text" style="height: 40px; overflow: scroll;">' . $note['created_on'] . '</p>
 					</div>
-				</div>
-			</div>';
-
+				</div>';
 			}
 			?>
 		</div>

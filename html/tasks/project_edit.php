@@ -64,7 +64,7 @@ if (isset($_GET['id'])) {
 						id="deadline" 
 						name="deadline" 
 						class="form-control"
-						value="<?php if($edit) echo $chosen_project['deadline']; ?>"
+						value="<?php if($edit) echo date('Y-m-d', strtotime($chosen_project['deadline'])); ?>"
 					>
 				</div>
 

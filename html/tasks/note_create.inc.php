@@ -17,6 +17,13 @@ foreach($_POST as $key => $value) {
 	}
 }
 
+$files=array();
+foreach($_POST as $key => $value) {
+        if(strpos($key, 'file_') === 0) {
+                $files[] = substr($key, 5); 
+        }
+}
+
 
 //Save the inputed data in the session
 $_SESSION['edit-file-form'] = array(
@@ -29,6 +36,11 @@ $_SESSION['edit-file-form'] = array(
 if($note_id=create_note($con, $title, $description, $_SESSION['user-details']['id'])) {
 	foreach($categories as $category_id)
 		append_category($con, $category_id, $note_id, 'NOTE', $_SESSION['user-details']['id']);
+
+        unattach_files_from_note($con, $note_id, $_SESSION['user-details']['id']);
+        foreach($files as $file_id)
+                attach_file_to_note($con, $file_id, $note_id, $_SESSION['user-details']['id']);
+
 	header("location: /tasks/notes.php?status=success-note-created");
 	exit;
 }

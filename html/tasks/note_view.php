@@ -32,7 +32,6 @@ $note = get_note_info($con, $note_id, $_SESSION['user-details']['id']);
 			<?php endif; ?>
 				<button class="btn btn-secondary" onClick="window.location.href='note_edit.php?id=<?php echo $note_id;?>'">Edit</button>
 				<button class="btn btn-secondary">Archive</button>
-				<button class="btn btn-secondary">Mark as Complete</button>
 			</div>
 		</div>
 		</div>

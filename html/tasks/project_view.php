@@ -17,56 +17,100 @@ $notes = [];
 <body class="cust-dark1">
 
 	<?php require '../common/navbar/navbar.php';?>
-
+	<?php require '../common/php/hidden_menu.php';?>
 
 	<div class="container mt-4">
-	    <div class="row">
+		<div class="row">
 		<div class="col-md-7 d-flex">
-		    <div class="bg-light p-2 mb-4 rounded flex-grow-1">
+			<div class="bg-light p-2 mb-4 rounded flex-grow-1">
 			<h2>Project Details</h2>
 			<p><strong>Title:</strong> <?php echo htmlspecialchars($project['title']); ?></p>
 			<p><strong>Description:</strong> <?php echo htmlspecialchars($project['description']); ?></p>
 			<p><strong>Created on:</strong> <?php echo htmlspecialchars($project['created_on']); ?></p>
 			<?php if($project['deadline']): ?>
-			    <p><strong>Deadline:</strong> <?php echo htmlspecialchars($project['deadline']); ?></p>
+				<p><strong>Deadline:</strong> <?php echo htmlspecialchars($project['deadline']); ?></p>
 			<?php endif; ?>
 			<?php if($project['ended_on']): ?>
-			    <p><strong>Completed on:</strong> <?php echo htmlspecialchars($project['ended_on']); ?></p>
+				<p><strong>Completed on:</strong> <?php echo htmlspecialchars($project['ended_on']); ?></p>
 			<?php else: ?>
-			    <button class="btn btn-secondary" onClick="window.location.href='project_edit.php?id=<?php echo $project_id;?>'">Edit</button>
-			    <button class="btn btn-secondary">Archive</button>
-			    <button class="btn btn-secondary">Mark as Complete</button>
+				<button class="btn btn-secondary" onClick="window.location.href='project_edit.php?id=<?php echo $project_id;?>'">Edit</button>
+				<button class="btn btn-secondary">Archive</button>
+				<button class="btn btn-secondary">Mark as Complete</button>
 			<?php endif; ?>
-		    </div>
+			</div>
 		</div>
 		<div class="col-md-5 d-flex">
-		    <div class="bg-light p-2 mb-4 rounded flex-grow-1">
-			<h2>Attached Notes</h2>
-			<!-- Add notes content here or leave empty if no notes -->
-		    </div>
-		</div>
-	    </div>
+			<div class="bg-light p-2 mb-4 rounded flex-grow-1">
+				<h2>Attached Notes</h2>
+				<div style="height: 400px; overflow-x: hidden; overflow-y: scroll;">
+				<?php
+					$notes=get_attached_notes_to_project($con, $project_id, $_SESSION['user-details']['id']);
 
-	    <div class="row">
-		<div class="col-12">
-		    <div class="bg-light p-2 rounded">
-			<h2>Tasks</h2>
-			<a href="task_edit.php?project_id=<?php echo $project_id; ?>" class="btn btn-secondary mb-3">Add New Task</a>
-			<div class="list-group">
-			    <?php foreach($tasks as $task): ?>
-				<a href="#" class="list-group-item list-group-item-action">
-				    <div class="d-flex w-100 justify-content-between">
-					<h5 class="mb-1"><?php echo htmlspecialchars($task['title']); ?></h5>
-					<small>Due: <?php echo htmlspecialchars($task['due_date']); ?></small>
-				    </div>
-				    <p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
-				    <!-- Add your task options (view, edit, delete) here -->
-				</a>
-			    <?php endforeach; ?>
+					foreach($notes as $note) {
+						if($note['description']) {
+							$description = $note['description'];
+						}
+						else {
+							$description = $phrases['text-no-description'];
+					}
+
+					$attached_files=get_attached_files_to_note($con, $note['id'], $_SESSION['user-details']['id']);
+
+					echo '
+					<div class="row">
+					<div 
+						class="mb-4" 
+						style="cursor: pointer; width: 100%;" 
+						onclick="show_menu(' . $note['id'] . ', \'attached_note\');"
+					>
+						<div class="card rounded" style="height: 400px;">
+								<div class="card-body" style="background-color: #f7f7f7;">
+									<h2 class="card-title" style="height: 80px; overflow: auto;">' . $note['title'] . '</h2>
+								</div>
+								<div class="card-body">
+									<p class="card-text" style="height: 150px; overflow: scroll;">' . nl2br($description) . '</p>
+									<div style="height: 50px; width: 100%; overflow-x: auto; white-space: nowrap;
+										<div style="width: 2000px; height: 50px;">';
+					foreach($attached_files as $file){
+						$source_image = '/common/images/file.png';
+						if(in_array($file['extension'], ['jpg', 'jpeg', 'png', 'gif', 'ico', 'webp'])) {
+							$source_image = '/common/uploaded_files/' . $file['server_name'] . '.' . $file['extension'];
+						}
+						echo '<img src="' . $source_image . '" style="cursor: pointer; width: 50px; height: 100%; object-fit: cover; border-radius: 10px;" alt="File image" onclick="show_menu(' . $file['id'] . ', \'file\');">&nbsp;';
+					}
+					echo   '</div>
+					</div>
+					<p class="card-text" style="height: 40px; overflow: scroll;">' . $note['created_on'] . '</p>
+						</div>
+					</div>
+					</div>';
+					}
+				?>
+				</div>
 			</div>
-		    </div>
 		</div>
-	    </div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<div class="bg-light p-2 rounded">
+					<h2>Tasks</h2>
+					<a href="task_edit.php?project_id=<?php echo $project_id; ?>" class="btn btn-secondary mb-3">Add New Task</a>
+					<div class="list-group">
+						<?php foreach($tasks as $task): ?>
+						<a href="#" class="list-group-item list-group-item-action">
+							<div class="d-flex w-100 justify-content-between">
+								<h5 class="mb-1"><?php echo htmlspecialchars($task['title']); ?></h5>
+								<small>Due: <?php echo htmlspecialchars($task['due_date']); ?></small>
+							</div>
+							<p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
+							<!-- Add your task options (view, edit, delete) here -->
+						</a>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 

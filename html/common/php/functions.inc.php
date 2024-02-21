@@ -461,18 +461,31 @@ function get_files($con, $user_id) {
 
 function get_notes($con, $user_id) {
 	$query="
-	SELECT 
-		N.ID AS id,
-		N.TITLE AS title,
-		N.DESCRIPTION AS description,
-		N.CREATED_ON AS created_on
-	FROM 
-		NOTES N INNER JOIN NOTE_PRIVILEGES NP ON N.ID = NP.NOTE_ID
-	WHERE
-		NP.USER_ID = ? AND
-		NP.PRIVILEGE = 'VIEW'
-	ORDER BY
-		N.ID;
+        SELECT 
+            N.ID AS id,
+            N.TITLE AS title,
+            N.DESCRIPTION AS description,
+            N.CREATED_ON AS created_on,
+            CASE 
+            WHEN INSTR(GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ',') > 0 
+            THEN CONCAT('background: linear-gradient(to right, ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ');')
+            ELSE CONCAT('background-color: ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ';')
+            END AS background_color,
+            MAX(CS.TEXT_COLOR) AS text_color
+        FROM 
+            NOTES N 
+            INNER JOIN NOTE_PRIVILEGES NP ON N.ID = NP.NOTE_ID
+            INNER JOIN NOTES_HAVE_CATEGORIES NC ON NC.NOTE_ID = N.ID
+            INNER JOIN CATEGORIES C ON C.ID = NC.CATEGORY_ID
+            INNER JOIN COLOR_SCHEMES CS ON CS.ID = C.COLOR_SCHEME_ID
+        WHERE
+            NP.USER_ID = ? AND
+            NP.PRIVILEGE = 'VIEW'
+        GROUP BY
+            N.ID, N.TITLE, N.DESCRIPTION, N.CREATED_ON
+        ORDER BY
+            N.ID;
+
 	";
 
 	$params=array($user_id);
@@ -773,6 +786,26 @@ function unattach_files_from_note($con, $note_id, $user_id) {
 	execute_query($con, $query, $params, $types);
 }
 
+function unattach_notes_from_project($con, $project_id, $user_id) {
+	$query = "
+	CALL P_UNATTACH_NOTES_FROM_PROJECT(?,?);
+	";
+
+	$params = array($project_id, $user_id);
+	$types = "ii";
+	execute_query($con, $query, $params, $types);
+}
+
+function unattach_note_from_project($con, $note, $project_id, $user_id) {
+	$query = "
+	CALL P_UNATTACH_NOTE_FROM_PROJECT(?,?,?);
+	";
+
+	$params = array($note, $project_id, $user_id);
+	$types = "iii";
+	execute_query($con, $query, $params, $types);
+}
+
 function unattach_file_from_note($con, $file_id, $note_id, $user_id) {
 	$query="
 	CALL P_UNATTACH_FILE_FROM_NOTE(?,?,?);
@@ -789,6 +822,16 @@ function attach_file_to_note($con, $file_id, $note_id, $user_id) {
 	";
 
 	$params=array($file_id, $note_id, $user_id);
+	$types="iii";
+	execute_query($con, $query, $params, $types);
+}
+
+function attach_note_to_project($con, $note_id, $project_id, $user_id) {
+	$query="
+	CALL P_ATTACH_NOTE_TO_PROJECT(?,?,?);
+	";
+
+	$params=array($note_id, $project_id, $user_id);
 	$types="iii";
 	execute_query($con, $query, $params, $types);
 }
@@ -863,3 +906,41 @@ function get_attached_files_to_note($con, $note_id, $user_id) {
 
 	return $result;
 }
+
+function get_attached_notes_to_project($con, $project_id, $user_id) {
+	$query = "
+	SELECT 
+		N.ID AS id,
+		N.TITLE AS title,
+		N.DESCRIPTION AS description,
+		N.CREATED_ON AS created_on,
+		CASE 
+		WHEN INSTR(GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ',') > 0 
+		THEN CONCAT('background: linear-gradient(to right, ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ');')
+		ELSE CONCAT('background-color: ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ';')
+		END AS background_color,
+		MAX(CS.TEXT_COLOR) AS text_color
+	FROM 
+		PROJECTS_ATTACH_NOTES PN
+		INNER JOIN NOTES N ON N.ID = PN.NOTE_ID
+		INNER JOIN NOTE_PRIVILEGES NP ON N.ID = NP.NOTE_ID
+		LEFT JOIN NOTES_HAVE_CATEGORIES NC ON NC.NOTE_ID = N.ID
+		LEFT JOIN CATEGORIES C ON C.ID = NC.CATEGORY_ID
+		LEFT JOIN COLOR_SCHEMES CS ON CS.ID = C.COLOR_SCHEME_ID
+	WHERE
+		NP.USER_ID = ? AND
+		PN.PROJECT_ID = ? AND
+		NP.PRIVILEGE = 'VIEW'
+	GROUP BY
+		N.ID, N.TITLE, N.DESCRIPTION, N.CREATED_ON
+	ORDER BY
+		N.ID;
+	";
+
+	$params = array($user_id, $project_id);
+	$types = "ii";
+	$result = execute_query($con, $query, $params, $types);
+
+	return $result;
+}
+

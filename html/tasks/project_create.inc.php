@@ -1,7 +1,7 @@
 <?php
 if(!isset($_POST["submit"])) {
-    header('location: /index.php');
-    exit;
+	header('location: /index.php');
+	exit;
 }
 
 require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
@@ -13,28 +13,38 @@ $deadline = $_POST['deadline'];
 
 $categories = array();
 foreach($_POST as $key => $value) {
-    if(strpos($key, 'category_') === 0) {
-        $categories[] = substr($key, 9);
-    }
+	if(strpos($key, 'category_') === 0) {
+		$categories[] = substr($key, 9);
+	}
+}
+
+$notes=array();
+foreach($_POST as $key => $value) {
+	if(strpos($key, 'note_') === 0) {
+		$notes[] = substr($key, 5); 
+	}   
 }
 
 $_SESSION['create-project-form'] = array(
-    'title' => $title,
-    'description' => $description,
-    'deadline' => $deadline,
-    'categories' => $categories
-);
+		'title' => $title,
+		'description' => $description,
+		'deadline' => $deadline,
+		'categories' => $categories
+		);
 
 if($project_id = create_project($con, $title, $description, $deadline, $_SESSION['user-details']['id'])) {
-    foreach($categories as $category_id) {
-        append_category($con, $category_id, $project_id, 'PROJECT', $_SESSION['user-details']['id']);
-    }
-    header("location: /tasks/projects.php?status=success-project-created");
-    exit;
+	foreach($categories as $category_id) {
+		append_category($con, $category_id, $project_id, 'PROJECT', $_SESSION['user-details']['id']);
+	}
+
+	foreach($notes as $note_id)
+		attach_note_to_project($con, $note_id, $project_id, $_SESSION['user-details']['id']);
+
+	header("location: /tasks/projects.php?status=success-project-created");
+	exit;
 }
 else {
-    header("location: project_edit.php?error=error-project-not-created");
-    exit;
+	header("location: project_edit.php?error=error-project-not-created");
+	exit;
 }
 ?>
-

@@ -75,7 +75,9 @@ if (isset($_GET['id'])) {
 						$categories = get_categories($con, $_SESSION['user-details']['id']);
 						$default_id = get_default_category_id($con, $_SESSION['user-details']['id']);
 
-						if(!$edit)
+						if($edit)
+							$first = false;
+						else
 							$first = true;
 
 						foreach($categories as $category) {
@@ -114,6 +116,37 @@ if (isset($_GET['id'])) {
 						?>
 					</div>
 					<div class="invalid-feedback" id="categoryError">Please select at least one category.</div>
+				</div>
+
+				<div class="form-group mb-3">
+					<label for="notes">Attach Notes</label>
+					<div id="notes" style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; border-radius: 10px; background-color: #f8f9fa;">
+						<?php
+						$notes = get_notes($con, $_SESSION['user-details']['id']);
+						$attached_note_ids = array_column(get_attached_notes_to_project($con, $_GET['id'], $_SESSION['user-details']['id']), 'id');
+
+
+						foreach($notes as $note) {
+							$checked='';
+							if(in_array($note['id'], $attached_note_ids))
+								$checked='checked';
+							$description=$note['description'] ? $note['description'] : $phrases['text-no-description'];
+							echo '
+							<div style="display: flex; align-items: center; margin-bottom: 10px; ' . $note['background_color'] . '; padding: 10px; border-radius: 10px;">
+								<input 
+									type="checkbox" 
+									id="note_' . $note['id'] . '"  
+									name="note_' . $note['id'] . '"  ' . 
+									$checked . ' 
+									style="width: 20px; height: 20px; margin-right: 10px;" 
+								>
+								<label for="note_' . $note['id'] . '" style="color: ' . $note['text_color'] . '">' . 
+									$note['title']. ': ' . $description . ' 
+								</label>
+							</div>';
+						}
+						?>
+					</div>
 				</div>
 
 				<div class="form-group mb-3">

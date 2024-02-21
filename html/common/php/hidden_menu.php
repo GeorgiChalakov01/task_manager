@@ -32,6 +32,18 @@ function show_menu(id, object_type) {
 	else
 		unattach_btn.style.display = 'none';
 
+	if(object_type == 'attached_note'){
+		object_type = 'note';
+		unattach_btn.style.display = 'block';
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const project_id = urlParams.get('id');
+
+		unattach_btn.href = "project_unattach_note.inc.php?project_id=" + project_id + "&note_id=" + id;
+	}
+	else
+		unattach_btn.style.display = 'none';
+
 	open_btn.href = object_type + "_view.php?id=" + id;
 	document.getElementById('edit').href = object_type + "_edit.php?id=" + id;
 	document.getElementById('delete').href = object_type + "_delete.inc.php?id=" + id;

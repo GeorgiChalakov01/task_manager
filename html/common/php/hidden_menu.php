@@ -15,11 +15,6 @@ function show_menu(id, object_type) {
 	var open_btn = document.getElementById('open');
 	var unattach_btn = document.getElementById('unattach');
 
-	if(['project', 'note'].includes(object_type)) 
-		open_btn.style.display = 'block';
-	else
-		open_btn.style.display = 'none';
-
 	if(object_type == 'attached_file'){
 		object_type = 'file';
 		unattach_btn.style.display = 'block';
@@ -43,6 +38,11 @@ function show_menu(id, object_type) {
 	}
 	else
 		unattach_btn.style.display = 'none';
+
+	if(['project', 'note'].includes(object_type)) 
+		open_btn.style.display = 'block';
+	else
+		open_btn.style.display = 'none';
 
 	open_btn.href = object_type + "_view.php?id=" + id;
 	document.getElementById('edit').href = object_type + "_edit.php?id=" + id;

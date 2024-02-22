@@ -468,6 +468,67 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-info-he
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-info-paragraph", "Use this section to add details about your project. Make sure to set a clear title and description to keep everything organized.");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-info-paragraph", "Използвайте тази секция, за да добавите детайли за вашия проект. Уверете се, че сте задали ясно заглавие и описание, за да поддържате всичко организирано.");
 
+-- used in task_edit.php
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-blocker-label", "Blocker");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-blocker-label", "Блокираща");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-create-page-title", "Create a Task");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-create-page-title", "Създаване на Задача");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-page-title", "Edit a Task");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-page-title", "Промяна на Задача");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-create-title", "Create a Task");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-create-title", "Създаване на Задача");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-title", "Edit a Task");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-title", "Промяна на Задача");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-title-label", "Task Title");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-title-label", "Заглавие на Задачата");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-title-placeholder", "Task Title");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-title-placeholder", "Заглавие на Задачаа");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-description-label", "Task Description");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-description-label", "Описание на Задачаа");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-description-placeholder", "Task Description");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-description-placeholder", "Описание на Задачаа");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-categories-label", "Choose Categories");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-categories-label", "Изберете Категории");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-attached-notes", "Attach Notes");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-attached-notes", "Прикачи Бележки");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-form-submit-button", "Submit");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-form-submit-button", "Въведи");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-task-created", "Task Created Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-created", "Задачаът е създаден успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-task-edited", "Task Edited Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-edited", "Задачаът е променен успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-task-deleted", "Task Deleted Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-deleted", "Задачаът е изтрит успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-deadline-label", "Deadline");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-deadline-label", "Краен Срок");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-endedOn-label", "End Date");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-endedOn-label", "Дата на Завършване");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-info-header", "Task Details");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-info-header", "Детайли за Проекта");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-info-paragraph", "Each project has tasks. If the project is the end goal you need to reach the tasks are the steps to it.");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-info-paragraph", "Всеки проект съдържа задачи. Ако проекта е крайната цел която трябва да бъде достигната, задачите са стъпките чрез които да стигнете до нея.");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-duration", "Duration in minutes");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-duration", "Продължителност в минути");
+
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "", "");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "", "");
 

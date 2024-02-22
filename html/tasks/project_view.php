@@ -4,7 +4,8 @@ require 'includes/php_auth_check.php';
 
 $project_id = $_GET['id'];
 $project = get_project_info($con, $project_id, $_SESSION['user-details']['id']);
-$tasks = [];
+$tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
+;
 $notes = [];
 ?>
 
@@ -98,17 +99,17 @@ $notes = [];
 				<div class="bg-light p-2 rounded">
 					<h2><?php echo $phrases['project-view-tasks-header'];?></h2>
 					<a href="task_edit.php?project_id=<?php echo $project_id; ?>" class="btn btn-secondary mb-3"><?php echo $phrases['project-view-add-task'];?></a>
-					<div class="list-group" style="min-height: 100px; border: 1px solid grey; border-radius: 10px;">
+					<div class="container" style="min-height: 100px; border: 1px solid grey; border-radius: 10px;">
 						<?php foreach($tasks as $task): ?>
-						<div class="row">
-							<a href="#" class="list-group-item list-group-item-action">
-								<div class="d-flex w-100 justify-content-between">
-									<h5 class="mb-1"><?php echo htmlspecialchars($task['title']); ?></h5>
-									<small>Due: <?php echo htmlspecialchars($task['due_date']); ?></small>
-								</div>
-								<p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
-							</a>
-						</div>
+							<div class="row m-2 p-1" style="border: 1px solid grey; border-radius: 10px;">
+								<a href="#" class="list-group-item list-group-item-action">
+									<div class="d-flex w-100 justify-content-between">
+										<h5 class="mb-1"><?php echo htmlspecialchars($task['title']); ?></h5>
+										<small>Due: <?php echo htmlspecialchars($task['due_date']); ?></small>
+									</div>
+									<p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
+								</a>
+							</div>
 						<?php endforeach; ?>
 					</div>
 				</div>

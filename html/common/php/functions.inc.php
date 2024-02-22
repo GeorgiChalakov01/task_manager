@@ -239,6 +239,21 @@ function create_project($con, $title, $description, $deadline, $user_id) {
 	return $project_id;
 }
 
+function create_task($con, $project_id, $blocker, $title, $description, $duration, $deadline, $user_id) {
+	$deadline = !empty($deadline) ? date('Y-m-d H:i:s', strtotime($deadline)) : NULL;
+
+	$query = "CALL P_CREATE_TASK(?,?,?,?,?,?,?,@TASK_ID);";
+
+	$params = array($project_id, $blocker, $title, $description, $duration, $deadline, $user_id);
+	$types = "iissisi";
+	$out_params = ["@TASK_ID"];
+	$result = execute_query($con, $query, $params, $types, $out_params);
+
+	$task_id = $result['@TASK_ID'];
+
+	return $task_id;
+}
+
 function edit_category($con, $category_id, $owner_id, $name, $color_scheme_id) {
 	$query="
 	CALL P_EDIT_CATEGORY(?,?,?,?);
@@ -935,6 +950,74 @@ function get_attached_notes_to_project($con, $project_id, $user_id) {
 		N.ID, N.TITLE, N.DESCRIPTION, N.CREATED_ON
 	ORDER BY
 		N.ID;
+	";
+
+	$params = array($user_id, $project_id);
+	$types = "ii";
+	$result = execute_query($con, $query, $params, $types);
+
+	return $result;
+}
+
+function get_attached_notes_to_task($con, $task_id, $user_id) {
+	$query = "
+	SELECT 
+			N.ID AS id,
+			N.TITLE AS title,
+			N.DESCRIPTION AS description,
+			N.CREATED_ON AS created_on,
+			CASE 
+			WHEN INSTR(GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ',') > 0 
+			THEN CONCAT('background: linear-gradient(to right, ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ');')
+			ELSE CONCAT('background-color: ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ';')
+			END AS background_color,
+			MAX(CS.TEXT_COLOR) AS text_color
+	FROM 
+			TASKS_ATTACH_NOTES TN
+			INNER JOIN NOTES N ON N.ID = TN.NOTE_ID
+			INNER JOIN NOTE_PRIVILEGES NP ON N.ID = NP.NOTE_ID
+			LEFT JOIN NOTES_HAVE_CATEGORIES NC ON NC.NOTE_ID = N.ID
+			LEFT JOIN CATEGORIES C ON C.ID = NC.CATEGORY_ID
+			LEFT JOIN COLOR_SCHEMES CS ON CS.ID = C.COLOR_SCHEME_ID
+	WHERE
+			NP.USER_ID = ? AND
+			TN.TASK_ID = ? AND
+			NP.PRIVILEGE = 'VIEW'
+	GROUP BY
+			N.ID, N.TITLE, N.DESCRIPTION, N.CREATED_ON
+	ORDER BY
+			N.ID;
+	";
+
+	$params = array($user_id, $task_id);
+	$types = "ii";
+	$result = execute_query($con, $query, $params, $types);
+
+	return $result;
+}
+
+function get_project_tasks($con, $project_id, $user_id) {
+	$query = "
+	SELECT 
+		T.ID AS id,
+		T.PROJECT_ID AS project_id,
+		T.PLACE AS place,
+		T.BLOCKER AS blocker,
+		T.TITLE AS title,
+		T.DESCRIPTION AS description,
+		T.CREATED_ON AS created_on,
+		T.COMPLETED_ON AS completed_on,
+		T.DURATION AS duration,
+		T.DEADLINE AS deadline
+	FROM 
+		TASKS T
+		INNER JOIN TASK_PRIVILEGES TP ON TP.TASK_ID = T.ID
+	WHERE
+		TP.USER_ID = ? AND
+		T.PROJECT_ID = ? AND
+		TP.PRIVILEGE = 'VIEW'
+	ORDER BY
+		T.PLACE;
 	";
 
 	$params = array($user_id, $project_id);

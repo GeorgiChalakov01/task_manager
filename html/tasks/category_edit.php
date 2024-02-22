@@ -36,7 +36,8 @@ if(isset($_GET['id'])) {
 					<input 
 						type="text" 
 						id="categoryName" 
-						name="name" class="form-control" 
+						name="name" 
+						class="form-control" 
 						<?php 
 						echo 'placeholder="' . $phrases['category-create-name-placeholder'] . '"';
 						if($edit)

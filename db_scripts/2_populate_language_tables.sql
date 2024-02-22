@@ -204,8 +204,8 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "file-edit-descriptio
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "file-edit-upload-label", "Chose a File");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "file-edit-upload-label", "Изберете Файла");
 
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "file-edit-categories-label", "Choose Categories");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "file-edit-categories-label", "Изберете Категории");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "categories-label", "Choose Categories");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "categories-label", "Изберете Категории");
 
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "file-edit-form-submit-button", "Submit");
@@ -214,8 +214,8 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "file-edit-form-submi
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "file-edit-info-header", "Files");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "file-edit-info-header", "Файлове");
 
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "file-edit-info-paragraph", "The categories are used to order your information. <br/>Be sure to give them discriptive names and append the right category to all your objects! :)");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "file-edit-info-paragraph", "Можете да използвате категориите за да организирате своите обекти.<br/>Старайте се да давате описателни имена на всяка своя категория и добавяйте категории на всички свои обекти! :)");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "file-edit-info-paragraph", "You can easily upload important files and attach them to any of your notes! :)");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "file-edit-info-paragraph", "Тук можете лесно да качвате полезни файлове, които по-късно могат да бъдат прикачвани във всяка бележка, която желаете! :)");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-file-uploaded", "File Uploaded Successfully!");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-file-uploaded", "Файлът е качен успешно!");
@@ -310,6 +310,53 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "notes-page-title", "
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "notes-create-button", "Create");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "notes-create-button", "Създай");
 
+/*Used in note_view.php*/
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-view-created-on", "Created On");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-view-created-on", "Създадена на");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-view-attached-files", "Attached Files");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-view-attached-files", "Прикачени Файлове");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-view-deadline", "Deadline");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-view-deadline", "Краен Срок");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-view-edit", "Edit");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-view-edit", "Промени");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-view-archive", "Archive");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-view-archive", "Архивиране");
+
+/*Used in project_view.php*/
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-description", "Description");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-description", "Описание");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-created-on", "Created On");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-created-on", "Създадена на");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-deadline", "Deadline");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-deadline", "Краен Срок");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-edit", "Edit");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-edit", "Промени");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-archive", "Archive");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-archive", "Архивиране");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-mark-complete", "Mark as Complete");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-mark-complete", "Приключване");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-completed-on", "Completed On");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-completed-on", "Приключен на");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-attached-notes", "Attached Notes");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-attached-notes", "Прикачени Бележки");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-tasks-header", "Tasks");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-tasks-header", "Задачи");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-add-task", "Add New Task");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-add-task", "Създаване на Задача");
+
 /*Used in note_edit.php*/
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-page-title", "Edit Note");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-page-title", "Промяна на Бележка");
@@ -332,11 +379,21 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-title-plac
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-description-label", "Description");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-description-label", "Описание");
 
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-files-label", "Attach Files");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-files-label", "Прикачете Файлове");
+
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-description-placeholder", "Milk, Eggs ...");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-description-placeholder", "Мляко, Яйца ...");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-form-submit-button", "Submit");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-form-submit-button", "Въведи");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-info-header", "Notes");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-info-header", "Бележки");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "note-edit-info-paragraph", "Write down any important information so you don't forget it.<br> Attach relevant pictures or documents for context! :)");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "note-edit-info-paragraph", "Записвайте важната за вас информация за да не я забравите.<br>Прикачете снимки и документи които да дадат допълнителен контекст! :)");
+
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-note-created", "Note Created Successfully!");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-note-created", "Бележката е създадена успешно!");
@@ -384,6 +441,9 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-descrip
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-categories-label", "Choose Categories");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-categories-label", "Изберете Категории");
 
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-attached-notes", "Attach Notes");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-attached-notes", "Прикачи Бележки");
+
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-form-submit-button", "Submit");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-form-submit-button", "Въведи");
 
@@ -407,8 +467,6 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-info-he
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-edit-info-paragraph", "Use this section to add details about your project. Make sure to set a clear title and description to keep everything organized.");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-edit-info-paragraph", "Използвайте тази секция, за да добавите детайли за вашия проект. Уверете се, че сте задали ясно заглавие и описание, за да поддържате всичко организирано.");
-
-
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "", "");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "", "");

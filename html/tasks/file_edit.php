@@ -69,7 +69,7 @@ if(isset($_GET['id'])) {
 					</div>
 
 					<div class="form-group mb-3">
-						<label for="categories">Categories</label>
+						<label for="categories"><?php echo $phrases['categories-label'];?></label>
 						<div id="categories" style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; border-radius: 10px; background-color: #f8f9fa;">
 							<?php
 							$categories = get_categories($con, $_SESSION['user-details']['id']);
@@ -106,7 +106,6 @@ if(isset($_GET['id'])) {
 							}
 							?>
 						</div>
-						<div class="invalid-feedback" id="categoryError">Please select at least one category.</div>
 					</div>
 
 					<div class="form-group mb-3">

@@ -63,7 +63,7 @@ if(isset($_GET['id'])) {
 						<div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
 					</div>
 					<div class="form-group mb-3">
-						<label for="categories">Categories</label>
+						<label for="categories"><?php echo $phrases['categories-label'];?></label>
 						<div id="categories" style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; border-radius: 10px; background-color: #f8f9fa;">
 							<?php
 							$categories = get_categories($con, $_SESSION['user-details']['id']);
@@ -109,11 +109,10 @@ if(isset($_GET['id'])) {
 							}
 							?>
 						</div>
-						<div class="invalid-feedback" id="categoryError">Please select at least one category.</div>
 					</div>
 
 					<div class="form-group mb-3">
-						<label for="files">Attach Files</label>
+						<label for="files"><?php echo $phrases['note-edit-files-label'];?></label>
 						<div id="files" style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; border-radius: 10px; background-color: #f8f9fa;">
 							<?php
 							$files = get_files($con, $_SESSION['user-details']['id']);
@@ -152,8 +151,8 @@ if(isset($_GET['id'])) {
 				</form>
 			</div>
 			<div class="col-0 col-lg-5 bg-dark text-white p-4 d-none d-lg-block">
-				<h2><?php echo $phrases['file-edit-info-header'];?></h2>
-				<p><?php echo $phrases['file-edit-info-paragraph'];?></p>
+				<h2><?php echo $phrases['note-edit-info-header'];?></h2>
+				<p><?php echo $phrases['note-edit-info-paragraph'];?></p>
 			</div>
 		</div>
 

@@ -23,15 +23,14 @@ $note = get_note_info($con, $note_id, $_SESSION['user-details']['id']);
 		<div class="row">
 		<div class="col-md-12 d-flex">
 			<div class="bg-light p-2 mb-4 rounded flex-grow-1">
-			<h2>Note Details</h2>
-			<p><strong>Title:</strong> <?php echo htmlspecialchars($note['title']); ?></p>
-			<p><strong>Description:</strong> <?php echo htmlspecialchars($note['description']); ?></p>
-			<p><strong>Created on:</strong> <?php echo htmlspecialchars($note['created_on']); ?></p>
+			<h1><strong><?php echo htmlspecialchars($note['title']); ?></strong></h1>
+			<p><?php echo nl2br(htmlspecialchars($note['description'])); ?></p>
+			<p><strong><?php echo $phrases['note-view-created-on'];?></strong> <?php echo htmlspecialchars($note['created_on']); ?></p>
 			<?php if($project['deadline']): ?>
-				<p><strong>Deadline:</strong> <?php echo htmlspecialchars($note['deadline']); ?></p>
+				<p><strong><?php echo $phrases['note-view-deadline'];?></strong> <?php echo htmlspecialchars($note['deadline']); ?></p>
 			<?php endif; ?>
-				<button class="btn btn-secondary" onClick="window.location.href='note_edit.php?id=<?php echo $note_id;?>'">Edit</button>
-				<button class="btn btn-secondary">Archive</button>
+				<button class="btn btn-secondary" onClick="window.location.href='note_edit.php?id=<?php echo $note_id;?>'"><?php echo $phrases['note-view-edit'];?></button>
+				<button class="btn btn-secondary"><?php echo $phrases['note-view-archive'];?></button>
 			</div>
 		</div>
 		</div>
@@ -39,7 +38,7 @@ $note = get_note_info($con, $note_id, $_SESSION['user-details']['id']);
 		<div class="row">
 			<div class="col-12">
 				<div class="bg-light p-2 rounded">
-					<h2>Attached Files</h2>
+					<h2><?php echo $phrases['note-view-attached-files'];?></h2>
 					<div class="row" style="min-height: 150px;">
 					<?php
 					$files=get_attached_files_to_note($con, $note_id, $_SESSION['user-details']['id']);

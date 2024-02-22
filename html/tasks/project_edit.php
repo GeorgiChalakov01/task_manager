@@ -164,7 +164,7 @@ if (isset($_GET['id'])) {
 	</div>
 
 	<script>
-		var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+		var checkboxes = document.querySelector('#categories').querySelectorAll('input[type="checkbox"]');
 		checkboxes.forEach(function(checkbox) {
 			checkbox.addEventListener('change', function() {
 				var checked = Array.prototype.slice.call(checkboxes).some(x => x.checked);

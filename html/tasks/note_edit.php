@@ -93,6 +93,7 @@ if(isset($_GET['id'])) {
 										border-radius: 10px;"
 								>
 									<input 
+										class="form-check-input"
 										type="checkbox" 
 										id="category_' . $category['id'] . '" 
 										name="category_' . $category['id'] . '" 
@@ -159,7 +160,7 @@ if(isset($_GET['id'])) {
 
 
 		<script>
-			var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+			var checkboxes = document.querySelector('#categories').querySelectorAll('input[type="checkbox"]');
 			checkboxes.forEach(function(checkbox) {
 				checkbox.addEventListener('change', function() {
 					var checked = Array.prototype.slice.call(checkboxes).some(x => x.checked);

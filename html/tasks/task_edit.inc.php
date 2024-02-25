@@ -9,7 +9,7 @@ require 'includes/php_auth_check.php';
 
 // Retrieve form data
 $task_id = $_POST['id'];
-$project_id = $_POST['project_id'];
+$project_id = get_task_info($con, $task_id, $_SESSION['user-details']['id'])['project_id'];
 $blocker = $_POST['blocker']=='on'?True:False;
 $title = $_POST['title'];
 $description = $_POST['description'];

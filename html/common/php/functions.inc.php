@@ -886,6 +886,16 @@ function unattach_note_from_project($con, $note, $project_id, $user_id) {
 	execute_query($con, $query, $params, $types);
 }
 
+function unattach_note_from_task($con, $note, $task_id, $user_id) {
+	$query = "
+	CALL P_UNATTACH_NOTE_FROM_TASK(?,?,?);
+	";
+
+	$params = array($note, $task_id, $user_id);
+	$types = "iii";
+	execute_query($con, $query, $params, $types);
+}
+
 function unattach_file_from_note($con, $file_id, $note_id, $user_id) {
 	$query="
 	CALL P_UNATTACH_FILE_FROM_NOTE(?,?,?);

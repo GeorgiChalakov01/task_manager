@@ -5,7 +5,6 @@ require 'includes/php_auth_check.php';
 $project_id = $_GET['id'];
 $project = get_project_info($con, $project_id, $_SESSION['user-details']['id']);
 $tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
-;
 $notes = [];
 ?>
 
@@ -24,7 +23,7 @@ $notes = [];
 	<?php require '../common/statuserror/statuserror.php';?>
 		<div class="row">
 			<div class="col-md-7 d-flex">
-				<div class="bg-light p-2 mb-4 rounded flex-grow-1">
+				<div class="bg-light p-2 mb-4 rounded flex-grow-1 d-flex flex-column">
 					<h2><?php echo htmlspecialchars($project['title']); ?></h2>
 					<br>
 					<p><strong><?php echo $phrases['project-view-description'];?>: </strong><br> <?php echo nl2br(htmlspecialchars($project['description'])); ?></p>
@@ -32,9 +31,9 @@ $notes = [];
 					<?php if($project['deadline']): ?>
 						<p><strong><?php echo $phrases['project-view-deadline'];?>: </strong><br> <?php echo htmlspecialchars($project['deadline']); ?></p>
 					<?php endif; ?>
-					<div>
+					<div class="child mt-auto">
 						<button class="btn btn-secondary" onClick="window.location.href='project_edit.php?id=<?php echo $project_id;?>'"><?php echo $phrases['project-view-edit'];?></button>
-						<button class="btn btn-secondary"><?php echo $phrases['project-view-archive'];?></button>
+						<button class="btn btn-secondary"><?php echo $phrases['project-view-mark-complete'];?></button>
 						<?php if($project['ended_on']): ?>
 							<p><strong><?php echo $phrases['project-view-completed-on'];?>: </strong><br> <?php echo htmlspecialchars($project['ended_on']); ?></p>
 						<?php else: ?>
@@ -65,7 +64,7 @@ $notes = [];
 						<div 
 							class="mb-4" 
 							style="cursor: pointer; width: 100%;" 
-							onclick="show_menu(' . $note['id'] . ', \'attached_note\');"
+							onclick="show_menu(' . $note['id'] . ', \'attached_note_to_project\');"
 						>
 							<div class="card rounded" style="height: 400px;">
 									<div class="card-body" style="background-color: #f7f7f7;">

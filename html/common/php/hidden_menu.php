@@ -33,11 +33,18 @@ function show_menu(id, object_type) {
 		const note_id = url_params.get('id');
 		unattach_btn.href = "note_unattach_file.inc.php?note_id=" + note_id + "&file_id=" + id;
 		object_type = 'file';
-	} else if(['attached_note'].includes(object_type)){
+	} else if(['attached_note_to_project'].includes(object_type)){
 		open_btn.style.display = 'block';
 		unattach_btn.style.display = 'block';
 		const project_id = url_params.get('id');
 		unattach_btn.href = "project_unattach_note.inc.php?project_id=" + project_id + "&note_id=" + id;
+		object_type = 'note';
+	} else if(['attached_note_to_task'].includes(object_type)){
+		open_btn.style.display = 'block';
+		unattach_btn.style.display = 'block';
+		const task_id = url_params.get('id');
+		const project_id = url_params.get('project_id');
+		unattach_btn.href = "task_unattach_note.inc.php?task_id=" + task_id + "&note_id=" + id + '&project_id=' + project_id;
 		object_type = 'note';
 	} else if(['task'].includes(object_type)){
 		open_btn.style.display = 'block';

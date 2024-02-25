@@ -68,10 +68,11 @@ require 'includes/php_auth_check.php';
 								box-shadow: 2px 2px 5px rgba(0,0,0,0.3); 
 								border-radius: 5px; 
 								margin-bottom: 15px;
-								cursor: pointer;" 
+								cursor: pointer;
+								font-size: 40px;" 
 							class="bg-info rounded"
 						>
-							<?php include '/home/gchalakov/zadachnik/html/common/php/plus.php';?>
+							+
 						</a>
 					</div>
 				</div>

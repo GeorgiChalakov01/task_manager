@@ -226,6 +226,9 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-file-edited"
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-file-deleted", "File Deleted Successfully!");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-file-deleted", "Файлът е изтрит успешно!");
 
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-file-unattached", "File Unattached Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-file-unattached", "Файлът е откачен успешно!");
+
 
 /*
 Used in the home.php. 
@@ -404,6 +407,9 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-note-edited"
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-note-deleted", "Note Deleted Successfully!");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-note-deleted", "Бележката е изтрита успешно!");
 
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-note-unattached", "Note Unattached Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-note-unattached", "Бележката е откачена успешно!");
+
 /*projects.php*/
 /* Used in projects.php */
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "projects-page-title", "Projects");
@@ -506,13 +512,13 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-form-submi
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-form-submit-button", "Въведи");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-task-created", "Task Created Successfully!");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-created", "Задачаът е създаден успешно!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-created", "Задачата е създадена успешно!");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-task-edited", "Task Edited Successfully!");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-edited", "Задачаът е променен успешно!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-edited", "Задачата е променена успешно!");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-task-deleted", "Task Deleted Successfully!");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-deleted", "Задачаът е изтрит успешно!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-deleted", "Задачата е изтрита успешно!");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-deadline-label", "Deadline");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-deadline-label", "Краен Срок");
@@ -520,8 +526,8 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-deadline-l
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-endedOn-label", "End Date");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-endedOn-label", "Дата на Завършване");
 
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-info-header", "Task Details");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-info-header", "Детайли за Проекта");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-info-header", "Tasks");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-info-header", "Задачи");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-info-paragraph", "Each project has tasks. If the project is the end goal you need to reach the tasks are the steps to it.");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-info-paragraph", "Всеки проект съдържа задачи. Ако проекта е крайната цел която трябва да бъде достигната, задачите са стъпките чрез които да стигнете до нея.");

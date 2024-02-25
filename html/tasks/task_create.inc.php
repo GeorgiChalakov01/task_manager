@@ -8,7 +8,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
 require 'includes/php_auth_check.php';
 
 $project_id=$_POST['project_id'];
-$blocker=$_POST['blocker']?$_POST['blocker']:False;
+$blocker=$_POST['blocker']=='on'?True:False;
 $title=$_POST['title'];
 $description=$_POST['description'];
 $duration=$_POST['duration'];
@@ -31,11 +31,11 @@ if($task_id = create_task($con, $project_id, $blocker, $title, $description, $du
 	foreach($notes as $note_id)
 		attach_note_to_task($con, $note_id, $task_id, $_SESSION['user-details']['id']);
 
-	header("location: /tasks/tasks.php?status=success-task-created");
+	header("location: /tasks/project_view.php?id=$project_id&status=success-task-created");
 	exit;
 }
 else {
-	header("location: task_edit.php?error=error-task-not-created");
+	header("location: /tasks/project_view.php?id=$project_id&status=error-task-not-created");
 	exit;
 }
 ?>

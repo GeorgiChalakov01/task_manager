@@ -21,6 +21,7 @@ $notes = [];
 	<?php require '../common/php/hidden_menu.php';?>
 
 	<div class="container mt-4">
+	<?php require '../common/statuserror/statuserror.php';?>
 		<div class="row">
 			<div class="col-md-7 d-flex">
 				<div class="bg-light p-2 mb-4 rounded flex-grow-1">
@@ -101,14 +102,10 @@ $notes = [];
 					<a href="task_edit.php?project_id=<?php echo $project_id; ?>" class="btn btn-secondary mb-3"><?php echo $phrases['project-view-add-task'];?></a>
 					<div class="container" style="min-height: 100px; border: 1px solid grey; border-radius: 10px;">
 						<?php foreach($tasks as $task): ?>
-							<div class="row m-2 p-1" style="border: 1px solid grey; border-radius: 10px;">
-								<a href="#" class="list-group-item list-group-item-action">
-									<div class="d-flex w-100 justify-content-between">
-										<h5 class="mb-1"><?php echo htmlspecialchars($task['title']); ?></h5>
-										<small>Due: <?php echo htmlspecialchars($task['due_date']); ?></small>
-									</div>
-									<p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
-								</a>
+							<div class="row m-2 p-1" style="border: 1px solid grey; border-radius: 10px; cursor: pointer; background-color: #6c757d; color: white; border: 1px solid black;" onclick="show_menu(<?php echo $task['id']; ?>, 'task');">
+								<h5 class="mb-1"><?php echo htmlspecialchars($task['title']); ?></h5>
+								<p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
+								<small><?php echo $phrases['project-view-deadline'];?>: <?php echo substr(htmlspecialchars($task['deadline']), 0, -3); ?></small>
 							</div>
 						<?php endforeach; ?>
 					</div>

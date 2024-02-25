@@ -302,6 +302,18 @@ function edit_project($con, $project_id, $title, $description, $deadline, $user_
 	return true;
 }
 
+function edit_task($con, $task_id, $blocker, $title, $description, $duration, $deadline, $user_id) {
+	$query="
+	CALL P_EDIT_TASK(?,?,?,?,?,?,?);
+	";
+
+	$params=array($task_id, $blocker, $title, $description, $duration, $deadline, $user_id);
+	$types="iissssi";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}
+
 function delete_category($con, $category_id, $user_id) {
 	$query="
 	CALL P_DELETE_CATEGORY(?,?);
@@ -333,6 +345,18 @@ function delete_note($con, $note_id, $user_id) {
 
 	$params=array($note_id, $user_id);
 	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}
+
+function delete_task($con, $task_id, $project_id, $user_id) {
+	$query="
+	CALL P_DELETE_TASK(?,?,?);
+	";
+
+	$params=array($task_id, $project_id, $user_id);
+	$types="iii";
 	$result=execute_query($con, $query, $params, $types);
 
 	return true;
@@ -696,6 +720,37 @@ function get_project_info($con, $project_id, $user_id) {
     return $result[0];
 }
 
+function get_task_info($con, $task_id, $user_id) {
+    $query = "
+	SELECT 
+		T.ID AS id,
+		T.PROJECT_ID AS project_id,
+		T.PLACE AS place,
+		T.BLOCKER AS blocker,
+		T.TITLE AS title,
+		T.DESCRIPTION AS description,
+		T.CREATED_ON AS created_on,
+		T.COMPLETED_ON AS completed_on,
+		T.DURATION AS duration,
+		T.AUTO_REMINDER AS auto_reminder,
+		T.DEADLINE AS deadline
+	FROM 
+		TASKS T INNER JOIN TASK_PRIVILEGES TP ON T.ID = TP.TASK_ID
+	WHERE
+		TP.TASK_ID = ? AND
+		TP.USER_ID = ? AND
+		TP.PRIVILEGE = 'VIEW'
+	ORDER BY
+		T.ID;
+    ";
+
+    $params = array($task_id, $user_id);
+    $types = "ii";
+    $result = execute_query($con, $query, $params, $types);
+
+    return $result[0];
+}
+
 function get_file_categories($con, $file_id, $user_id) {
 	$query="
 	SELECT 
@@ -811,6 +866,16 @@ function unattach_notes_from_project($con, $project_id, $user_id) {
 	execute_query($con, $query, $params, $types);
 }
 
+function unattach_notes_from_task($con, $task_id, $user_id) {
+	$query = "
+	CALL P_UNATTACH_NOTES_FROM_TASK(?,?);
+	";
+
+	$params = array($task_id, $user_id);
+	$types = "ii";
+	execute_query($con, $query, $params, $types);
+}
+
 function unattach_note_from_project($con, $note, $project_id, $user_id) {
 	$query = "
 	CALL P_UNATTACH_NOTE_FROM_PROJECT(?,?,?);
@@ -847,6 +912,16 @@ function attach_note_to_project($con, $note_id, $project_id, $user_id) {
 	";
 
 	$params=array($note_id, $project_id, $user_id);
+	$types="iii";
+	execute_query($con, $query, $params, $types);
+}
+
+function attach_note_to_task($con, $note_id, $task_id, $user_id) {
+	$query="
+	CALL P_ATTACH_NOTE_TO_TASK(?,?,?);
+	";
+
+	$params=array($note_id, $task_id, $user_id);
 	$types="iii";
 	execute_query($con, $query, $params, $types);
 }

@@ -55,13 +55,13 @@ if (isset($_GET['id'])) {
 				</div>
 
 				<div class="form-group mb-3">
-					<input type="checkbox" name="blocker" id="blocker" class="form-check-input"/>
+					<input type="checkbox" name="blocker" id="blocker" class="form-check-input" <?php if($edit and $chosen_task['blocker']) echo ' checked';?>/>
 					<label for="blocker"><?php echo $phrases['task-edit-blocker-label'];?></label>
 				</div>
 
 				<div class="form-group mb-3">
 					<label for="duration"><?php echo $phrases['task-edit-duration-label'];?><?php echo $phrases['task-edit-duration'];?></label>
-					<input type="number" id="duration" name="duration" value="15" min="0" class="form-control form-icon-trailing"/>
+					<input type="number" id="duration" name="duration" value="<?php if($edit) echo $chosen_task['duration']; else echo '15';?>" min="0" class="form-control form-icon-trailing"/>
 				</div>
 
 				<div class="form-group mb-3">

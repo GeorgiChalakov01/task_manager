@@ -10,49 +10,58 @@
 
 <script>
 function show_menu(id, object_type) {
+	var url_params = new URLSearchParams(window.location.search);
+
 	var overlay = document.getElementById('overlay');
 	var menu = document.getElementById('menu');
+
 	var open_btn = document.getElementById('open');
 	var unattach_btn = document.getElementById('unattach');
+	var edit_btn = document.getElementById('edit');
+	var delete_btn = document.getElementById('delete');
 
-	if(object_type == 'attached_file'){
-		object_type = 'file';
-		unattach_btn.style.display = 'block';
-
-		const urlParams = new URLSearchParams(window.location.search);
-		const note_id = urlParams.get('id');
-
-		unattach_btn.href = "note_unattach_file.inc.php?note_id=" + note_id + "&file_id=" + id;
-	}
-	else
-		unattach_btn.style.display = 'none';
-
-	if(object_type == 'attached_note'){
-		object_type = 'note';
-		unattach_btn.style.display = 'block';
-
-		const urlParams = new URLSearchParams(window.location.search);
-		const project_id = urlParams.get('id');
-
-		unattach_btn.href = "project_unattach_note.inc.php?project_id=" + project_id + "&note_id=" + id;
-	}
-	else
-		unattach_btn.style.display = 'none';
-
-	if(['project', 'note'].includes(object_type)) 
-		open_btn.style.display = 'block';
-	else
+	if(['category', 'file'].includes(object_type)){
 		open_btn.style.display = 'none';
+		unattach_btn.style.display = 'none';
+	}
+	else if(['project', 'note'].includes(object_type)){
+		open_btn.style.display = 'block';
+		unattach_btn.style.display = 'none';
+	} else if(['attached_file'].includes(object_type)){
+		open_btn.style.display = 'none';
+		unattach_btn.style.display = 'block';
+		const note_id = url_params.get('id');
+		unattach_btn.href = "note_unattach_file.inc.php?note_id=" + note_id + "&file_id=" + id;
+		object_type = 'file';
+	} else if(['attached_note'].includes(object_type)){
+		open_btn.style.display = 'block';
+		unattach_btn.style.display = 'block';
+		const project_id = url_params.get('id');
+		unattach_btn.href = "project_unattach_note.inc.php?project_id=" + project_id + "&note_id=" + id;
+		object_type = 'note';
+	} else if(['task'].includes(object_type)){
+		open_btn.style.display = 'block';
+		unattach_btn.style.display = 'none';
+		open_btn.href = object_type + "_view.php?id=" + id + 'project_id=' + project_id;
+	}
 
-	open_btn.href = object_type + "_view.php?id=" + id;
-	document.getElementById('edit').href = object_type + "_edit.php?id=" + id;
-	document.getElementById('delete').href = object_type + "_delete.inc.php?id=" + id;
+	var project_id = url_params.get('id');
+	if(['task'].includes(object_type)){
+		open_btn.href = object_type + "_view.php?id=" + id + '&project_id=' + project_id;
+		edit_btn.href = object_type + "_edit.php?id=" + id + '&project_id=' + project_id;
+		delete_btn.href = object_type + "_delete.inc.php?id=" + id + '&project_id=' + project_id;
+	}
+	else{
+		open_btn.href = object_type + "_view.php?id=" + id;
+		edit_btn.href = object_type + "_edit.php?id=" + id;
+		delete_btn.href = object_type + "_delete.inc.php?id=" + id;
+	}
+
 
 	overlay.style.display = "block";
 	menu.style.display = "block";
 }
 
-// Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
 	if (event.target.matches('.overlay')) {
 		var overlay = document.getElementById('overlay');

@@ -732,7 +732,6 @@ function get_task_info($con, $task_id, $user_id) {
 		T.CREATED_ON AS created_on,
 		T.COMPLETED_ON AS completed_on,
 		T.DURATION AS duration,
-		T.AUTO_REMINDER AS auto_reminder,
 		T.DEADLINE AS deadline
 	FROM 
 		TASKS T INNER JOIN TASK_PRIVILEGES TP ON T.ID = TP.TASK_ID

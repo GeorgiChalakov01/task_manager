@@ -45,7 +45,7 @@ $notes = [];
 			<div class="col-md-5 d-flex">
 				<div class="bg-light p-2 mb-4 rounded flex-grow-1">
 					<h2><?php echo $phrases['project-view-attached-notes'];?></h2>
-					<div style="height: 400px; overflow-x: hidden; overflow-y: scroll;">
+					<div style="min-height: 100px; max-height: 400px; border: 1px solid grey; border-radius: 10px; overflow-x: hidden; overflow-y: scroll;">
 					<?php
 						$notes=get_attached_notes_to_project($con, $project_id, $_SESSION['user-details']['id']);
 

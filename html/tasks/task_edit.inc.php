@@ -14,7 +14,7 @@ $blocker = $_POST['blocker']=='on'?True:False;
 $title = $_POST['title'];
 $description = $_POST['description'];
 $duration = $_POST['duration'];
-$deadline = $_POST['deadline'];
+$deadline = $_POST['deadline']?$_POST['deadline']:NULL;
 
 $notes = array();
 foreach($_POST as $key => $value) {

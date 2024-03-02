@@ -1101,7 +1101,7 @@ function get_project_tasks($con, $project_id, $user_id) {
 		T.PROJECT_ID = ? AND
 		TP.PRIVILEGE = 'VIEW'
 	ORDER BY
-		T.PLACE;
+		DESC T.PLACE;
 	";
 
 	$params = array($user_id, $project_id);

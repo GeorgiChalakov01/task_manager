@@ -81,6 +81,12 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "signup-form-submit-b
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "default-category-name", "Unsorted");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "default-category-name", "Неподредени");
 
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "default-project-title", "Unsorted");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "default-project-title", "Неподредени");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "default-project-description", "Here you can create your unsorted tasks. This is useful for standalone tasks which can't be added to a specific project.");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "default-project-description", "Тук можете да създавате неподредени задачи. Това е особено полезно за задачи които не могат да се причислят към определен проект.");
+
 /*
 Used in the files.php. 
  */

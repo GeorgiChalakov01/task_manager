@@ -64,6 +64,7 @@ if ($_FILE['file'] and $profile_picture_path === false) {
 
 if($user_id=signup_user($con, $first_name, $last_name, $username, $email, $hashed_password, $profile_picture_path)) {
 	create_category($con, $user_id, 'default-category', '1');
+	create_project($con, 'default-project-title', 'default-project-description', NULL, $user_id);
 
 	header("location: signin.php?status=success-account-created");
 	exit;

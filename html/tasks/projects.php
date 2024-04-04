@@ -77,15 +77,18 @@ require 'includes/php_auth_check.php';
 					$description = $phrases['text-no-description'];
 				}
 
+				$default_project = (($project['title'] == 'default-project-title') ? True : False);
+				$onclick = $default_project ? '' : "show_menu({$project['id']}, 'project');";
+
 				echo '
 				<div 
 					class="col-lg-4 col-md-6 col-sm-12 mb-4" 
 					style="cursor: pointer;" 
-					onclick="show_menu(' . $project['id'] . ', \'project\');"
+					onclick="' . $onclick . '"
 				>
 					<div class="card rounded" style="height: 400px;">
 						<div class="card-body" style="background-color: #f7f7f7;">
-							<h2 class="card-title" style="height: 50px; overflow: auto;">' . ($project['title'] == 'default-project-title' ? $phrases[$project['title']] : $project['title']) . '</h2>
+							<h2 class="card-title" style="height: 50px; overflow: auto;">' . ($default_project ? $phrases[$project['title']] : $project['title']) . '</h2>
 						</div>
 						<div class="card-body">
 							<p class="card-text" style="height: 200px; overflow: auto;">' . ($description == 'default-project-description' ? $phrases[$description] : $project['description']) . '</p>

@@ -21,9 +21,9 @@ function execute_query($con, $query, $params, $types, $out_params = null) {
 			$result = mysqli_stmt_get_result($stmt);
 			$data = array();
 			if ($result) {
-			    while($row = mysqli_fetch_assoc($result)){
+				while($row = mysqli_fetch_assoc($result)){
 				$data[] = $row;
-			    }
+				}
 			}
 		}
 		mysqli_stmt_close($stmt);
@@ -488,7 +488,7 @@ function get_files($con, $user_id) {
 	GROUP BY
 		F.ID, F.ORIGINAL_NAME, F.SERVER_NAME, F.EXTENSION, F.TITLE, F.DESCRIPTION, F.UPLOADED_ON
 	ORDER BY
-		F.ID;
+		F.UPLOADED_ON DESC;
 	";
 
 	$params=array($user_id);
@@ -500,30 +500,30 @@ function get_files($con, $user_id) {
 
 function get_notes($con, $user_id) {
 	$query="
-        SELECT 
-            N.ID AS id,
-            N.TITLE AS title,
-            N.DESCRIPTION AS description,
-            N.CREATED_ON AS created_on,
-            CASE 
-            WHEN INSTR(GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ',') > 0 
-            THEN CONCAT('background: linear-gradient(to right, ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ');')
-            ELSE CONCAT('background-color: ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ';')
-            END AS background_color,
-            MAX(CS.TEXT_COLOR) AS text_color
-        FROM 
-            NOTES N 
-            INNER JOIN NOTE_PRIVILEGES NP ON N.ID = NP.NOTE_ID
-            INNER JOIN NOTES_HAVE_CATEGORIES NC ON NC.NOTE_ID = N.ID
-            INNER JOIN CATEGORIES C ON C.ID = NC.CATEGORY_ID
-            INNER JOIN COLOR_SCHEMES CS ON CS.ID = C.COLOR_SCHEME_ID
-        WHERE
-            NP.USER_ID = ? AND
-            NP.PRIVILEGE = 'VIEW'
-        GROUP BY
-            N.ID, N.TITLE, N.DESCRIPTION, N.CREATED_ON
-        ORDER BY
-            N.ID;
+		SELECT 
+			N.ID AS id,
+			N.TITLE AS title,
+			N.DESCRIPTION AS description,
+			N.CREATED_ON AS created_on,
+			CASE 
+			WHEN INSTR(GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ',') > 0 
+			THEN CONCAT('background: linear-gradient(to right, ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ');')
+			ELSE CONCAT('background-color: ', GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ';')
+			END AS background_color,
+			MAX(CS.TEXT_COLOR) AS text_color
+		FROM 
+			NOTES N 
+			INNER JOIN NOTE_PRIVILEGES NP ON N.ID = NP.NOTE_ID
+			INNER JOIN NOTES_HAVE_CATEGORIES NC ON NC.NOTE_ID = N.ID
+			INNER JOIN CATEGORIES C ON C.ID = NC.CATEGORY_ID
+			INNER JOIN COLOR_SCHEMES CS ON CS.ID = C.COLOR_SCHEME_ID
+		WHERE
+			NP.USER_ID = ? AND
+			NP.PRIVILEGE = 'VIEW'
+		GROUP BY
+			N.ID, N.TITLE, N.DESCRIPTION, N.CREATED_ON
+		ORDER BY
+			N.CREATED_ON DESC;
 
 	";
 
@@ -579,7 +579,7 @@ function get_files_from_category($con, $user_id, $category_id) {
 		FP.PRIVILEGE = 'VIEW' AND
 		FC.CATEGORY_ID = ?
 	ORDER BY
-		F.ID;
+		F.UPLOADED_ON;
 	";
 
 	$params=array($user_id, $category_id);
@@ -605,7 +605,7 @@ function get_notes_from_category($con, $user_id, $category_id) {
 		NP.PRIVILEGE = 'VIEW' AND
 		NC.CATEGORY_ID = ?
 	ORDER BY
-		N.ID;
+		N.CREATED_ON;
 	";
 
 	$params=array($user_id, $category_id);
@@ -695,33 +695,33 @@ function get_note_info($con, $note_id, $user_id) {
 }
 
 function get_project_info($con, $project_id, $user_id) {
-    $query = "
-    SELECT 
-        P.ID AS id,
-        P.TITLE AS title,
-        P.DESCRIPTION AS description,
-        P.CREATED_ON AS created_on,
-        P.DEADLINE AS deadline,
-        P.ENDED_ON AS ended_on
-    FROM 
-        PROJECTS P INNER JOIN PROJECT_PRIVILEGES PP ON P.ID = PP.PROJECT_ID
-    WHERE
-        PP.PROJECT_ID = ? AND
-        PP.USER_ID = ? AND
-        PP.PRIVILEGE = 'VIEW'
-    ORDER BY
-        P.ID;
-    ";
+	$query = "
+	SELECT 
+		P.ID AS id,
+		P.TITLE AS title,
+		P.DESCRIPTION AS description,
+		P.CREATED_ON AS created_on,
+		P.DEADLINE AS deadline,
+		P.ENDED_ON AS ended_on
+	FROM 
+		PROJECTS P INNER JOIN PROJECT_PRIVILEGES PP ON P.ID = PP.PROJECT_ID
+	WHERE
+		PP.PROJECT_ID = ? AND
+		PP.USER_ID = ? AND
+		PP.PRIVILEGE = 'VIEW'
+	ORDER BY
+		P.ID;
+	";
 
-    $params = array($project_id, $user_id);
-    $types = "ii";
-    $result = execute_query($con, $query, $params, $types);
+	$params = array($project_id, $user_id);
+	$types = "ii";
+	$result = execute_query($con, $query, $params, $types);
 
-    return $result[0];
+	return $result[0];
 }
 
 function get_task_info($con, $task_id, $user_id) {
-    $query = "
+	$query = "
 	SELECT 
 		T.ID AS id,
 		T.PROJECT_ID AS project_id,
@@ -741,13 +741,13 @@ function get_task_info($con, $task_id, $user_id) {
 		TP.PRIVILEGE = 'VIEW'
 	ORDER BY
 		T.ID;
-    ";
+	";
 
-    $params = array($task_id, $user_id);
-    $types = "ii";
-    $result = execute_query($con, $query, $params, $types);
+	$params = array($task_id, $user_id);
+	$types = "ii";
+	$result = execute_query($con, $query, $params, $types);
 
-    return $result[0];
+	return $result[0];
 }
 
 function get_file_categories($con, $file_id, $user_id) {

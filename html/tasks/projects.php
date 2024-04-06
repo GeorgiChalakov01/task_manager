@@ -78,7 +78,7 @@ require 'includes/php_auth_check.php';
 				}
 
 				$default_project = (($project['title'] == 'default-project-title') ? True : False);
-				$onclick = $default_project ? '' : "show_menu({$project['id']}, 'project');";
+				$onclick = $default_project ? "window.location.href='project_view.php?id={$project['id']}'" : "show_menu({$project['id']}, 'project');";
 
 				echo '
 				<div 

@@ -24,22 +24,24 @@ $notes = [];
 		<div class="row">
 			<div class="col-md-7 d-flex">
 				<div class="bg-light p-2 mb-4 rounded flex-grow-1 d-flex flex-column">
-					<h2><?php echo htmlspecialchars($project['title']); ?></h2>
+					<h2><?php echo htmlspecialchars($project['title']=='default-project-title'?$phrases[$project['title']]:$project['title']); ?></h2>
 					<br>
-					<p><strong><?php echo $phrases['project-view-description'];?>: </strong><br> <?php echo nl2br(htmlspecialchars($project['description'])); ?></p>
-					<p><strong><?php echo $phrases['project-view-created-on'];?>: </strong><br> <?php echo htmlspecialchars($project['created_on']); ?></p>
-					<?php if($project['deadline']): ?>
-						<p><strong><?php echo $phrases['project-view-deadline'];?>: </strong><br> <?php echo htmlspecialchars($project['deadline']); ?></p>
-					<?php endif; ?>
-					<div class="child mt-auto">
-						<button class="btn btn-secondary" onClick="window.location.href='project_edit.php?id=<?php echo $project_id;?>'"><?php echo $phrases['project-view-edit'];?></button>
-						<button class="btn btn-secondary"><?php echo $phrases['project-view-mark-complete'];?></button>
-						<?php if($project['ended_on']): ?>
-							<p><strong><?php echo $phrases['project-view-completed-on'];?>: </strong><br> <?php echo htmlspecialchars($project['ended_on']); ?></p>
-						<?php else: ?>
-							<button class="btn btn-secondary"><?php echo $phrases['project-view-archive'];?></button>
+					<p><strong><?php echo $phrases['project-view-description'];?>: </strong><br> <?php echo nl2br(htmlspecialchars($project['description']=='default-project-description'?$phrases[$project['description']]:$project['description'])); ?></p>
+					<?php if($project['title']!='default-project-title'): ?>
+						<p><strong><?php echo $phrases['project-view-created-on'];?>: </strong><br> <?php echo htmlspecialchars($project['created_on']); ?></p>
+						<?php if($project['deadline']): ?>
+							<p><strong><?php echo $phrases['project-view-deadline'];?>: </strong><br> <?php echo htmlspecialchars($project['deadline']); ?></p>
 						<?php endif; ?>
-					</div>
+						<div class="child mt-auto">
+							<button class="btn btn-secondary" onClick="window.location.href='project_edit.php?id=<?php echo $project_id;?>'"><?php echo $phrases['project-view-edit'];?></button>
+							<button class="btn btn-secondary"><?php echo $phrases['project-view-mark-complete'];?></button>
+							<?php if($project['ended_on']): ?>
+								<p><strong><?php echo $phrases['project-view-completed-on'];?>: </strong><br> <?php echo htmlspecialchars($project['ended_on']); ?></p>
+							<?php else: ?>
+								<button class="btn btn-secondary"><?php echo $phrases['project-view-archive'];?></button>
+							<?php endif; ?>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 			<div class="col-md-5 d-flex">
@@ -62,12 +64,12 @@ $notes = [];
 						echo '
 						<div class="row">
 						<div 
-							class="mb-4" 
+							class="mb-4 p-4 pb-0" 
 							style="cursor: pointer; width: 100%;" 
 							onclick="show_menu(' . $note['id'] . ', \'attached_note_to_project\');"
 						>
-							<div class="card rounded" style="height: 400px;">
-									<div class="card-body" style="background-color: #f7f7f7;">
+							<div class="card" style="height: 400px; border: 1px solid black; border-radius: 10px;">
+									<div class="card-body" style="background-color: #f7f7f7; border-radius: 10px;">
 										<h2 class="card-title" style="height: 80px; overflow: auto;">' . $note['title'] . '</h2>
 									</div>
 									<div class="card-body">
@@ -90,6 +92,8 @@ $notes = [];
 						}
 					?>
 					</div>
+					<br>
+					<button class="btn btn-secondary"><?php echo $phrases['project-view-attach-note'];?></button>
 				</div>
 			</div>
 		</div>

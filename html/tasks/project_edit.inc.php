@@ -11,7 +11,7 @@ require 'includes/php_auth_check.php';
 $project_id = $_POST['id'];
 $title = $_POST['title'];
 $description = $_POST['description'];
-$deadline = $_POST['deadline'];
+$deadline = $_POST['deadline']?$_POST['deadline']:NULL;
 
 $categories = array();
 foreach($_POST as $key => $value) {

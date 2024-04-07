@@ -56,7 +56,6 @@ if (isset($_GET['id'])) {
 					<div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>
 				</div>
 
-				<!-- Add date fields for deadline and end date -->
 				<div class="form-group mb-3">
 					<label for="deadline"><?php echo $phrases['project-edit-deadline-label'];?></label>
 					<input 
@@ -64,7 +63,7 @@ if (isset($_GET['id'])) {
 						id="deadline" 
 						name="deadline" 
 						class="form-control"
-						value="<?php if($edit) echo date('Y-m-d', strtotime($chosen_project['deadline'])); ?>"
+						value="<?php if($edit and $chosen_project['deadline']) echo date('Y-m-d', strtotime($chosen_project['deadline'])); ?>"
 					>
 				</div>
 

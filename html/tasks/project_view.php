@@ -11,7 +11,7 @@ $notes = [];
 <!DOCTYPE html>
 <html>
 <head>
-	<title><?php echo htmlspecialchars($project['title']); ?></title>
+	<title><?php echo htmlspecialchars($project['title']=='default-project-title'?$phrases[$project['title']]:$project['title']); ?></title>
 	<?php include $_SERVER['DOCUMENT_ROOT'] . '/common/php/head.php';?>
 </head>
 <body class="cust-dark1">
@@ -106,7 +106,7 @@ $notes = [];
 					<div class="container" style="min-height: 100px; border: 1px solid grey; border-radius: 10px;">
 						<?php foreach($tasks as $task): ?>
 							<div class="row m-2 p-1" style="border: 1px solid grey; border-radius: 10px; cursor: pointer; background-color: #6c757d; color: white; border: 1px solid black;" onclick="show_menu(<?php echo $task['id']; ?>, 'task');">
-								<h5 class="mb-1"><?php echo htmlspecialchars($task['title']); ?></h5>
+								<h5 class="mb-1"><?php echo $task['place'] . ': ' . htmlspecialchars($task['title']); ?></h5>
 								<p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
 								<?php if($task['deadline']): ?>
 									<small><?php echo $phrases['project-view-deadline'];?>: <?php echo substr(htmlspecialchars($task['deadline']), 0, -3); ?></small>

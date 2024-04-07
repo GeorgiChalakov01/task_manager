@@ -108,7 +108,9 @@ $notes = [];
 							<div class="row m-2 p-1" style="border: 1px solid grey; border-radius: 10px; cursor: pointer; background-color: #6c757d; color: white; border: 1px solid black;" onclick="show_menu(<?php echo $task['id']; ?>, 'task');">
 								<h5 class="mb-1"><?php echo htmlspecialchars($task['title']); ?></h5>
 								<p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
-								<small><?php echo $phrases['project-view-deadline'];?>: <?php echo substr(htmlspecialchars($task['deadline']), 0, -3); ?></small>
+								<?php if($task['deadline']): ?>
+									<small><?php echo $phrases['project-view-deadline'];?>: <?php echo substr(htmlspecialchars($task['deadline']), 0, -3); ?></small>
+								<?php endif; ?>
 							</div>
 						<?php endforeach; ?>
 					</div>

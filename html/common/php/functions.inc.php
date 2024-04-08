@@ -1111,3 +1111,12 @@ function get_project_tasks($con, $project_id, $user_id) {
 	return $result;
 }
 
+function move_task($con, $project_id, $task_id, $new_place, $user_id) {
+	$query="
+	CALL P_MOVE_TASK(?,?,?,?);
+	";
+
+	$params=array($project_id, $task_id, $new_place, $user_id);
+	$types="iiii";
+	execute_query($con, $query, $params, $types);
+}

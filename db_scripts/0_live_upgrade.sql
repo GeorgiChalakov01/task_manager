@@ -9,4 +9,6 @@ DROP TABLE COLOR_SCHEMES;
 SOURCE 3_create_color_schemes.sql;
 SOURCE 4_populate_color_schemes.sql;
 
+SOURCE 0_create_drop_all_procedures.sql;
+CALL DROP_ALL_PROCEDURES();
 SOURCE 6_create_procedures.sql;

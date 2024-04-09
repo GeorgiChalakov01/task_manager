@@ -2,7 +2,7 @@
 
 <div id="menu" class="hidden-menu">
 	<p><?php echo $phrases['categories-hidden-menu-question'];?></p>
-	<button id="move" class="btn" style="background-color: #7CB9E8; width: 100%; padding: 12px 16px;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
+	<button id="move" class="btn" style="background-color: #7CB9E8; color: white; width: 100%; padding: 12px 16px;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
 	<a id="open" href="" class="btn btn-secondary"><?php echo $phrases['categories-hidden-menu-open'];?></a>
 	<a id="unattach" href="" class="btn" style="background-color: #7CB9E8;"><?php echo $phrases['categories-hidden-menu-unattach'];?></a>
 	<a id="edit" href="" class="btn" style="background-color: green;"><?php echo $phrases['categories-hidden-menu-edit'];?></a>

@@ -12,7 +12,7 @@
 <form action="" method="post" id="move_form" class="hidden-menu">
 	<p><?php echo $phrases['categories-hidden-move-form-question'];?></p>
 	<input id="move_form_input" type="number" min="1" name="new_place"/>
-	<button type="submit"id="move" class="btn" style="background-color: #7CB9E8;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
+	<button type="submit"id="move" class="btn" style="background-color: #7CB9E8; color: white;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
 </form>
 
 <script>

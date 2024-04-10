@@ -30,13 +30,12 @@ $notes = [];
 					<p><strong><?php echo $phrases['task-view-deadline'];?>: </strong><br> <?php echo htmlspecialchars($task['deadline']); ?></p>
 				<?php endif; ?>
 				<div>
-					<button class="btn btn-secondary" onClick="window.location.href='task_edit.php?id=<?php echo $task_id;?>'"><?php echo $phrases['task-view-edit'];?></button>
-					<button class="btn btn-secondary"><?php echo $phrases['task-view-mark-complete'];?></button>
-					<?php if($task['ended_on']): ?>
-						<p><strong><?php echo $phrases['task-view-completed-on'];?>: </strong><br> <?php echo htmlspecialchars($task['ended_on']); ?></p>
-					<?php else: ?>
-						<button class="btn btn-secondary"><?php echo $phrases['task-view-archive'];?></button>
+					<?php if($task['completed_on']): ?>
+						<p><strong><?php echo $phrases['task-view-completed-on'];?>: </strong><br> <?php echo htmlspecialchars($task['completed_on']); ?></p>
 					<?php endif; ?>
+					<button class="btn btn-secondary" onClick="window.location.href='task_edit.php?id=<?php echo $task_id;?>'"><?php echo $phrases['task-view-edit'];?></button>
+					<a href="task_complete.inc.php?id=<?php echo $task_id;?>" class="btn btn-secondary"><?php echo $task['completed_on']?$phrases['task-view-mark-non-completed']:$phrases['task-view-mark-completed'];?></a>
+					<button class="btn btn-secondary"><?php echo $phrases['task-view-archive'];?></button>
 				</div>
 			</div>
 		</div>

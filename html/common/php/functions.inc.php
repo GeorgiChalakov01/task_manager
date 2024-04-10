@@ -1120,3 +1120,15 @@ function move_task($con, $project_id, $task_id, $new_place, $user_id) {
 	$types="iiii";
 	execute_query($con, $query, $params, $types);
 }
+
+function complete_task($con, $task_id, $user_id) {
+	$query="
+	CALL P_COMPLETE_TASK(?,?);
+	";
+
+	$params=array($task_id, $user_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}

@@ -1,3 +1,6 @@
+DELETE FROM PHRASES;
+DELETE FROM LANGUAGES;
+
 INSERT INTO LANGUAGES (ID, CODE, NAME) VALUES (1, "en", "English");
 INSERT INTO LANGUAGES (ID, CODE, NAME) VALUES (2, "bg", "български");
 
@@ -391,8 +394,11 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-view-edit", "П
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-view-archive", "Archive");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-view-archive", "Архивиране");
 
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-view-mark-complete", "Mark as Complete");
-INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-view-mark-complete", "Приключване");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-view-mark-completed", "Mark as Completed");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-view-mark-completed", "Приключване");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-view-mark-non-completed", "Mark as non-completed");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-view-mark-non-completed", "Маркиране като неприключена");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-view-completed-on", "Completed On");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-view-completed-on", "Приключен на");
@@ -565,6 +571,9 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-edited"
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-task-deleted", "Task Deleted Successfully!");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-deleted", "Задачата е изтрита успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-task-completed", "Task Completed Status Changed Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-completed", "Статуса на задачата е променен успешно!");
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-edit-deadline-label", "Deadline");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "task-edit-deadline-label", "Краен Срок");

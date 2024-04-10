@@ -2,11 +2,13 @@
 
 <div id="menu" class="hidden-menu">
 	<p><?php echo $phrases['categories-hidden-menu-question'];?></p>
-	<button id="move" class="btn" style="background-color: #7CB9E8; color: white; width: 100%; padding: 12px 16px;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
-	<a id="open" href="" class="btn btn-secondary"><?php echo $phrases['categories-hidden-menu-open'];?></a>
-	<a id="unattach" href="" class="btn" style="background-color: #7CB9E8;"><?php echo $phrases['categories-hidden-menu-unattach'];?></a>
-	<a id="edit" href="" class="btn" style="background-color: green;"><?php echo $phrases['categories-hidden-menu-edit'];?></a>
-	<a id="delete" href="" class="btn" style="background-color: red;"><?php echo $phrases['categories-hidden-menu-delete'];?></a>
+
+	<a id="open" href="" class="btn btn-secondary" style="display: none;"><?php echo $phrases['categories-hidden-menu-open'];?></a>
+	<a id="complete" class="btn btn-secondary" style="background-color: blue; display: none;"><?php echo $task['completed_on']?$phrases['task-view-mark-non-completed']:$phrases['task-view-mark-completed'];?></a>
+	<a id="unattach" href="" class="btn" style="background-color: #7CB9E8; display: none;"><?php echo $phrases['categories-hidden-menu-unattach'];?></a>
+	<button id="move" class="btn" style="background-color: #7CB9E8; color: white; width: 100%; padding: 12px 16px; display: none;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
+	<a id="edit" href="" class="btn" style="background-color: green; display: none;"><?php echo $phrases['categories-hidden-menu-edit'];?></a>
+	<a id="delete" href="" class="btn" style="background-color: red; display: none;"><?php echo $phrases['categories-hidden-menu-delete'];?></a>
 </div>
 
 <form action="" method="post" id="move_form" class="hidden-menu">
@@ -24,68 +26,107 @@ function show_menu(id, object_type) {
 	var move_form = document.getElementById('move_form');
 	var move_form_input = document.getElementById('move_form_input');
 
-	var move_btn = document.getElementById('move');
 	var open_btn = document.getElementById('open');
+	var move_btn = document.getElementById('move');
+	var complete_btn = document.getElementById('complete');
 	var unattach_btn = document.getElementById('unattach');
 	var edit_btn = document.getElementById('edit');
 	var delete_btn = document.getElementById('delete');
 
-	if(['category', 'file'].includes(object_type)){
-		move_btn.style.display = 'none';
-		open_btn.style.display = 'none';
-		unattach_btn.style.display = 'none';
+
+	if(object_type === 'category'){
+		edit_btn.style.display = 'block';
+		delete_btn.style.display = 'block';
+
+		edit_btn.href = 'category_edit.php?id=' + id;
+		delete_btn.href = 'category_delete.inc.php?id=' + id;
 	}
-	else if(['project', 'note'].includes(object_type)){
-		move_btn.style.display = 'none';
-		open_btn.style.display = 'block';
-		unattach_btn.style.display = 'none';
-	} else if(['attached_file'].includes(object_type)){
-		move_btn.style.display = 'none';
-		open_btn.style.display = 'none';
+	else if(object_type === 'file'){
+		edit_btn.style.display = 'block';
+		delete_btn.style.display = 'block';
+
+		edit_btn.href = "file_edit.php?id=" + id;
+		delete_btn.href = "file_delete.inc.php?id=" + id;
+	}
+	else if(object_type === 'attached_file'){
 		unattach_btn.style.display = 'block';
+		edit_btn.style.display = 'block';
+		delete_btn.style.display = 'block';
+
 		const note_id = url_params.get('id');
-		unattach_btn.href = "note_unattach_file.inc.php?note_id=" + note_id + "&file_id=" + id;
-		object_type = 'file';
-	} else if(['attached_note_to_project'].includes(object_type)){
-		move_btn.style.display = 'none';
+		const file_id = id;
+		unattach_btn.href = "note_unattach_file.inc.php?note_id=" + note_id + "&file_id=" + file_id;
+		edit_btn.href = "file_edit.php?id=" + file_id;
+		delete_btn.href = "file_delete.inc.php?id=" + file_id;
+	}
+	else if(object_type === 'note'){
 		open_btn.style.display = 'block';
+		edit_btn.style.display = 'block';
+		delete_btn.style.display = 'block';
+
+		open_btn.href = "note_view.php?id=" + id;
+		edit_btn.href = "note_edit.php?id=" + id;
+		delete_btn.href = "note_delete.inc.php?id=" + id;
+	}
+	else if(object_type === 'project'){
+		open_btn.style.display = 'block';
+		complete_btn.style.display = 'block';
+		edit_btn.style.display = 'block';
+		delete_btn.style.display = 'block';
+
+		open_btn.href = "project_view.php?id=" + id;
+		edit_btn.href = "project_edit.php?id=" + id;
+		delete_btn.href = "project_delete.inc.php?id=" + id;
+		complete_btn.href = "project_complete.inc.php?id=" + id;
+	}
+	else if(object_type === 'attached_note_to_project'){
 		unattach_btn.style.display = 'block';
+		open_btn.style.display = 'block';
+		edit_btn.style.display = 'block';
+		delete_btn.style.display = 'block';
+
 		const project_id = url_params.get('id');
-		unattach_btn.href = "project_unattach_note.inc.php?project_id=" + project_id + "&note_id=" + id;
-		object_type = 'note';
-	} else if(['attached_note_to_task'].includes(object_type)){
-		move_btn.style.display = 'none';
+		const note_id = id;
+		unattach_btn.href = "project_unattach_note.inc.php?project_id=" + project_id + "&note_id=" + note_id;
+		open_btn.href = "note_view.php?id=" + note_id;
+		edit_btn.href = "note_edit.php?id=" + id;
+		delete_btn.href = "note_delete.inc.php?id=" + id;
+	}
+	else if(object_type === 'task'){
 		open_btn.style.display = 'block';
-		unattach_btn.style.display = 'block';
-		const task_id = url_params.get('id');
-		const project_id = url_params.get('project_id');
-		unattach_btn.href = "task_unattach_note.inc.php?task_id=" + task_id + "&note_id=" + id + '&project_id=' + project_id;
-		object_type = 'note';
-	} else if(['task'].includes(object_type)){
-		open_btn.style.display = 'block';
-		unattach_btn.style.display = 'none';
-		open_btn.href = object_type + "_view.php?id=" + id + 'project_id=' + project_id;
+		complete_btn.style.display = 'block';
 		move_btn.style.display = 'block';
+		edit_btn.style.display = 'block';
+		delete_btn.style.display = 'block';
+
+		const project_id = url_params.get('id');
+
+		complete_btn.href = "task_complete.inc.php?id=" + id;
+		open_btn.href = object_type + "_view.php?id=" + id + "project_id=" + project_id;
+		edit_btn.href = "task_edit.php?id=" + id;
+		delete_btn.href = "task_delete.inc.php?id=" + id + "&project_id=" + project_id;
 		move_btn.onclick = function() {
 			menu.style.display = 'none';
 			move_form.style.display = 'block';
 			move_form_input.value = null;
 
-			const project_id = url_params.get('id');
 			move_form.action = "task_move.inc.php?project_id=" + project_id + "&task_id=" + id;
 		};
 	}
+	else if(object_type === 'attached_note_to_task'){
+		unattach_btn.style.display = 'block';
+		open_btn.style.display = 'block';
+		edit_btn.style.display = 'block';
+		delete_btn.style.display = 'block';
 
-	var project_id = url_params.get('id');
-	if(['task'].includes(object_type)){
-		open_btn.href = object_type + "_view.php?id=" + id + '&project_id=' + project_id;
-		edit_btn.href = object_type + "_edit.php?id=" + id + '&project_id=' + project_id;
-		delete_btn.href = object_type + "_delete.inc.php?id=" + id + '&project_id=' + project_id;
-	}
-	else{
-		open_btn.href = object_type + "_view.php?id=" + id;
-		edit_btn.href = object_type + "_edit.php?id=" + id;
-		delete_btn.href = object_type + "_delete.inc.php?id=" + id;
+		const task_id = url_params.get('id');
+		const project_id = url_params.get('project_id');
+		const note_id = id;
+
+		unattach_btn.href = "task_unattach_note.inc.php?task_id=" + task_id + "&note_id=" + note_id + '&project_id=' + project_id;
+		open_btn.href = "note_view.php?id=" + note_id;
+		edit_btn.href = "note_edit.php?id=" + note_id;
+		delete_btn.href = "note_delete.inc.php?id=" + note_id;
 	}
 
 

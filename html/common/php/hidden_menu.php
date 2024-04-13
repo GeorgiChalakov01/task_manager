@@ -17,6 +17,8 @@
 	<button type="submit"id="move" class="btn" style="background-color: #7CB9E8; color: white;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
 </form>
 
+<?php require 'includes/note_chooser.php';?>
+
 <script>
 function show_menu(id, object_type) {
 	var url_params = new URLSearchParams(window.location.search);
@@ -134,16 +136,25 @@ function show_menu(id, object_type) {
 	menu.style.display = "block";
 }
 
+function show_note_chooser() {
+	var note_chooser = document.getElementById("note_chooser");
+	var overlay = document.getElementById('overlay');
+	overlay.style.display = 'block';
+	note_chooser.style.display = 'block';
+}
+
 window.onclick = function(event) {
 	if (event.target.matches('.overlay')) {
 		var overlay = document.getElementById('overlay');
 		var menu = document.getElementById("menu");
 		var move_form = document.getElementById("move_form");
+		var note_chooser = document.getElementById("note_chooser");
 
-		if (menu.style.display === "block" || move_form.style.display === "block") {
+		if (menu.style.display === "block" || move_form.style.display === "block" || note_chooser.style.display == 'block') {
 			overlay.style.display = "none";
 			menu.style.display = "none";
 			move_form.style.display = "none";
+			note_chooser.style.display = 'none';
 		}
 	}
 }

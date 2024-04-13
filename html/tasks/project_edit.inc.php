@@ -22,9 +22,9 @@ foreach($_POST as $key => $value) {
 
 $notes=array();
 foreach($_POST as $key => $value) {
-		if(strpos($key, 'note_') === 0) {
-		        $notes[] = substr($key, 5); 
-		}
+	if(strpos($key, 'note_') === 0) {
+		$notes[] = substr($key, 5); 
+	}
 }
 
 //Save the input data in the session

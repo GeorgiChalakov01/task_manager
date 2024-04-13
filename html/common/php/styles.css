@@ -36,6 +36,7 @@ body {
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 3;
 	border-radius: 10px;
+	max-height: 600px;
 }
 
 .hidden-menu a {

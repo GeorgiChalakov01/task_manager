@@ -93,7 +93,7 @@ $notes = [];
 					?>
 					</div>
 					<br>
-					<button class="btn btn-secondary"><?php echo $phrases['project-view-attach-note'];?></button>
+					<button class="btn btn-secondary" onclick="show_note_chooser();"><?php echo $phrases['project-view-attach-note'];?></button>
 				</div>
 			</div>
 		</div>

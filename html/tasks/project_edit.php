@@ -50,7 +50,7 @@ if (isset($_GET['id'])) {
 						id="description" 
 						name="description" 
 						class="form-control" 
-						style="min-height: 100px; width: 100%; resize: none;" 
+						style="min-height: 200px; width: 100%; resize: none;" 
 						placeholder="<?php echo $phrases['project-edit-description-placeholder']; ?>"
 					><?php if($edit) echo $chosen_project['description'];?></textarea>
 					<div class="invalid-feedback"><?php echo $phrases['error-field-is-manditory'];?></div>

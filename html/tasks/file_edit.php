@@ -55,7 +55,7 @@ if(isset($_GET['id'])) {
 							id="fileDescription" 
 							name="description" 
 							class="form-control" 
-							style="min-height: 100px; width: 100%; resize: none;" 
+							style="min-height: 200px; width: 100%; resize: none;" 
 							<?php 
 							echo 'placeholder="' . $phrases['file-edit-description-placeholder'] . '"';
 						?> 

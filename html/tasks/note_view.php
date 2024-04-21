@@ -1,9 +1,6 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
 require 'includes/php_auth_check.php';
-
-$note_id = $_GET['id'];
-$note = get_note_info($con, $note_id, $_SESSION['user-details']['id']);
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +14,11 @@ $note = get_note_info($con, $note_id, $_SESSION['user-details']['id']);
 	<?php require '../common/navbar/navbar.php';?>
 	<?php require '../common/php/hidden_menu.php';?>
 
+<?php
+// This tag should not be at the top because the hidden menu adds variables with the same name. It would be good to revisit this toppic and think of a better solution.
+$note_id = $_GET['id'];
+$note = get_note_info($con, $note_id, $_SESSION['user-details']['id']);
+?>
 
 	<div class="container mt-4">
 		<?php require '../common/statuserror/statuserror.php';?>

@@ -4,7 +4,7 @@
 	<p><?php echo $phrases['categories-hidden-menu-question'];?></p>
 
 	<a id="open" href="" class="btn btn-secondary" style="display: none;"><?php echo $phrases['categories-hidden-menu-open'];?></a>
-	<a id="complete" class="btn btn-secondary" style="background-color: blue; display: none;"><?php echo $task['completed_on']?$phrases['task-view-mark-non-completed']:$phrases['task-view-mark-completed'];?></a>
+	<a id="complete" class="btn btn-secondary" style="background-color: blue; display: none;"><?php echo $phrases['task-view-mark-completed'];?></a>
 	<a id="unattach" href="" class="btn" style="background-color: #7CB9E8; display: none;"><?php echo $phrases['categories-hidden-menu-unattach'];?></a>
 	<button id="move" class="btn" style="background-color: #7CB9E8; color: white; width: 100%; padding: 12px 16px; display: none;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
 	<a id="edit" href="" class="btn" style="background-color: green; display: none;"><?php echo $phrases['categories-hidden-menu-edit'];?></a>
@@ -35,6 +35,14 @@ function show_menu(id, object_type) {
 	var edit_btn = document.getElementById('edit');
 	var delete_btn = document.getElementById('delete');
 
+	// Show mark completed/non-completed correctly.
+	<?php 
+		foreach($tasks as $task) { 
+			echo "
+			if({$task['id']} === id && '{$task['completed_on']}' != '') 
+				complete_btn.innerHTML = '{$phrases['task-view-mark-non-completed']}';";
+		}
+	?>
 
 	if(object_type === 'category'){
 		edit_btn.style.display = 'block';

@@ -215,6 +215,38 @@ BEGIN
 END;
 $$
 
+CREATE OR REPLACE PROCEDURE P_REORDER_TASKS (
+	IN PI_PROJECT_ID INT,
+	IN PI_USER_ID INT
+)
+BEGIN
+	DECLARE V_IS_EDITOR BOOLEAN;
+
+	CALL P_CHECK_PRIVILEGES(PI_USER_ID, PI_PROJECT_ID, 'PROJECT', 'EDIT', V_IS_EDITOR);
+
+	IF V_IS_EDITOR THEN
+		UPDATE TASKS t
+                JOIN (
+                        SELECT 
+				PROJECT_ID, 
+				@rownum:=@rownum+1 AS new_place, 
+				ID
+                        FROM 
+				TASKS, 
+				(SELECT @rownum:=0) r
+                        WHERE 
+				PROJECT_ID = PI_PROJECT_ID
+                        ORDER BY 
+				PLACE
+                ) x ON t.ID = x.ID
+                SET t.PLACE = x.new_place;
+	ELSE
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'error-insufficient-privileges';
+	END IF;
+END;
+$$
+
+
 CREATE OR REPLACE PROCEDURE P_DELETE_TASK (
 	IN PI_TASK_ID INT,
 	IN PI_PROJECT_ID INT,
@@ -241,6 +273,7 @@ BEGIN
 		WHERE
 			ID = PI_TASK_ID;
 
+		CALL P_REORDER_TASKS(PI_PROJECT_ID, PI_USER_ID);
 	ELSE
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'error-insufficient-privileges';
 	END IF;

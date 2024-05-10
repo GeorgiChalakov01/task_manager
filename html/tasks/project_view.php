@@ -103,8 +103,10 @@ $notes = [];
 				<div class="bg-light p-2 rounded">
 					<h2><?php echo $phrases['project-view-tasks-header'];?></h2>
 					<a href="task_edit.php?project_id=<?php echo $project_id; ?>" class="btn btn-secondary mb-3"><?php echo $phrases['project-view-add-task'];?></a>
+					<a href="project_view.php?id=<?php echo $project_id; if(!$_GET['hide_completed']) echo '&hide_completed=true';?>" class="btn btn-secondary mb-3"><?php echo $phrases['project-view-hide-completed-tasks'];?></a>
 					<div class="container" style="min-height: 100px; border: 1px solid grey; border-radius: 10px;">
 						<?php foreach($tasks as $task): ?>
+							<?php if( ($_GET['hide_completed'] and !$task['completed_on']) or (!$_GET['hide_completed'])): ?>
 							<div 
 								class="row m-2 p-1" 
 								style="
@@ -122,6 +124,7 @@ $notes = [];
 									<small><?php echo $phrases['project-view-deadline'];?>: <?php echo substr(htmlspecialchars($task['deadline']), 0, -3); ?></small>
 								<?php endif; ?>
 							</div>
+							<?php endif; ?>
 						<?php endforeach; ?>
 					</div>
 				</div>

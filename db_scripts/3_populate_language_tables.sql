@@ -363,6 +363,9 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-archive
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-mark-complete", "Mark as Complete");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-mark-complete", "Приключване");
 
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-hide-completed-tasks", "Hide Completed Tasks");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-hide-completed-tasks", "Скриване на приключените задачи");
+
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-completed-on", "Completed On");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-completed-on", "Приключен на");
 

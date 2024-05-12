@@ -366,6 +366,9 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-mark-co
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-hide-completed-tasks", "Hide Completed Tasks");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-hide-completed-tasks", "Скриване на приключените задачи");
 
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-unhide-completed-tasks", "Show Completed Tasks");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-unhide-completed-tasks", "Показване на приключените задачи");
+
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "project-view-completed-on", "Completed On");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-completed-on", "Приключен на");
 
@@ -389,6 +392,12 @@ INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "project-view-attach-
 
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-task-moved", "Success! Task Moved.");
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-task-moved", "Задачата е преместена успешно!");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-project-completed-tasks-hidden", "Completed tasks are hidden");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-project-completed-tasks-hidden", "Приключените задачи са скрити");
+
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "success-project-completed-tasks-not-hidden", "Completed tasks are shown");
+INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (2, "success-project-completed-tasks-not-hidden", "Приключените задачи са показани");
 
 /*Used in task_view.php*/
 INSERT INTO PHRASES (LANGUAGE_ID, `KEY`, VALUE) VALUES (1, "task-view-description", "Description");

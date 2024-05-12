@@ -542,9 +542,12 @@ function get_projects($con, $user_id) {
 		P.DESCRIPTION AS description,
 		P.CREATED_ON AS created_on,
 		P.ENDED_ON AS ended_on,
-		P.DEADLINE AS deadline
+		P.DEADLINE AS deadline,
+		UHPHT.HIDE_COMPLETED_TASKS AS hide_completed_tasks
 	FROM 
-		PROJECTS P INNER JOIN PROJECT_PRIVILEGES PP ON P.ID = PP.PROJECT_ID
+		PROJECTS P 
+		INNER JOIN PROJECT_PRIVILEGES PP ON P.ID = PP.PROJECT_ID
+		INNER JOIN USERS_HAVE_PROJECTS_HIDE_COMPLETED_TASKS UHPHT ON UHPHT.PROJECT_ID = P.ID
 	WHERE
 		PP.USER_ID = ? AND
 		PP.PRIVILEGE = 'VIEW'
@@ -702,9 +705,12 @@ function get_project_info($con, $project_id, $user_id) {
 		P.DESCRIPTION AS description,
 		P.CREATED_ON AS created_on,
 		P.DEADLINE AS deadline,
-		P.ENDED_ON AS ended_on
+		P.ENDED_ON AS ended_on,
+		UHPHT.HIDE_COMPLETED_TASKS as hide_completed_tasks
 	FROM 
-		PROJECTS P INNER JOIN PROJECT_PRIVILEGES PP ON P.ID = PP.PROJECT_ID
+		PROJECTS P 
+		INNER JOIN PROJECT_PRIVILEGES PP ON P.ID = PP.PROJECT_ID
+                INNER JOIN USERS_HAVE_PROJECTS_HIDE_COMPLETED_TASKS UHPHT ON UHPHT.PROJECT_ID = P.ID
 	WHERE
 		PP.PROJECT_ID = ? AND
 		PP.USER_ID = ? AND
@@ -1096,10 +1102,15 @@ function get_project_tasks($con, $project_id, $user_id) {
 	FROM 
 		TASKS T
 		INNER JOIN TASK_PRIVILEGES TP ON TP.TASK_ID = T.ID
+                INNER JOIN USERS_HAVE_PROJECTS_HIDE_COMPLETED_TASKS UHPHT ON UHPHT.PROJECT_ID = T.PROJECT_ID
 	WHERE
 		TP.USER_ID = ? AND
 		T.PROJECT_ID = ? AND
-		TP.PRIVILEGE = 'VIEW'
+		TP.PRIVILEGE = 'VIEW' AND
+		(
+			UHPHT.HIDE_COMPLETED_TASKS = 0 OR 
+			(UHPHT.HIDE_COMPLETED_TASKS = 1 AND T.COMPLETED_ON IS NULL)
+		)
 	ORDER BY
 		T.PLACE ASC;
 	";
@@ -1127,6 +1138,18 @@ function complete_task($con, $task_id, $user_id) {
 	";
 
 	$params=array($task_id, $user_id);
+	$types="ii";
+	$result=execute_query($con, $query, $params, $types);
+
+	return true;
+}
+
+function flip_hide_completed_tasks_of_project($con, $project_id, $user_id) {
+	$query="
+	CALL P_FLIP_HIDE_COMPLETED_TASKS_OF_PROJECT(?,?);
+	";
+
+	$params=array($project_id, $user_id);
 	$types="ii";
 	$result=execute_query($con, $query, $params, $types);
 

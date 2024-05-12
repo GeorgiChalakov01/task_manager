@@ -1,10 +1,10 @@
-echo "\n\nInstalling MariaDB..."
+echo -e "\n\nInstalling MariaDB..."
 sudo apt install mariadb-server
 
-echo "\n\nInstall PHP and php-mysqli..."
+echo -e "\n\nInstall PHP and php-mysqli..."
 sudo apt install php php-mysqli
 
-echo "\n\nSetup the database..."
+echo -e "\n\nSetup the database..."
 cd db_scripts
 sudo mariadb < 0_full_upgrade.sql
 cd ..

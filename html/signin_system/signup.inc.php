@@ -62,7 +62,7 @@ if ($_FILE['file'] and $profile_picture_path === false) {
 	exit;
 }
 
-if($user_id=signup_user($con, $first_name, $last_name, $username, $email, $hashed_password, $profile_picture_path)) {
+if($user_id=signup_user($con, $first_name, $last_name, $username, $email, $hashed_password, $profile_picture_path, $_SESSION['language_code'])) {
 	create_category($con, $user_id, 'default-category', '1');
 	create_project($con, 'default-project-title', 'default-project-description', NULL, $user_id);
 

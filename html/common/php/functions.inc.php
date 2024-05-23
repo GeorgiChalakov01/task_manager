@@ -43,9 +43,9 @@ function get_phrases($con, $language_code) {
 		P.VALUE AS VALUE
 	FROM 
 		PHRASES P 
-		INNER JOIN LANGUAGES L ON P.LANGUAGE_ID = L.ID
+		INNER JOIN LANGUAGES L ON P.LANGUAGE_ISO_CODE = L.ISO_CODE
 	WHERE 
-		L.CODE = ?";
+		L.ISO_CODE = ?";
 
 	$params=array($language_code);
 	$types="s";
@@ -63,7 +63,7 @@ function get_languages($con) {
 	$query="
 	SELECT 
 		NAME AS name,
-		CODE AS code
+		ISO_CODE AS code
 	FROM 
 		LANGUAGES;
 	";
@@ -109,19 +109,32 @@ function email_exists($con, $email) {
 	return $result;
 }
 
-function signup_user($con, $first_name, $last_name, $username, $email, $password, $profile_picture_path) {
+function signup_user($con, $first_name, $last_name, $username, $email, $password, $profile_picture_path, $language_code) {
 	$query="
-	CALL P_CREATE_USER(?,?,?,?,?,?,@USER_ID);
+	CALL P_CREATE_USER(?,?,?,?,?,?,?,@USER_ID);
 	";
 
-	$params=array($first_name, $last_name, $username, $email, $password, $profile_picture_path);
-	$types="ssssss";
+	$params=array($first_name, $last_name, $username, $email, $password, $profile_picture_path, $language_code);
+	$types="sssssss";
 	$out_params=["@USER_ID"];
 	$result=execute_query($con, $query, $params, $types, $out_params);
 
 	$user_id=$result['@USER_ID'];
 
 	return $user_id;
+}
+
+function set_user_language($con, $user_id, $language_code){
+	$query="
+	CALL P_SET_USER_LANGUAGE(?,?);
+	";
+
+	$params=array($user_id, $language_code);
+	$types="is";
+	$out_params=[];
+	$result=execute_query($con, $query, $params, $types, $out_params);
+
+	return $result;
 }
 
 function signin_user($con, $email, $password) {
@@ -159,17 +172,36 @@ function get_user_details($con, $user_id) {
 		PROFILE_PICTURE_PATH AS profile_picture_path
 	FROM 
 		USERS
-		WHERE
+	WHERE
 		ID = ?;
 	";
 
 	$params=array($user_id);
-	$types="s";
+	$types="i";
 	$result=execute_query($con, $query, $params, $types);
 
 	$user_details=$result[0];
 
 	return $user_details;
+}
+
+function get_user_language($con, $user_id) {
+	$query="
+	SELECT 
+		LANGUAGE_ISO_CODE
+	FROM 
+		USERS
+	WHERE
+		ID = ?;
+	";
+
+	$params=array($user_id);
+	$types="i";
+	$result=execute_query($con, $query, $params, $types);
+
+	$language_iso_code=$result[0]['LANGUAGE_ISO_CODE'];
+
+	return $language_iso_code;
 }
 
 function get_categories($con, $user_id) {

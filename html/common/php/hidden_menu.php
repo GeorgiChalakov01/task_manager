@@ -118,7 +118,7 @@ function show_menu(id, object_type) {
 		move_btn.onclick = function() {
 			menu.style.display = 'none';
 			move_form.style.display = 'block';
-			move_form_input.value = null;
+			move_form_input.value = 1;
 
 			move_form.action = "task_move.inc.php?project_id=" + project_id + "&task_id=" + id;
 		};

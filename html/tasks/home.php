@@ -18,18 +18,19 @@ require 'includes/php_auth_check.php';
 
 		<br>
 		<div class="container" style="height: 85%;">
-			<div class="bg-light rounded mb-3" style="height: 60%; padding: 0; margin: 0;">
+			<div class="bg-dark rounded mb-3" style="height: 60%; padding: 0; margin: 0;">
 				<div class="bg-dark rounded text-white" style="height: 10%; width: 100%; padding: 0; margin: 0;">
 					<input style="float:right;" type="date"/>
 				</div>
-				<div class="bg-light rounded mb-3" style="height: 90%; padding: 0; margin: 0; overflow: auto;">
-					<div class="bg-dark p-1 rounded" style="float: left; padding: 0; margin: 0; width: 40px; height: 1900px;">
+				<div class="bg-light rounded mb-3 row" style="height: 90%; padding: 0; margin: 0; overflow: auto;">
+					<div class="bg-dark p-1 rounded col-1" style="float: left; padding: 0; margin: 0; height: 1935px;">
 						<?php for ($i = 0; $i < 25; $i++) { ?>
-							<div style="padding: 0; margin: 0; font-size: 12px; top: <?php echo $i * 60; ?>px; position: relative;" class="text-white">
+							<div style="text-align: center; padding: 0; margin: 0; font-size: 12px; top: <?php echo $i * 60; ?>px; position: relative; border-top: 1px solid white;" class="text-white">
 								<?php echo sprintf("%02d:00", $i); ?>
 							</div>
 						<?php } ?>
 					</div>
+					<div class="col-11 rounded bg-light" style="height: 1900px;"></div>
 				</div>
 				<div class="bg-light rounded" style="height: 40%; padding: 0; margin: 0; overflow-y: auto;">
 				</div>

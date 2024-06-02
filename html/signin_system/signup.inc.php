@@ -63,8 +63,9 @@ if ($_FILE['file'] and $profile_picture_path === false) {
 }
 
 if($user_id=signup_user($con, $first_name, $last_name, $username, $email, $hashed_password, $profile_picture_path, $_SESSION['language_code'])) {
-	create_category($con, $user_id, 'default-category', '1');
-	create_project($con, 'default-project-title', 'default-project-description', NULL, $user_id);
+	$category_id = create_category($con, $user_id, 'default-category', '1');
+	$project_id = create_project($con, 'default-project-title', 'default-project-description', NULL, $user_id);
+	append_category($con, $category_id, $project_id, 'PROJECT', $user_id);
 
 	header("location: signin.php?status=success-account-created");
 	exit;

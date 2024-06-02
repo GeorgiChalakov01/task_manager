@@ -1,6 +1,9 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
 require 'includes/php_auth_check.php';
+
+$project_id = isset($_GET['project_id'])?$_GET['project_id']:get_default_project_id($con, $_SESSION['user-details']['id']);
+$tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +52,25 @@ require 'includes/php_auth_check.php';
 					<?php } ?>
 				</div>
 				<div class="bg-light rounded row" style="height: 80%; padding: 0; margin: 0; overflow: auto;">
+					<?php foreach($tasks as $task): ?>
+						<div 
+							class="row m-2 p-1" 
+							style="
+								border: 1px solid grey; 
+								border-radius: 10px; 
+								cursor: pointer; 
+								background-color: <?php if($task['completed_on']) echo 'green'; else echo '#6c757d';?>; 
+								color: white; 
+								border: 1px solid black;" 
+							onclick="show_menu(<?php echo $task['id']; ?>, 'task');"
+						>
+							<h5 class="mb-1"><?php echo $task['place'] . ': ' . htmlspecialchars($task['title']); ?></h5>
+							<p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
+							<?php if($task['deadline']): ?>
+								<small><?php echo $phrases['project-view-deadline'];?>: <?php echo substr(htmlspecialchars($task['deadline']), 0, -3); ?></small>
+							<?php endif; ?>
+						</div>
+					<?php endforeach; ?>
 				</div>
 			</div>
 		</div>

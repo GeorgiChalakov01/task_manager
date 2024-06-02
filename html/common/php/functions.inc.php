@@ -450,6 +450,24 @@ function get_default_category_id($con, $user_id) {
 	return $result;
 }
 
+function get_default_project_id($con, $user_id) {
+	$query="
+	SELECT 
+		MIN(P.ID) AS id
+	FROM 
+		PROJECTS P
+		INNER JOIN PROJECT_PRIVILEGES PP ON PP.PROJECT_ID = P.ID
+	WHERE
+		PP.USER_ID = ?;
+	";
+
+	$params=array($user_id);
+	$types="i";
+	$result=execute_query($con, $query, $params, $types)[0]['id'];
+
+	return $result;
+}
+
 function get_category_info($con, $category_id, $user_id) {
 	$query="
 	SELECT 

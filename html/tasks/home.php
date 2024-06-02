@@ -16,31 +16,22 @@ require 'includes/php_auth_check.php';
 		<?php require '../common/navbar/navbar.php';?>
 
 
-		<div class="container mt-5 p-3 mb-3 bg-dark rounded text-white text-center">
-			<div class="jumbotron bg-dark rounded">
-				<h1 class="display-4">Welcome to Task Manager!</h1>
-				<p class="lead">Organize and prioritize your tasks effectively.</p>
-				<hr class="my-4">
-			</div>
-
-			<div class="row">
-				<div class="col-md-4 mb-3">
-					<div class="p-3 bg-secondary rounded text-center">
-						<h2>Organize</h2>
-						<p>Keep all your tasks in one place. No more sticky notes and random notebooks.</p>
+		<br>
+		<div class="container" style="height: 85%;">
+			<div class="bg-light rounded mb-3" style="height: 60%; padding: 0; margin: 0;">
+				<div class="bg-dark rounded text-white" style="height: 10%; width: 100%; padding: 0; margin: 0;">
+					<input style="float:right;" type="date"/>
+				</div>
+				<div class="bg-light rounded mb-3" style="height: 90%; padding: 0; margin: 0; overflow: auto;">
+					<div class="bg-dark p-1 rounded" style="float: left; padding: 0; margin: 0; width: 40px; height: 1900px;">
+						<?php for ($i = 0; $i < 25; $i++) { ?>
+							<div style="padding: 0; margin: 0; font-size: 12px; top: <?php echo $i * 60; ?>px; position: relative;" class="text-white">
+								<?php echo sprintf("%02d:00", $i); ?>
+							</div>
+						<?php } ?>
 					</div>
 				</div>
-				<div class="col-md-4 mb-3">
-					<div class="p-3 bg-secondary rounded text-center">
-						<h2>Prioritize</h2>
-						<p>Decide which tasks are most important and tackle those first.</p>
-					</div>
-				</div>
-				<div class="col-md-4 mb-3">
-					<div class="p-3 bg-secondary rounded text-center">
-						<h2>Accomplish</h2>
-						<p>Check off your tasks as you complete them. Feel the satisfaction of getting things done!</p>
-					</div>
+				<div class="bg-light rounded" style="height: 40%; padding: 0; margin: 0; overflow-y: auto;">
 				</div>
 			</div>
 		</div>

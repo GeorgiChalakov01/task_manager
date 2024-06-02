@@ -5,6 +5,15 @@ INSERT INTO LANGUAGES (ISO_CODE, NAME) VALUES("en", "English");
 INSERT INTO LANGUAGES (ISO_CODE, NAME) VALUES ("bg", "български");
 
 
+/*
+Used in the home.php. 
+ */
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', 'shedule-am', 'AM');
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', 'shedule-am', 'AM');
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', 'shedule-pm', 'PM');
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', 'shedule-pm', 'PM');
+
 
 /*
 Used in the signin.php. 

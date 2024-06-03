@@ -286,6 +286,15 @@ function create_task($con, $project_id, $blocker, $title, $description, $duratio
 	return $task_id;
 }
 
+function schedule_task($con, $task_id, $start_time, $end_time, $user_id) {
+	$query = "CALL P_SCHEDULE_TASK(?,?,?,?);";
+
+	$params = array($task_id, $start_time, $end_time, $user_id);
+	$types = "issi";
+	$out_params = [];
+	$result = execute_query($con, $query, $params, $types, $out_params);
+}
+
 function edit_category($con, $category_id, $owner_id, $name, $color_scheme_id) {
 	$query="
 	CALL P_EDIT_CATEGORY(?,?,?,?);
@@ -1179,6 +1188,39 @@ function get_project_tasks($con, $project_id, $user_id) {
 	return $result;
 }
 
+function get_scheduled_tasks($con, $date, $user_id) {
+	$query = "
+	SELECT 
+		T.ID AS id,
+		T.PROJECT_ID AS project_id,
+		T.PLACE AS place,
+		T.BLOCKER AS blocker,
+		T.TITLE AS title,
+		T.DESCRIPTION AS description,
+		T.CREATED_ON AS created_on,
+		T.COMPLETED_ON AS completed_on,
+		T.DURATION AS duration,
+		T.DEADLINE AS deadline,
+		ST.START_TIME AS start_time,
+		ST.END_TIME AS end_time
+	FROM 
+		TASKS T
+		INNER JOIN TASK_PRIVILEGES TP ON TP.TASK_ID = T.ID
+		INNER JOIN SCHEDULES_HAVE_TASKS ST ON ST.TASK_ID = T.ID
+		INNER JOIN SCHEDULES S ON S.ID = ST.SCHEDULE_ID
+	WHERE
+		TP.USER_ID = ? AND
+		TP.PRIVILEGE = 'VIEW' AND 
+		S.`DATE` = ?;	
+	";
+
+	$params = array($user_id, $date);
+	$types = "is";
+	$result = execute_query($con, $query, $params, $types);
+
+	return $result;
+}
+
 function move_task($con, $project_id, $task_id, $new_place, $user_id) {
 	$query="
 	CALL P_MOVE_TASK(?,?,?,?);
@@ -1211,4 +1253,12 @@ function flip_hide_completed_tasks_of_project($con, $project_id, $user_id) {
 	$result=execute_query($con, $query, $params, $types);
 
 	return true;
+}
+
+function time_to_minutes($time) {
+	list($hours, $minutes, $seconds) = explode(':', $time);
+	$hours = (int) $hours;
+	$minutes = (int) $minutes;
+	$seconds = (int) $seconds;
+	return ($hours * 60) + $minutes + ($seconds / 60);
 }

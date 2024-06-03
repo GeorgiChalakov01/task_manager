@@ -9,12 +9,34 @@
 	<button id="move" class="btn" style="background-color: #7CB9E8; color: white; width: 100%; padding: 12px 16px; display: none;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
 	<a id="edit" href="" class="btn" style="background-color: green; display: none;"><?php echo $phrases['categories-hidden-menu-edit'];?></a>
 	<a id="delete" href="" class="btn" style="background-color: red; display: none;"><?php echo $phrases['categories-hidden-menu-delete'];?></a>
+	<a id="schedule" class="btn" style="background-color: blue; display: none;"><?php echo $phrases['hidden-menu-schedule'];?></a>
 </div>
 
 <form action="" method="post" id="move_form" class="hidden-menu">
 	<p><?php echo $phrases['categories-hidden-move-form-question'];?></p>
 	<input id="move_form_input" type="number" min="1" name="new_place"/>
-	<button type="submit"id="move" class="btn" style="background-color: #7CB9E8; color: white;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
+	<button type="submit" id="move" class="btn" style="background-color: #7CB9E8; color: white;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
+</form>
+
+<form action="" method="post" id="schedule_form" class="hidden-menu">
+	<table class="table table-bordered">
+		<tr>
+			<td colspan="2" class="text-center"><?php echo $phrases['schedule-from-question'];?></td>
+		</tr>
+		<tr>
+			<td class="text-center"><?php echo $phrases['schedule-from-start'];?></td>
+			<td class="text-center"><input id="start_time" type="time" name="start_time"/></td>
+		</tr>
+		<tr>
+			<td class="text-center"><?php echo $phrases['schedule-from-end'];?></td>
+			<td class="text-center"><input id="end_time" type="time" name="end_time"/></td>
+		</tr>
+		<tr>
+			<td colspan="2" class="text-center">
+				<button type="submit" id="submit" class="btn btn-primary" style="background-color: #7CB9E8; color: white;"><?php echo $phrases['schedule-from-submit'];?></button>
+			</td>
+		</tr>
+	</table>
 </form>
 
 <?php require 'includes/note_chooser.php';?>
@@ -27,6 +49,10 @@ function show_menu(id, object_type) {
 	var menu = document.getElementById('menu');
 	var move_form = document.getElementById('move_form');
 	var move_form_input = document.getElementById('move_form_input');
+	var schedule_form = document.getElementById('schedule_form');
+	var schedule_form_start_input = document.getElementById('schedule_form_start');
+	var schedule_form_end_input = document.getElementById('schedule_form_end');
+	
 
 	var open_btn = document.getElementById('open');
 	var move_btn = document.getElementById('move');
@@ -34,6 +60,7 @@ function show_menu(id, object_type) {
 	var unattach_btn = document.getElementById('unattach');
 	var edit_btn = document.getElementById('edit');
 	var delete_btn = document.getElementById('delete');
+	var schedule_btn = document.getElementById('schedule');
 
 	// Show mark completed/non-completed correctly.
 	<?php 
@@ -138,6 +165,22 @@ function show_menu(id, object_type) {
 		edit_btn.href = "note_edit.php?id=" + note_id;
 		delete_btn.href = "note_delete.inc.php?id=" + note_id;
 	}
+	else if(object_type === 'task-schedule'){
+		const project_id = url_params.get('project_id');
+
+		open_btn.style.display = 'block';
+		edit_btn.style.display = 'block';
+		schedule_btn.style.display = 'block';
+
+		open_btn.href = "task_view.php?id=" + id;
+		edit_btn.href = "task_edit.php?id=" + id;
+
+		schedule_btn.onclick = function() {
+			menu.style.display = 'none';
+			schedule_form.style.display = 'block';
+			schedule_form.action = "task_schedule.inc.php?project_id=" + project_id + "&task_id=" + id;
+		};
+	}
 
 
 	overlay.style.display = "block";
@@ -157,12 +200,14 @@ window.onclick = function(event) {
 		var menu = document.getElementById("menu");
 		var move_form = document.getElementById("move_form");
 		var note_chooser = document.getElementById("note_chooser");
+		var schedule_form = document.getElementById("schedule_form");
 
-		if (menu.style.display === "block" || move_form.style.display === "block" || note_chooser.style.display == 'block') {
+		if (menu.style.display === "block" || move_form.style.display === "block" || note_chooser.style.display === 'block' || schedule_form.style.display === "block") {
 			overlay.style.display = "none";
 			menu.style.display = "none";
 			move_form.style.display = "none";
 			note_chooser.style.display = 'none';
+			schedule_form.style.display = 'none';
 		}
 	}
 }

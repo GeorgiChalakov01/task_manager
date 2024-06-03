@@ -2,8 +2,15 @@
 require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
 require 'includes/php_auth_check.php';
 
-$project_id = isset($_GET['project_id'])?$_GET['project_id']:get_default_project_id($con, $_SESSION['user-details']['id']);
+if(isset($_GET['project_id']))
+	$project_id = $_GET['project_id'];
+else {
+	header('Location: home.php?project_id=' . get_default_project_id($con, $_SESSION['user-details']['id']));
+	$project_id = $_GET['project_id'];
+}
+
 $tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
+$scheduled_tasks = get_scheduled_tasks($con, '2024-06-04', $_SESSION['user-details']['id']);
 ?>
 
 <!DOCTYPE html>
@@ -17,10 +24,12 @@ $tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
 	<body class="cust-dark1">
 
 		<?php require '../common/navbar/navbar.php';?>
+		<?php require '../common/php/hidden_menu.php';?>
 
 
 		<br>
 		<div class="container" style="height: 80%;">
+			<?php require '../common/statuserror/statuserror.php';?>
 			<div class="bg-dark rounded mb-3" style="height: 60%; padding: 0; margin: 0;">
 				<div class="bg-dark rounded text-white" style="height: 10%; width: 100%; padding: 0; margin: 0;">
 					<input style="float:right;" type="date"/>
@@ -34,12 +43,22 @@ $tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
 						<?php } ?>
 					</div>
 					<div class="col-11 rounded bg-light" style="height: 1935px; position: relative;">
-						<div style="position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 100%;">
+						<div style="position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 1935px;">
 						<?php for ($i = 0; $i < 25; $i++) { ?>
 							<div style="text-align: center; padding: 0; margin: 0; font-size: 12px; top: <?php echo $i * 60; ?>px; position: relative; border-top: 1px solid black;" class="col-12">&nbsp;</div>
 						<?php } ?>
 						</div>
-						<div style="position: absolute; top: 0; left: 0; z-index: 2;">TWO</div>
+						<div style="position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 1935px;">
+						<?php 
+							foreach($scheduled_tasks as $scheduled_task){ 
+								$start_minutes = time_to_minutes($scheduled_task['start_time']);
+								$end_minutes = time_to_minutes($scheduled_task['end_time']);
+								$height = $end_minutes - $start_minutes;
+
+								echo '<div style="position: relative; top: ' . $start_minutes . 'px; height: ' . $height . 'px; border: 1px solid black; background-color: red;">' . $scheduled_task['title'] . '</div>';
+							} 
+						?>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -48,10 +67,11 @@ $tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
 					<?php 
 					$projects = get_projects($con, $_SESSION['user-details']['id']);
 					foreach($projects as $project){ ?>
-					<a class="col rounded" style="background-color: <?php echo $project['background_color'];?>; color: <?php echo $project['text_color'];?>; text-decoration: none; height: 20px;" href=""><?php echo $project['title'];?></a>
+						<a href="home.php?project_id=<?php echo $project['id']; ?>" class="col rounded" style="background-color: <?php echo $project['background_color'];?>; color: <?php echo $project['text_color'];?>; text-decoration: none; height: 20px;" href=""><?php echo $project['title'];?></a>
 					<?php } ?>
 				</div>
 				<div class="bg-light rounded row" style="height: 80%; padding: 0; margin: 0; overflow: auto;">
+					<div class="container" style="min-height: 100px;">
 					<?php foreach($tasks as $task): ?>
 						<div 
 							class="row m-2 p-1" 
@@ -62,7 +82,7 @@ $tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
 								background-color: <?php if($task['completed_on']) echo 'green'; else echo '#6c757d';?>; 
 								color: white; 
 								border: 1px solid black;" 
-							onclick="show_menu(<?php echo $task['id']; ?>, 'task');"
+							onclick="show_menu(<?php echo $task['id']; ?>, 'task-schedule');"
 						>
 							<h5 class="mb-1"><?php echo $task['place'] . ': ' . htmlspecialchars($task['title']); ?></h5>
 							<p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
@@ -71,6 +91,7 @@ $tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
 							<?php endif; ?>
 						</div>
 					<?php endforeach; ?>
+					</div>
 				</div>
 			</div>
 		</div>

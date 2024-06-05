@@ -2,6 +2,13 @@
 require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
 require 'includes/php_auth_check.php';
 
+header('Location: schedule.php?project_id=' . get_default_project_id($con, $_SESSION['user-details']['id']));
+exit;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+require $_SERVER['DOCUMENT_ROOT'] . '/common/php/php_start.php';
+require 'includes/php_auth_check.php';
+
 if(isset($_GET['project_id']))
 	$project_id = $_GET['project_id'];
 else {
@@ -55,7 +62,7 @@ $scheduled_tasks = get_scheduled_tasks($con, '2024-06-04', $_SESSION['user-detai
 								$end_minutes = time_to_minutes($scheduled_task['end_time']);
 								$height = $end_minutes - $start_minutes;
 
-								echo '<div style="position: relative; top: ' . $start_minutes . 'px; height: ' . $height . 'px; border: 1px solid black; background-color: red;">' . $scheduled_task['title'] . '</div>';
+								echo '<div class="rounded" style="position: relative; border: 1px solid black; background-color: red; top: ' . $start_minutes . 'px; height: ' . $height . 'px;">' . $scheduled_task['title'] . '</div>';
 							} 
 						?>
 						</div>

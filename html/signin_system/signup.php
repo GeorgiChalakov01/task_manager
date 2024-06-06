@@ -116,6 +116,18 @@ require 'includes/php_auth_check.php';
 						 type="file" 
 						 id="profile_picture" name="file" accept="image/*">
 					</div>
+					<label for="timezone" class="form-label">
+						<?php echo $phrases['signup-form-timezone-label'];?>
+					</label>
+					<select id="timezone" class="form-select" aria-label="Default select example" name="timezone" required>
+						<option value="" disabled selected><?php echo $phrases['signup-form-timezone-placeholder'];?></option>
+					<?php
+						$timezones = DateTimeZone::listIdentifiers();
+						foreach ($timezones as $timezone) {
+							echo '<option value="' . $timezone . '">' . $timezone . '</option>';
+						}
+					?>
+					</select>
 					<br/>
 					<br/>
 					<button type="submit" name="submit" class="col-12 btn btn-secondary"><?php echo $phrases['signup-form-submit-button'];?></button>

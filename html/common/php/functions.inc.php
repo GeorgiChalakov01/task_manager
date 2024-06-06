@@ -109,13 +109,13 @@ function email_exists($con, $email) {
 	return $result;
 }
 
-function signup_user($con, $first_name, $last_name, $username, $email, $password, $profile_picture_path, $language_code) {
+function signup_user($con, $first_name, $last_name, $username, $email, $password, $profile_picture_path, $timezone, $language_code) {
 	$query="
-	CALL P_CREATE_USER(?,?,?,?,?,?,?,@USER_ID);
+	CALL P_CREATE_USER(?,?,?,?,?,?,?,?,@USER_ID);
 	";
 
-	$params=array($first_name, $last_name, $username, $email, $password, $profile_picture_path, $language_code);
-	$types="sssssss";
+	$params=array($first_name, $last_name, $username, $email, $password, $profile_picture_path, $language_code, $timezone);
+	$types="ssssssss";
 	$out_params=["@USER_ID"];
 	$result=execute_query($con, $query, $params, $types, $out_params);
 
@@ -286,11 +286,20 @@ function create_task($con, $project_id, $blocker, $title, $description, $duratio
 	return $task_id;
 }
 
-function schedule_task($con, $task_id, $start_time, $end_time, $user_id) {
-	$query = "CALL P_SCHEDULE_TASK(?,?,?,?);";
+function schedule_task($con, $task_id, $date, $start_time, $end_time, $user_id) {
+	$query = "CALL P_SCHEDULE_TASK(?,?,?,?,?);";
 
-	$params = array($task_id, $start_time, $end_time, $user_id);
-	$types = "issi";
+	$params = array($task_id, $date, $start_time, $end_time, $user_id);
+	$types = "isssi";
+	$out_params = [];
+	$result = execute_query($con, $query, $params, $types, $out_params);
+}
+
+function unschedule_task($con, $id, $user_id) {
+	$query = "CALL P_UNSCHEDULE_TASK(?,?);";
+
+	$params = array($id, $user_id);
+	$types = "ii";
 	$out_params = [];
 	$result = execute_query($con, $query, $params, $types, $out_params);
 }
@@ -1201,13 +1210,21 @@ function get_scheduled_tasks($con, $date, $user_id) {
 		T.COMPLETED_ON AS completed_on,
 		T.DURATION AS duration,
 		T.DEADLINE AS deadline,
+		CS.BACKGROUND_COLOR AS background_color,
+		CS.TEXT_COLOR AS text_color,
 		ST.START_TIME AS start_time,
-		ST.END_TIME AS end_time
+		ST.END_TIME AS end_time,
+		ST.ID AS task_schedule_id,
+		ST.SCHEDULE_ID AS schedule_id,
+		S.DATE AS date
 	FROM 
 		TASKS T
 		INNER JOIN TASK_PRIVILEGES TP ON TP.TASK_ID = T.ID
 		INNER JOIN SCHEDULES_HAVE_TASKS ST ON ST.TASK_ID = T.ID
 		INNER JOIN SCHEDULES S ON S.ID = ST.SCHEDULE_ID
+		INNER JOIN PROJECTS_HAVE_CATEGORIES PC ON PC.PROJECT_ID = T.PROJECT_ID
+		INNER JOIN CATEGORIES C ON C.ID = PC.CATEGORY_ID
+		INNER JOIN COLOR_SCHEMES CS ON CS.ID = C.COLOR_SCHEME_ID
 	WHERE
 		TP.USER_ID = ? AND
 		TP.PRIVILEGE = 'VIEW' AND 
@@ -1219,6 +1236,24 @@ function get_scheduled_tasks($con, $date, $user_id) {
 	$result = execute_query($con, $query, $params, $types);
 
 	return $result;
+}
+
+function get_user_timezone($con, $user_id) {
+	$query = "
+	SELECT 
+		TIMEZONE AS timezone
+	FROM 
+		USERS
+	WHERE
+		ID = ?
+	;
+	";
+
+	$params = array($user_id);
+	$types = "i";
+	$result = execute_query($con, $query, $params, $types);
+
+	return $result[0]['timezone'];
 }
 
 function move_task($con, $project_id, $task_id, $new_place, $user_id) {

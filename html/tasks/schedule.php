@@ -9,8 +9,13 @@ else {
 	$project_id = $_GET['project_id'];
 }
 
+if(isset($_GET['date']))
+	$date = DateTime::createFromFormat('Y-m-d', $_GET['date']);
+else
+	$date = new DateTime('now', new DateTimeZone(get_user_timezone($con, $_SESSION['user-details']['id'])));
+
 $tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
-$scheduled_tasks = get_scheduled_tasks($con, '2024-06-04', $_SESSION['user-details']['id']);
+$scheduled_tasks = get_scheduled_tasks($con, $date->format('Y-m-d'), $_SESSION['user-details']['id']);
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +36,7 @@ $scheduled_tasks = get_scheduled_tasks($con, '2024-06-04', $_SESSION['user-detai
 			<div class="bg-dark rounded" style="height: 60%; padding: 0; margin: 0;">
 				<!-- Date Choosing Container -->
 				<div class="bg-dark rounded text-white" style="height: 10%; width: 100%; padding: 0; margin: 0; border: 1px solid white;">
-					<input style="float:right;" type="date"/>
+					<input id="date-picker" style="float:right;" type="date"/>
         </div>
 
 				<!-- Top Content Schedule Container -->
@@ -59,8 +64,24 @@ $scheduled_tasks = get_scheduled_tasks($con, '2024-06-04', $_SESSION['user-detai
 									$start_minutes = time_to_minutes($scheduled_task['start_time']);
 									$end_minutes = time_to_minutes($scheduled_task['end_time']);
 									$height = $end_minutes - $start_minutes;
+									
+									if(is_null($scheduled_task['completed_on'])){
+										$background_color = 'green';
+										$text_color = 'white';
+									}
+									else{
+										$background_color = $scheduled_task['background_color'];
+										$text_color = $scheduled_task['text_color'];
+									}
 
-									echo '<div class="rounded" style="font-size: 12px; text-align: center; position: relative; border: 1px solid black; background-color: red; top: ' . $start_minutes . 'px; height: ' . $height . 'px;">' . $scheduled_task['title'] . '</div>';
+									echo '
+									<div 
+										class="rounded" 
+										style="font-size: 12px; text-align: center; position: relative; border: 1px solid ' . $text_color . '; background-color: ' . $background_color . '; color: ' . $text_color . '; top: ' . $start_minutes . 'px; height: ' . $height . 'px; cursor: pointer;"
+										onclick="show_menu(' . $task['id'] . ', \'scheduled-task\', '. $scheduled_task['task_schedule_id'] .');"
+									>' . 
+										$scheduled_task['title'] . '
+									</div>';
 								}
 							?>
 						</div>
@@ -74,7 +95,7 @@ $scheduled_tasks = get_scheduled_tasks($con, '2024-06-04', $_SESSION['user-detai
 			<!-- Top Task Container -->
 			<div class="bg-dark rounded" style="height: 37%; padding: 0; margin: 0;">
 				<!-- Project Choosing Container -->
-				<div class="bg-dark rounded text-white row" style="height: 20%; width: 100%; padding: 0; margin: 0; align-items: center;">
+				<div class="bg-dark rounded text-white row" style="height: 20%; width: 100%; padding: 0; margin: 0; align-items: center; border: 1px solid white;">
 					<?php
 					$projects = get_projects($con, $_SESSION['user-details']['id']);
 					foreach($projects as $project){ ?>
@@ -82,8 +103,8 @@ $scheduled_tasks = get_scheduled_tasks($con, '2024-06-04', $_SESSION['user-detai
 					<?php } ?>
 				</div>
 				<!-- Task Choosing Container -->
-				<div class="bg-light rounded row" style="height: 80%; padding: 0; margin: 0; overflow: auto;">
-					<div class="container" style="min-height: 100px;">
+				<div class="bg-light rounded row" style="height: 80%; padding: 0; margin: 0; overflow: auto; border: 1px solid white;">
+					<div class="container rounded" style="min-height: 100px;">
 					<?php foreach($tasks as $task): ?>
 						<div 
 							class="row m-2 p-1" 
@@ -94,7 +115,7 @@ $scheduled_tasks = get_scheduled_tasks($con, '2024-06-04', $_SESSION['user-detai
 								background-color: <?php if($task['completed_on']) echo 'green'; else echo '#6c757d';?>; 
 								color: white; 
 								border: 1px solid black;" 
-							onclick="show_menu(<?php echo $task['id']; ?>, 'task-schedule');"
+							onclick="show_menu(<?php echo $task['id']; ?>, 'task-to-schedule');"
 						>
 							<h5 class="mb-1"><?php echo $task['place'] . ': ' . htmlspecialchars($task['title']); ?></h5>
 							<p class="mb-1"><?php echo htmlspecialchars($task['description']); ?></p>
@@ -108,6 +129,24 @@ $scheduled_tasks = get_scheduled_tasks($con, '2024-06-04', $_SESSION['user-detai
 			</div>
 		</div>
 
+		<script>
+			const datePickerInput = document.getElementById('date-picker');
+
+			datePickerInput.addEventListener('input', (e) => {
+				const inputValue = e.target.value;
+				const currentUrl = new URL(window.location.href);
+				currentUrl.searchParams.set('date', inputValue);
+				window.location.href = currentUrl.href;
+			});
+
+
+			const urlParams = new URLSearchParams(window.location.search);
+			const dateParam = urlParams.get('date');
+
+			if (dateParam) {
+				datePickerInput.value = dateParam;
+			}
+		</script>
 		<script src="/common/scripts/form_mandatory_fields.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 

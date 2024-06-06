@@ -14,6 +14,7 @@ $email=$_POST['email'];
 $password=$_POST['password'];
 $password_repeat=$_POST['password_repeat'];
 $profile_picture_path;
+$timezone=$_POST['timezone'];
 
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -62,7 +63,7 @@ if ($_FILE['file'] and $profile_picture_path === false) {
 	exit;
 }
 
-if($user_id=signup_user($con, $first_name, $last_name, $username, $email, $hashed_password, $profile_picture_path, $_SESSION['language_code'])) {
+if($user_id=signup_user($con, $first_name, $last_name, $username, $email, $hashed_password, $profile_picture_path, $timezone, $_SESSION['language_code'])) {
 	$category_id = create_category($con, $user_id, 'default-category', '1');
 	$project_id = create_project($con, 'default-project-title', 'default-project-description', NULL, $user_id);
 	append_category($con, $category_id, $project_id, 'PROJECT', $user_id);

@@ -1214,6 +1214,7 @@ function get_scheduled_tasks($con, $date, $user_id) {
 		CS.TEXT_COLOR AS text_color,
 		ST.START_TIME AS start_time,
 		ST.END_TIME AS end_time,
+		ST.`COLUMN` AS col,
 		ST.ID AS task_schedule_id,
 		ST.SCHEDULE_ID AS schedule_id,
 		S.DATE AS date

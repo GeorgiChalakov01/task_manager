@@ -66,18 +66,18 @@ $scheduled_tasks = get_scheduled_tasks($con, $date->format('Y-m-d'), $_SESSION['
 									$height = $end_minutes - $start_minutes;
 									
 									if(is_null($scheduled_task['completed_on'])){
-										$background_color = 'green';
-										$text_color = 'white';
-									}
-									else{
 										$background_color = $scheduled_task['background_color'];
 										$text_color = $scheduled_task['text_color'];
+									}
+									else{
+										$background_color = 'green';
+										$text_color = 'white';
 									}
 
 									echo '
 									<div 
 										class="rounded" 
-										style="font-size: 12px; text-align: center; position: relative; border: 1px solid ' . $text_color . '; background-color: ' . $background_color . '; color: ' . $text_color . '; top: ' . $start_minutes . 'px; height: ' . $height . 'px; cursor: pointer;"
+										style="font-size: 12px; text-align: center; position: absolute; border: 1px solid ' . $text_color . '; background-color: ' . $background_color . '; color: ' . $text_color . '; top: ' . $start_minutes . 'px; height: ' . $height . 'px; width: 100px; left: ' . (int)$scheduled_task['col'] * 100 . 'px; cursor: pointer; z-index: ' . $scheduled_task['id'] . ';"
 										onclick="show_menu(' . $task['id'] . ', \'scheduled-task\', '. $scheduled_task['task_schedule_id'] .');"
 									>' . 
 										$scheduled_task['title'] . '

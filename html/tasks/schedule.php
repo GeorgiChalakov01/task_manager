@@ -41,7 +41,7 @@ $task_width = 300;
         </div>
 
 				<!-- Top Content Schedule Container -->
-			<div class="row rounded" style="height: 90%; padding: 0; margin: 0; overflow: auto; border: 1px solid white; width: auto;">
+			<div class="row rounded" style="height: 90%; padding: 0; margin: 0; overflow-x: hidden; overflow-y: auto; border: 1px solid white; width: auto;">
 					<!-- Hour Container -->
 					<div class="bg-dark rounded col-1" style="float: left; padding: 0; margin: 0; position: relative;">
 						<?php for ($i = 0; $i < 25; $i++) { ?>
@@ -51,7 +51,7 @@ $task_width = 300;
 						<?php } ?>
 					</div>
 					<!-- Schedule Content Container -->
-					<div class="col-11 rounded" style="height: 1440px; position: relative;">
+					<div class="col-11 rounded" style="height: 1440px; position: relative; overflow-x: auto;">
 						<!-- Schedule Content Line Container -->
 						<div style="position: absolute; top: 0; left: 0; z-index: 1; min-width: 100%; width: <?php echo (max(array_column($scheduled_tasks, 'col'))+1) * $task_width;?>px;">
 						<?php for ($i = 0; $i < 24; $i++) { ?>

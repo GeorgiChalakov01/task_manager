@@ -33,6 +33,12 @@ INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "signin-form-
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "signin-form-password-label", "Password");
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "signin-form-password-label", "Парола");
 
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "signup-form-timezone-label", "Timezone");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "signup-form-timezone-label", "Времева зона");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "signup-form-timezone-placeholder", "Choose a timezone");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "signup-form-timezone-placeholder", "Изберете времева зона");
+
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "signin-form-password-placeholder", "Password");
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "signin-form-password-placeholder", "Парола");
 
@@ -141,6 +147,18 @@ INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-h
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-move-form-question", "What should the new place of this task be?");
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-move-form-question", "На кое място бихте искали да преместите задачата?");
 
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "schedule-from-question", "Schedule a task.");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-from-question", "Насрочване на задача.");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "schedule-form-submit", "Schedule");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-from-submit", "Насрочване");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "schedule-form-start", "Start Time");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-from-start", "Начално време");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "schedule-form-end", "End Time");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-from-end", "Крайно време");
+
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-menu-move", "Move");
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-menu-move", "Премести");
 
@@ -155,6 +173,12 @@ INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-h
 
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-menu-delete", "Delete");
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-menu-delete", "Изтриване");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "hidden-menu-schedule", "Schedule");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "hidden-menu-schedule", "Насрочване");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "hidden-menu-unschedule", "Unschedule");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "hidden-menu-unschedule", "Премахване");
 
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "success-category-created", "Category Created Successfully!");
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "success-category-created", "Категорията е създадена успешно!");
@@ -259,6 +283,10 @@ Used in the home.php.
  */
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "home-page-title", "Home");
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "home-page-title", "Начало");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "success-task-scheduled", "Task Scheduled Successfully!");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "success-task-scheduled", "Задачата е насрочена успешно!");
+
 
 /*
 Used in signup.inc.php to indicate errors.

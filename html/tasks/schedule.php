@@ -16,6 +16,7 @@ else
 
 $tasks = get_project_tasks($con, $project_id, $_SESSION['user-details']['id']);
 $scheduled_tasks = get_scheduled_tasks($con, $date->format('Y-m-d'), $_SESSION['user-details']['id']);
+$task_width = 300;
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +41,7 @@ $scheduled_tasks = get_scheduled_tasks($con, $date->format('Y-m-d'), $_SESSION['
         </div>
 
 				<!-- Top Content Schedule Container -->
-				<div class="row rounded" style="height: 90%; padding: 0; margin: 0; overflow: auto; border: 1px solid white;">
+			<div class="row rounded" style="height: 90%; padding: 0; margin: 0; overflow: auto; border: 1px solid white; width: auto;">
 					<!-- Hour Container -->
 					<div class="bg-dark rounded col-1" style="float: left; padding: 0; margin: 0; position: relative;">
 						<?php for ($i = 0; $i < 25; $i++) { ?>
@@ -50,15 +51,15 @@ $scheduled_tasks = get_scheduled_tasks($con, $date->format('Y-m-d'), $_SESSION['
 						<?php } ?>
 					</div>
 					<!-- Schedule Content Container -->
-					<div class="col-11 rounded bg-light" style="height: 1440px; position: relative;">
+					<div class="col-11 rounded" style="height: 1440px; position: relative;">
 						<!-- Schedule Content Line Container -->
-						<div style="position: absolute; top: 0; left: 0; z-index: 1; width: 100%;">
+						<div style="position: absolute; top: 0; left: 0; z-index: 1; min-width: 100%; width: <?php echo (max(array_column($scheduled_tasks, 'col'))+1) * $task_width;?>px;">
 						<?php for ($i = 0; $i < 24; $i++) { ?>
-							<div style="text-align: center; padding: 0; margin: 0; font-size: 12px; top: <?php echo $i * 60; ?>px; height: 60px; position: absolute; border: 1px solid black;" class="col-12">&nbsp;</div>
+							<div class="col-12 bg-light" style="text-align: center; padding: 0; margin: 0; font-size: 12px; top: <?php echo $i * 60; ?>px; height: 60px; position: absolute; border: 1px solid black; background-color: transparent;">&nbsp;</div>
 						<?php } ?>
 						</div>
 						<!-- Schedule Content Task Container -->
-						<div style="position: absolute; top: 0; left: 0; z-index: 1; width: 100%;">
+						<div style="position: absolute; top: 0; left: 0; z-index: 1; min-width: 100%;">
 							<?php
 								foreach($scheduled_tasks as $scheduled_task){
 									$start_minutes = time_to_minutes($scheduled_task['start_time']);
@@ -77,7 +78,7 @@ $scheduled_tasks = get_scheduled_tasks($con, $date->format('Y-m-d'), $_SESSION['
 									echo '
 									<div 
 										class="rounded" 
-										style="font-size: 12px; text-align: center; position: absolute; border: 1px solid ' . $text_color . '; background-color: ' . $background_color . '; color: ' . $text_color . '; top: ' . $start_minutes . 'px; height: ' . $height . 'px; width: 100px; left: ' . (int)$scheduled_task['col'] * 100 . 'px; cursor: pointer; z-index: ' . $scheduled_task['id'] . ';"
+										style="font-size: 12px; text-align: center; position: absolute; border: 1px solid ' . $text_color . '; background-color: ' . $background_color . '; color: ' . $text_color . '; top: ' . $start_minutes . 'px; height: ' . $height . 'px; width: ' . $task_width . 'px; left: ' . (int)$scheduled_task['col'] * $task_width . 'px; cursor: pointer; z-index: ' . $scheduled_task['id'] . ';"
 										onclick="show_menu(' . $task['id'] . ', \'scheduled-task\', '. $scheduled_task['task_schedule_id'] .');"
 									>' . 
 										$scheduled_task['title'] . '

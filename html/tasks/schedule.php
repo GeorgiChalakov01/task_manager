@@ -53,7 +53,7 @@ $task_width = 300;
 					<!-- Schedule Content Container -->
 					<div class="col-11 rounded" style="height: 1440px; position: relative; overflow-x: auto;">
 						<!-- Schedule Content Line Container -->
-						<div style="position: absolute; top: 0; left: 0; z-index: 1; min-width: 100%; width: <?php echo (max(array_column($scheduled_tasks, 'col'))+1) * $task_width;?>px;">
+						<div style="position: absolute; top: 0; left: 0; z-index: 1; min-width: 100%; <?php if($scheduled_tasks)echo 'width: ' . (max(array_column($scheduled_tasks, 'col'))+1) * $task_width . 'px;';?>">
 						<?php for ($i = 0; $i < 24; $i++) { ?>
 							<div class="col-12 bg-light" style="text-align: center; padding: 0; margin: 0; font-size: 12px; top: <?php echo $i * 60; ?>px; height: 60px; position: absolute; border: 1px solid black; background-color: transparent;">&nbsp;</div>
 						<?php } ?>

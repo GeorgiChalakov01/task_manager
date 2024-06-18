@@ -28,21 +28,11 @@ $_SESSION['edit-file-form'] = array(
 );
 
 
-$original_name=null;
-$server_name=null;
-$extension=null;
-if($_FILES['file']['name']) {
-	$server_name = save_file($_FILES['file'], __DIR__ . '/../common/uploaded_files/');
-	if ($server_name === false) {
-		header('location: file_edit.php?error=error-file-upload');
-		exit;
-	}
-	$original_name = pathinfo($_FILES["file"]["name"], PATHINFO_FILENAME);
-	$extension = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
-}
-
-
-if(edit_file($con, $file_id, $original_name, $server_name, $extension, $title, $description, $_SESSION['user-details']['id'])) {
+if(check_privileges($con, $_SESSION['user-details']['id'], $file_id, 'FILE', 'EDIT'))
+$minio_key = (string)get_file_info($con, $file_id, $_SESSION['user-details']['id'])['minio_key'];
+delete_minio_object($s3, $files_bucket, $minio_key);
+upload_file_minio($s3, $_FILES['file'], $files_bucket, (string)$minio_key);
+if(edit_file($con, $file_id, $name, $extension, $title, $description, $minio_key, $_SESSION['user-details']['id'])) {
 	unappend_categories($con, $file_id, 'FILE', $_SESSION['user-details']['id']);
 	foreach($categories as $category_id)
 		append_category($con, $category_id, $file_id, 'FILE', $_SESSION['user-details']['id']);

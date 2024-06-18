@@ -319,13 +319,13 @@ function edit_category($con, $category_id, $owner_id, $name, $color_scheme_id) {
 	return true;
 }
 
-function edit_file($con, $file_id, $name, $extension, $title, $description, $user_id) {
+function edit_file($con, $file_id, $name, $extension, $title, $description, $minio_key, $user_id) {
 	$query="
 	CALL P_EDIT_FILE(?,?,?,?,?,?,?);
 	";
 
-	$in_params=array($file_id, $name, $extension, $title, $description, $user_id);
-	$types="isssssi";
+	$in_params=array($file_id, $name, $extension, $title, $description, $minio_key, $user_id);
+	$types="issssii";
 	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
@@ -441,7 +441,7 @@ function append_category($con, $category_id, $object_id, $object_type, $user_id)
 
 function upload_file ($con, $s3, $files_bucket, $file, $name, $extension, $title, $description, $user_id) {
 	$file_key = get_next_file_key($con);
-	$minio_key = upload_file_minio($con, $s3, $file, $files_bucket, (string)$file_key);
+	upload_file_minio($s3, $file, $files_bucket, (string)$file_key);
 
 	$query="
 	CALL P_UPLOAD_FILE(?,?,?,?,?,?,@FILE_ID);
@@ -742,7 +742,7 @@ function get_file_info($con, $file_id, $user_id) {
 	WHERE
 		FP.FILE_ID = ? AND
 		FP.USER_ID = ? AND
-		FP.PRIVILEGE = 'EDIT'
+		FP.PRIVILEGE = 'VIEW'
 	ORDER BY
 		F.ID;
 	";
@@ -1036,7 +1036,7 @@ function get_next_file_key($con) {
 	return $id[0]['id'];
 }
 
-function upload_file_minio($con, $s3, $file, $files_bucket, $file_key) {
+function upload_file_minio($s3, $file, $files_bucket, $file_key) {
 	// File information
 	$file_info = pathinfo($file['name']);
 	$file_name = $file_info['filename'];
@@ -1068,20 +1068,22 @@ function get_minio_file_contents($s3, $files_bucket, $file_key) {
     return $body;
 }
 
-function get_file_minio($con, $user_id, $file_id, $s3, $files_bucket) {
+function check_privileges($con, $user_id, $file_id, $object_type, $privilege) {
 	$query="
-	CALL P_CHECK_PRIVILEGES(?,?,?,?,@IS_VIEWER);
+	CALL P_CHECK_PRIVILEGES(?,?,?,?,@HAS_PRIVILEGE);
 	";
 
-	$in_params=array($user_id, $file_id, 'FILE', 'VIEW');
+	$in_params=array($user_id, $file_id, $object_type, $privilege);
 	$types="iiss";
-	$out_params=["@IS_VIEWER"];
+	$out_params=["@HAS_PRIVILEGE"];
 	$result=execute_query($con, $query, $in_params, $types, $out_params);
 
-	$is_viewer=$result['@IS_VIEWER'];
+	$has_privilege=$result['@HAS_PRIVILEGE'];
+	return $has_privilege;
+}
 
-
-	if($is_viewer) {
+function get_file_minio($con, $user_id, $file_id, $s3, $files_bucket) {
+	if(check_privileges($con, $user_id, $file_id, 'FILE', 'VIEW')) {
 		$minio_key = (string)get_file_info($con, $file_id, $user_id)['minio_key'];
 		return get_minio_file_contents($s3, $files_bucket, $minio_key);
 	}
@@ -1102,18 +1104,7 @@ function delete_minio_object($s3, $files_bucket, $file_key) {
 }
 
 function delete_file_minio($con, $user_id, $file_id, $s3, $files_bucket) {
-	$query="
-	CALL P_CHECK_PRIVILEGES(?,?,?,?,@IS_EDITOR);
-	";
-
-	$in_params=array($user_id, $file_id, 'FILE', 'EDIT');
-	$types="iiss";
-	$out_params=["@IS_EDITOR"];
-	$result=execute_query($con, $query, $in_params, $types, $out_params);
-
-	$is_editor=$result['@IS_EDITOR'];
-
-	if($is_editor) {
+	if(check_privileges($con, $user_id, $file_id, 'FILE', 'EDIT')) {
 		$minio_key = (string)get_file_info($con, $file_id, $user_id)['minio_key'];
 		$minio_delete_success=delete_minio_object($s3, $files_bucket, $minio_key);
 		if($minio_delete_success) {

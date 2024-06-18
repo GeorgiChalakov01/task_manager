@@ -55,13 +55,14 @@ if($password != $password_repeat) {
 	exit;
 }
 
-
+/*
 //Profile picture information
 $profile_picture_path = save_file($_FILES['file'], __DIR__ . '/../common/uploaded_files/');
 if ($_FILE['file'] and $profile_picture_path === false) {
 	header('location: signup.php?error=error-file-upload');
 	exit;
 }
+*/
 
 if($user_id=signup_user($con, $first_name, $last_name, $username, $email, $hashed_password, $profile_picture_path, $timezone, $_SESSION['language_code'])) {
 	$category_id = create_category($con, $user_id, 'default-category', '1');

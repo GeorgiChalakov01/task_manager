@@ -84,7 +84,7 @@ require 'includes/php_auth_check.php';
 
 				$source_image = '/common/images/file.png';
 				if(in_array($file['extension'], ['jpg', 'jpeg', 'png', 'gif', 'ico', 'webp'])) {
-					$source_image = '/common/uploaded_files/' . $file['server_name'] . '.' . $file['extension'];
+					$source_image = 'get_file_minio.php?file_id=' . $file['id'];
 				}
 				
 				echo '
@@ -96,7 +96,7 @@ require 'includes/php_auth_check.php';
 						<div class="card-body">
 							<h5 class="card-title" style="height: 40px; overflow: auto;">' . $file['title'] . '</h5>
 							<p class="card-text" style="height: 60px; overflow: scroll;">' . $description . '</p>
-							<p class="card-text" style="height: 40px; overflow: scroll;">' . $file['original_name'] . '.' . $file['extension'] . '</p>
+							<p class="card-text" style="height: 40px; overflow: scroll;">' . $file['name'] . '.' . $file['extension'] . '</p>
 							<p class="card-text" style="height: 40px; overflow: scroll;">' . $file['uploaded_on'] . '</p>
 							<a href="file_download.inc.php?id=' . $file['id'] . '" class="btn btn-secondary">' . $phrases['files-file-download-button'] . '</a>
 						</div>

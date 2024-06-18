@@ -1,5 +1,8 @@
 <?php
-function execute_query($con, $query, $params, $types, $out_params = null) {
+require_once '../common/composer/vendor/autoload.php';
+
+
+function execute_query($con, $query, $in_params, $types, $out_params = null) {
 	$stmt = mysqli_stmt_init($con);
 
 	if(!mysqli_stmt_prepare($stmt, $query)) {
@@ -7,8 +10,8 @@ function execute_query($con, $query, $params, $types, $out_params = null) {
 		exit();
 	}
 
-	if(!empty($params) && !empty($types))
-		mysqli_stmt_bind_param($stmt, $types, ...$params);
+	if(!empty($in_params) && !empty($types))
+		mysqli_stmt_bind_param($stmt, $types, ...$in_params);
 
 	if(mysqli_stmt_execute($stmt)){
 		if ($out_params) {
@@ -47,9 +50,9 @@ function get_phrases($con, $language_code) {
 	WHERE 
 		L.ISO_CODE = ?";
 
-	$params=array($language_code);
+	$in_params=array($language_code);
 	$types="s";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	$phrases = array();
 	foreach ($result as $row) {
@@ -68,9 +71,9 @@ function get_languages($con) {
 		LANGUAGES;
 	";
 
-	$params=array();
+	$in_params=array();
 	$types="";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -85,9 +88,9 @@ function username_exists($con, $username) {
 		USERNAME = ?;
 	";
 
-	$params=array($username);
+	$in_params=array($username);
 	$types="s";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result[0]['exists'];
 }
@@ -102,9 +105,9 @@ function email_exists($con, $email) {
 		EMAIL = ?;
 	";
 
-	$params=array($email);
+	$in_params=array($email);
 	$types="s";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -114,10 +117,10 @@ function signup_user($con, $first_name, $last_name, $username, $email, $password
 	CALL P_CREATE_USER(?,?,?,?,?,?,?,?,@USER_ID);
 	";
 
-	$params=array($first_name, $last_name, $username, $email, $password, $profile_picture_path, $language_code, $timezone);
+	$in_params=array($first_name, $last_name, $username, $email, $password, $profile_picture_path, $language_code, $timezone);
 	$types="ssssssss";
 	$out_params=["@USER_ID"];
-	$result=execute_query($con, $query, $params, $types, $out_params);
+	$result=execute_query($con, $query, $in_params, $types, $out_params);
 
 	$user_id=$result['@USER_ID'];
 
@@ -129,10 +132,10 @@ function set_user_language($con, $user_id, $language_code){
 	CALL P_SET_USER_LANGUAGE(?,?);
 	";
 
-	$params=array($user_id, $language_code);
+	$in_params=array($user_id, $language_code);
 	$types="is";
 	$out_params=[];
-	$result=execute_query($con, $query, $params, $types, $out_params);
+	$result=execute_query($con, $query, $in_params, $types, $out_params);
 
 	return $result;
 }
@@ -148,9 +151,9 @@ function signin_user($con, $email, $password) {
 		EMAIL = ?;
 	";
 
-	$params=array($email);
+	$in_params=array($email);
 	$types="s";
-	$user_details=execute_query($con, $query, $params, $types)[0];
+	$user_details=execute_query($con, $query, $in_params, $types)[0];
 
 	$user_id=$user_details['ID'];
 	$password_hash=$user_details['PASSWORD_HASH'];
@@ -176,9 +179,9 @@ function get_user_details($con, $user_id) {
 		ID = ?;
 	";
 
-	$params=array($user_id);
+	$in_params=array($user_id);
 	$types="i";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	$user_details=$result[0];
 
@@ -195,9 +198,9 @@ function get_user_language($con, $user_id) {
 		ID = ?;
 	";
 
-	$params=array($user_id);
+	$in_params=array($user_id);
 	$types="i";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	$language_iso_code=$result[0]['LANGUAGE_ISO_CODE'];
 
@@ -219,9 +222,9 @@ function get_categories($con, $user_id) {
 		C.ID;
 	";
 
-	$params=array($user_id);
+	$in_params=array($user_id);
 	$types="i";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -231,10 +234,10 @@ function create_category($con, $owner_id, $name, $color_scheme_id) {
 	CALL P_CREATE_CATEGORY(?,?,?,@CATEGORY_ID);
 	";
 
-	$params=array($owner_id, $name, $color_scheme_id);
+	$in_params=array($owner_id, $name, $color_scheme_id);
 	$types="isi";
 	$out_params=["@CATEGORY_ID"];
-	$result=execute_query($con, $query, $params, $types, $out_params);
+	$result=execute_query($con, $query, $in_params, $types, $out_params);
 
 	$category_id=$result['@CATEGORY_ID'];
 
@@ -246,10 +249,10 @@ function create_note($con, $title, $description, $user_id) {
 	CALL P_CREATE_NOTE(?,?,?,@NOTE_ID);
 	";
 
-	$params=array($title, $description, $user_id);
+	$in_params=array($title, $description, $user_id);
 	$types="ssi";
 	$out_params=["@NOTE_ID"];
-	$result=execute_query($con, $query, $params, $types, $out_params);
+	$result=execute_query($con, $query, $in_params, $types, $out_params);
 
 	$category_id=$result['@NOTE_ID'];
 
@@ -261,10 +264,10 @@ function create_project($con, $title, $description, $deadline, $user_id) {
 
 	$query = "CALL P_CREATE_PROJECT(?,?,?,?,@PROJECT_ID);";
 
-	$params = array($title, $description, $deadline, $user_id);
+	$in_params = array($title, $description, $deadline, $user_id);
 	$types = "sssi";
 	$out_params = ["@PROJECT_ID"];
-	$result = execute_query($con, $query, $params, $types, $out_params);
+	$result = execute_query($con, $query, $in_params, $types, $out_params);
 
 	$project_id = $result['@PROJECT_ID'];
 
@@ -276,10 +279,10 @@ function create_task($con, $project_id, $blocker, $title, $description, $duratio
 
 	$query = "CALL P_CREATE_TASK(?,?,?,?,?,?,?,@TASK_ID);";
 
-	$params = array($project_id, $blocker, $title, $description, $duration, $deadline, $user_id);
+	$in_params = array($project_id, $blocker, $title, $description, $duration, $deadline, $user_id);
 	$types = "iissisi";
 	$out_params = ["@TASK_ID"];
-	$result = execute_query($con, $query, $params, $types, $out_params);
+	$result = execute_query($con, $query, $in_params, $types, $out_params);
 
 	$task_id = $result['@TASK_ID'];
 
@@ -289,19 +292,19 @@ function create_task($con, $project_id, $blocker, $title, $description, $duratio
 function schedule_task($con, $task_id, $date, $start_time, $end_time, $user_id) {
 	$query = "CALL P_SCHEDULE_TASK(?,?,?,?,?);";
 
-	$params = array($task_id, $date, $start_time, $end_time, $user_id);
+	$in_params = array($task_id, $date, $start_time, $end_time, $user_id);
 	$types = "isssi";
 	$out_params = [];
-	$result = execute_query($con, $query, $params, $types, $out_params);
+	$result = execute_query($con, $query, $in_params, $types, $out_params);
 }
 
 function unschedule_task($con, $id, $user_id) {
 	$query = "CALL P_UNSCHEDULE_TASK(?,?);";
 
-	$params = array($id, $user_id);
+	$in_params = array($id, $user_id);
 	$types = "ii";
 	$out_params = [];
-	$result = execute_query($con, $query, $params, $types, $out_params);
+	$result = execute_query($con, $query, $in_params, $types, $out_params);
 }
 
 function edit_category($con, $category_id, $owner_id, $name, $color_scheme_id) {
@@ -309,21 +312,21 @@ function edit_category($con, $category_id, $owner_id, $name, $color_scheme_id) {
 	CALL P_EDIT_CATEGORY(?,?,?,?);
 	";
 
-	$params=array($category_id, $owner_id, $name, $color_scheme_id);
+	$in_params=array($category_id, $owner_id, $name, $color_scheme_id);
 	$types="iisi";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
 
-function edit_file($con, $file_id, $original_name, $server_name, $extension, $title, $description, $user_id) {
+function edit_file($con, $file_id, $name, $extension, $title, $description, $user_id) {
 	$query="
 	CALL P_EDIT_FILE(?,?,?,?,?,?,?);
 	";
 
-	$params=array($file_id, $original_name, $server_name, $extension, $title, $description, $user_id);
+	$in_params=array($file_id, $name, $extension, $title, $description, $user_id);
 	$types="isssssi";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
@@ -333,9 +336,9 @@ function edit_note($con, $note_id, $title, $description, $user_id) {
 	CALL P_EDIT_NOTE(?,?,?,?);
 	";
 
-	$params=array($note_id, $title, $description, $user_id);
+	$in_params=array($note_id, $title, $description, $user_id);
 	$types="issi";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
@@ -345,9 +348,9 @@ function edit_project($con, $project_id, $title, $description, $deadline, $user_
 	CALL P_EDIT_PROJECT(?,?,?,?,?);
 	";
 
-	$params=array($project_id, $title, $description, $deadline, $user_id);
+	$in_params=array($project_id, $title, $description, $deadline, $user_id);
 	$types="isssi";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
@@ -357,9 +360,9 @@ function edit_task($con, $task_id, $blocker, $title, $description, $duration, $d
 	CALL P_EDIT_TASK(?,?,?,?,?,?,?);
 	";
 
-	$params=array($task_id, $blocker, $title, $description, $duration, $deadline, $user_id);
+	$in_params=array($task_id, $blocker, $title, $description, $duration, $deadline, $user_id);
 	$types="iissssi";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
@@ -369,9 +372,9 @@ function delete_category($con, $category_id, $user_id) {
 	CALL P_DELETE_CATEGORY(?,?);
 	";
 
-	$params=array($category_id, $user_id);
+	$in_params=array($category_id, $user_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
@@ -381,9 +384,9 @@ function delete_file($con, $file_id, $user_id) {
 	CALL P_DELETE_FILE(?,?);
 	";
 
-	$params=array($file_id, $user_id);
+	$in_params=array($file_id, $user_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
@@ -393,9 +396,9 @@ function delete_note($con, $note_id, $user_id) {
 	CALL P_DELETE_NOTE(?,?);
 	";
 
-	$params=array($note_id, $user_id);
+	$in_params=array($note_id, $user_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
@@ -405,9 +408,9 @@ function delete_task($con, $task_id, $project_id, $user_id) {
 	CALL P_DELETE_TASK(?,?,?);
 	";
 
-	$params=array($task_id, $project_id, $user_id);
+	$in_params=array($task_id, $project_id, $user_id);
 	$types="iii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
@@ -417,9 +420,9 @@ function delete_project($con, $project_id, $user_id) {
 	CALL P_DELETE_PROJECT(?,?);
 	";
 
-	$params=array($project_id, $user_id);
+	$in_params=array($project_id, $user_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
@@ -429,22 +432,25 @@ function append_category($con, $category_id, $object_id, $object_type, $user_id)
 	CALL P_APPEND_CATEGORY(?,?,?,?);
 	";
 
-	$params=array($category_id, $object_id, $object_type, $user_id);
+	$in_params=array($category_id, $object_id, $object_type, $user_id);
 	$types="iisi";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
 
-function upload_file ($con, $original_name, $server_name, $extension, $title, $description, $user_id) {
+function upload_file ($con, $s3, $files_bucket, $file, $name, $extension, $title, $description, $user_id) {
+	$file_key = get_next_file_key($con);
+	$minio_key = upload_file_minio($con, $s3, $file, $files_bucket, (string)$file_key);
+
 	$query="
 	CALL P_UPLOAD_FILE(?,?,?,?,?,?,@FILE_ID);
 	";
 
-	$params=array($original_name, $server_name, $extension, $title, $description, $user_id);
+	$in_params=array($name, $extension, $title, $description, $file_key, $user_id);
 	$types="sssssi";
 	$out_params=["@FILE_ID"];
-	$result=execute_query($con, $query, $params, $types, $out_params);
+	$result=execute_query($con, $query, $in_params, $types, $out_params);
 
 	$file_id=$result['@FILE_ID'];
 
@@ -461,9 +467,9 @@ function get_default_category_id($con, $user_id) {
 		OWNER_ID = ?;
 	";
 
-	$params=array($user_id);
+	$in_params=array($user_id);
 	$types="i";
-	$result=execute_query($con, $query, $params, $types)[0]['id'];
+	$result=execute_query($con, $query, $in_params, $types)[0]['id'];
 
 	return $result;
 }
@@ -479,9 +485,9 @@ function get_default_project_id($con, $user_id) {
 		PP.USER_ID = ?;
 	";
 
-	$params=array($user_id);
+	$in_params=array($user_id);
 	$types="i";
-	$result=execute_query($con, $query, $params, $types)[0]['id'];
+	$result=execute_query($con, $query, $in_params, $types)[0]['id'];
 
 	return $result;
 }
@@ -501,9 +507,9 @@ function get_category_info($con, $category_id, $user_id) {
 		C.OWNER_ID = ?;
 	";
 
-	$params=array($category_id, $user_id);
+	$in_params=array($category_id, $user_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types)[0];
+	$result=execute_query($con, $query, $in_params, $types)[0];
 
 	return $result;
 }
@@ -521,9 +527,9 @@ function get_color_schemes($con) {
 		ID;
 	";
 
-	$params=array();
+	$in_params=array();
 	$types="";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -532,11 +538,11 @@ function get_files($con, $user_id) {
 	$query="
 	SELECT 
 		F.ID AS id,
-		F.ORIGINAL_NAME AS original_name,
-		F.SERVER_NAME AS server_name,
+		F.NAME AS name,
 		F.EXTENSION AS extension,
 		F.TITLE AS title,
 		F.DESCRIPTION AS description,
+		F.MINIO_KEY AS minio_key,
 		F.UPLOADED_ON AS uploaded_on,
 		CASE 
 		WHEN INSTR(GROUP_CONCAT(DISTINCT CS.BACKGROUND_COLOR ORDER BY CS.BACKGROUND_COLOR SEPARATOR ', '), ',') > 0 
@@ -554,14 +560,14 @@ function get_files($con, $user_id) {
 		FP.USER_ID = ? AND
 		FP.PRIVILEGE = 'VIEW'
 	GROUP BY
-		F.ID, F.ORIGINAL_NAME, F.SERVER_NAME, F.EXTENSION, F.TITLE, F.DESCRIPTION, F.UPLOADED_ON
+		F.ID, F.NAME, F.EXTENSION, F.TITLE, F.DESCRIPTION, F.UPLOADED_ON
 	ORDER BY
 		F.UPLOADED_ON DESC;
 	";
 
-	$params=array($user_id);
+	$in_params=array($user_id);
 	$types="i";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -595,9 +601,9 @@ function get_notes($con, $user_id) {
 
 	";
 
-	$params=array($user_id);
+	$in_params=array($user_id);
 	$types="i";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -630,9 +636,9 @@ function get_projects($con, $user_id) {
 		P.ID;
 	";
 
-	$params = array($user_id);
+	$in_params = array($user_id);
 	$types = "i";
-	$result = execute_query($con, $query, $params, $types);
+	$result = execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -642,12 +648,12 @@ function get_files_from_category($con, $user_id, $category_id) {
 	$query="
 	SELECT 
 		F.ID AS id,
-		F.ORIGINAL_NAME AS original_name,
-		F.SERVER_NAME AS server_name,
+		F.NAME AS name,
 		F.EXTENSION AS extension,
 		F.TITLE AS title,
 		F.DESCRIPTION AS description,
-		F.UPLOADED_ON AS uploaded_on
+		F.UPLOADED_ON AS uploaded_on,
+		F.MINIO_KEY AS minio_key
 	FROM 
 		FILES F 
 		INNER JOIN FILE_PRIVILEGES FP ON F.ID = FP.FILE_ID
@@ -660,9 +666,9 @@ function get_files_from_category($con, $user_id, $category_id) {
 		F.UPLOADED_ON;
 	";
 
-	$params=array($user_id, $category_id);
+	$in_params=array($user_id, $category_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -686,9 +692,9 @@ function get_notes_from_category($con, $user_id, $category_id) {
 		N.CREATED_ON;
 	";
 
-	$params=array($user_id, $category_id);
+	$in_params=array($user_id, $category_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -714,9 +720,9 @@ function get_projects_from_category($con, $user_id, $category_id) {
 		P.ID;
 	";
 
-	$params=array($user_id, $category_id);
+	$in_params=array($user_id, $category_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -725,12 +731,12 @@ function get_file_info($con, $file_id, $user_id) {
 	$query="
 	SELECT 
 		F.ID AS id,
-		F.ORIGINAL_NAME AS original_name,
-		F.SERVER_NAME AS server_name,
+		F.NAME AS name,
 		F.EXTENSION AS extension,
 		F.TITLE AS title,
 		F.DESCRIPTION AS description,
-		F.UPLOADED_ON AS uploaded_on
+		F.UPLOADED_ON AS uploaded_on,
+		F.MINIO_KEY AS minio_key
 	FROM 
 		FILES F INNER JOIN FILE_PRIVILEGES FP ON F.ID = FP.FILE_ID
 	WHERE
@@ -741,9 +747,9 @@ function get_file_info($con, $file_id, $user_id) {
 		F.ID;
 	";
 
-	$params=array($file_id, $user_id);
+	$in_params=array($file_id, $user_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result[0];
 }
@@ -765,9 +771,9 @@ function get_note_info($con, $note_id, $user_id) {
 		N.ID;
 	";
 
-	$params=array($note_id, $user_id);
+	$in_params=array($note_id, $user_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result[0];
 }
@@ -794,9 +800,9 @@ function get_project_info($con, $project_id, $user_id) {
 		P.ID;
 	";
 
-	$params = array($project_id, $user_id);
+	$in_params = array($project_id, $user_id);
 	$types = "ii";
-	$result = execute_query($con, $query, $params, $types);
+	$result = execute_query($con, $query, $in_params, $types);
 
 	return $result[0];
 }
@@ -824,9 +830,9 @@ function get_task_info($con, $task_id, $user_id) {
 		T.ID;
 	";
 
-	$params = array($task_id, $user_id);
+	$in_params = array($task_id, $user_id);
 	$types = "ii";
-	$result = execute_query($con, $query, $params, $types);
+	$result = execute_query($con, $query, $in_params, $types);
 
 	return $result[0];
 }
@@ -844,9 +850,9 @@ function get_file_categories($con, $file_id, $user_id) {
 		C.ID;
 	";
 
-	$params=array($user_id, $file_id);
+	$in_params=array($user_id, $file_id);
 	$types="ii";
-	$categories=execute_query($con, $query, $params, $types);
+	$categories=execute_query($con, $query, $in_params, $types);
 
 	$ids = array();
 	foreach($categories as $category)
@@ -868,9 +874,9 @@ function get_note_categories($con, $note_id, $user_id) {
 		C.ID;
 	";
 
-	$params=array($user_id, $note_id);
+	$in_params=array($user_id, $note_id);
 	$types="ii";
-	$categories=execute_query($con, $query, $params, $types);
+	$categories=execute_query($con, $query, $in_params, $types);
 
 	$ids = array();
 	foreach($categories as $category)
@@ -892,9 +898,9 @@ function get_project_categories($con, $project_id, $user_id) {
 		C.ID;
 	";
 
-	$params=array($user_id, $project_id);
+	$in_params=array($user_id, $project_id);
 	$types="ii";
-	$categories=execute_query($con, $query, $params, $types);
+	$categories=execute_query($con, $query, $in_params, $types);
 
 	$ids = array();
 	foreach($categories as $category)
@@ -915,9 +921,9 @@ function unappend_categories($con, $object_id, $object_type, $user_id) {
 		OC." . $object_type . "_ID = ?;
 	";
 
-	$params=array($user_id, $object_id);
+	$in_params=array($user_id, $object_id);
 	$types="ii";
-	$categories=execute_query($con, $query, $params, $types);
+	$categories=execute_query($con, $query, $in_params, $types);
 
 	$ids = array();
 	foreach($categories as $category)
@@ -931,9 +937,9 @@ function unattach_files_from_note($con, $note_id, $user_id) {
 	CALL P_UNATTACH_FILES_FROM_NOTE(?,?);
 	";
 
-	$params=array($note_id, $user_id);
+	$in_params=array($note_id, $user_id);
 	$types="ii";
-	execute_query($con, $query, $params, $types);
+	execute_query($con, $query, $in_params, $types);
 }
 
 function unattach_notes_from_project($con, $project_id, $user_id) {
@@ -941,9 +947,9 @@ function unattach_notes_from_project($con, $project_id, $user_id) {
 	CALL P_UNATTACH_NOTES_FROM_PROJECT(?,?);
 	";
 
-	$params = array($project_id, $user_id);
+	$in_params = array($project_id, $user_id);
 	$types = "ii";
-	execute_query($con, $query, $params, $types);
+	execute_query($con, $query, $in_params, $types);
 }
 
 function unattach_notes_from_task($con, $task_id, $user_id) {
@@ -951,9 +957,9 @@ function unattach_notes_from_task($con, $task_id, $user_id) {
 	CALL P_UNATTACH_NOTES_FROM_TASK(?,?);
 	";
 
-	$params = array($task_id, $user_id);
+	$in_params = array($task_id, $user_id);
 	$types = "ii";
-	execute_query($con, $query, $params, $types);
+	execute_query($con, $query, $in_params, $types);
 }
 
 function unattach_note_from_project($con, $note, $project_id, $user_id) {
@@ -961,9 +967,9 @@ function unattach_note_from_project($con, $note, $project_id, $user_id) {
 	CALL P_UNATTACH_NOTE_FROM_PROJECT(?,?,?);
 	";
 
-	$params = array($note, $project_id, $user_id);
+	$in_params = array($note, $project_id, $user_id);
 	$types = "iii";
-	execute_query($con, $query, $params, $types);
+	execute_query($con, $query, $in_params, $types);
 }
 
 function unattach_note_from_task($con, $note, $task_id, $user_id) {
@@ -971,9 +977,9 @@ function unattach_note_from_task($con, $note, $task_id, $user_id) {
 	CALL P_UNATTACH_NOTE_FROM_TASK(?,?,?);
 	";
 
-	$params = array($note, $task_id, $user_id);
+	$in_params = array($note, $task_id, $user_id);
 	$types = "iii";
-	execute_query($con, $query, $params, $types);
+	execute_query($con, $query, $in_params, $types);
 }
 
 function unattach_file_from_note($con, $file_id, $note_id, $user_id) {
@@ -981,9 +987,9 @@ function unattach_file_from_note($con, $file_id, $note_id, $user_id) {
 	CALL P_UNATTACH_FILE_FROM_NOTE(?,?,?);
 	";
 
-	$params=array($file_id, $note_id, $user_id);
+	$in_params=array($file_id, $note_id, $user_id);
 	$types="iii";
-	execute_query($con, $query, $params, $types);
+	execute_query($con, $query, $in_params, $types);
 }
 
 function attach_file_to_note($con, $file_id, $note_id, $user_id) {
@@ -991,9 +997,9 @@ function attach_file_to_note($con, $file_id, $note_id, $user_id) {
 	CALL P_ATTACH_FILE_TO_NOTE(?,?,?);
 	";
 
-	$params=array($file_id, $note_id, $user_id);
+	$in_params=array($file_id, $note_id, $user_id);
 	$types="iii";
-	execute_query($con, $query, $params, $types);
+	execute_query($con, $query, $in_params, $types);
 }
 
 function attach_note_to_project($con, $note_id, $project_id, $user_id) {
@@ -1001,9 +1007,9 @@ function attach_note_to_project($con, $note_id, $project_id, $user_id) {
 	CALL P_ATTACH_NOTE_TO_PROJECT(?,?,?);
 	";
 
-	$params=array($note_id, $project_id, $user_id);
+	$in_params=array($note_id, $project_id, $user_id);
 	$types="iii";
-	execute_query($con, $query, $params, $types);
+	execute_query($con, $query, $in_params, $types);
 }
 
 function attach_note_to_task($con, $note_id, $task_id, $user_id) {
@@ -1011,48 +1017,83 @@ function attach_note_to_task($con, $note_id, $task_id, $user_id) {
 	CALL P_ATTACH_NOTE_TO_TASK(?,?,?);
 	";
 
-	$params=array($note_id, $task_id, $user_id);
+	$in_params=array($note_id, $task_id, $user_id);
 	$types="iii";
-	execute_query($con, $query, $params, $types);
+	execute_query($con, $query, $in_params, $types);
 }
 
-function save_file($file, $destination_directory) {
+function get_next_file_key($con) {
+	$query="
+	SELECT 
+		NEXTVAL(S_FILE_KEY) AS id
+	;
+	";
+
+	$in_params=array();
+	$types="";
+	$id=execute_query($con, $query, $in_params, $types);
+
+	return $id[0]['id'];
+}
+
+function upload_file_minio($con, $s3, $file, $files_bucket, $file_key) {
 	// File information
 	$file_info = pathinfo($file['name']);
 	$file_name = $file_info['filename'];
 	$file_extension = $file_info['extension'];
-
-	// Get the target destination for the file.
-	$file_destination;
 	$file_tmp_name = $file['tmp_name'];
-	$next_file_number='';
-	if($file_name) {
-		$files_in_directory = glob($destination_directory . '*.*');
-		$file_numbers = array_map(
-				function($file) {
-				return intval(pathinfo($file, PATHINFO_FILENAME));
-				},
-				$files_in_directory
-				);
-		$next_file_number = empty($file_numbers) ? 1 : max($file_numbers) + 1;
 
-		$file_destination = $destination_directory . $next_file_number . '.' . $file_extension;
+	$tmpFilePath = $_FILES['file']['tmp_name'];
+	$fileStream = fopen($tmpFilePath, 'r');
+
+	// Send a PutObject request and get the result object.
+	$insert = $s3->putObject([
+	  'Bucket' => $files_bucket,
+	  'Key'    => $file_key,
+	  'Body'   => $fileStream
+	]);
+	fclose($fileStream);
+}
+
+function get_minio_file_contents($s3, $files_bucket, $file_key) {
+    $object = $s3->getObject([
+        'Bucket' => $files_bucket,
+        'Key'    => $file_key
+    ]);
+
+    $body = $object->get('Body');
+    $contentType = $object->get('ContentType');
+
+    header("Content-Type: $contentType");
+    return $body;
+}
+
+function get_file_minio($con, $user_id, $file_id, $s3, $files_bucket) {
+	$query="
+	CALL P_CHECK_PRIVILEGES(?,?,?,?,@IS_VIEWER);
+	";
+
+	$in_params=array($user_id, $file_id, 'FILE', 'VIEW');
+	$types="iiss";
+	$out_params=["@IS_VIEWER"];
+	$result=execute_query($con, $query, $in_params, $types, $out_params);
+
+	$is_viewer=$result['@IS_VIEWER'];
+
+
+	if($is_viewer) {
+		$minio_key = (string)get_file_info($con, $file_id, $user_id)['minio_key'];
+		return get_minio_file_contents($s3, $files_bucket, $minio_key);
 	}
-
-	// Move the uploaded file to the target destination.
-	if(move_uploaded_file($file_tmp_name, $file_destination)) {
-		return $next_file_number;
-	} else {
+	else 
 		return false;
-	}
 }
 
 function get_attached_files_to_note($con, $note_id, $user_id) {
 	$query="
 	SELECT 
 		F.ID AS id,
-		F.ORIGINAL_NAME AS original_name,
-		F.SERVER_NAME AS server_name,
+		F.NAME AS name,
 		F.EXTENSION AS extension,
 		F.TITLE AS title,
 		F.DESCRIPTION AS description,
@@ -1075,14 +1116,14 @@ function get_attached_files_to_note($con, $note_id, $user_id) {
 		NF.NOTE_ID = ? AND
 		FP.PRIVILEGE = 'VIEW'
 	GROUP BY
-		F.ID, F.ORIGINAL_NAME, F.SERVER_NAME, F.EXTENSION, F.TITLE, F.DESCRIPTION, F.UPLOADED_ON
+		F.ID, F.NAME, F.EXTENSION, F.TITLE, F.DESCRIPTION, F.UPLOADED_ON
 	ORDER BY
 		F.ID;
 	";
 
-	$params=array($user_id, $note_id);
+	$in_params=array($user_id, $note_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -1117,9 +1158,9 @@ function get_attached_notes_to_project($con, $project_id, $user_id) {
 		N.ID;
 	";
 
-	$params = array($user_id, $project_id);
+	$in_params = array($user_id, $project_id);
 	$types = "ii";
-	$result = execute_query($con, $query, $params, $types);
+	$result = execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -1154,9 +1195,9 @@ function get_attached_notes_to_task($con, $task_id, $user_id) {
 			N.ID;
 	";
 
-	$params = array($user_id, $task_id);
+	$in_params = array($user_id, $task_id);
 	$types = "ii";
-	$result = execute_query($con, $query, $params, $types);
+	$result = execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -1190,9 +1231,9 @@ function get_project_tasks($con, $project_id, $user_id) {
 		T.PLACE ASC;
 	";
 
-	$params = array($user_id, $project_id);
+	$in_params = array($user_id, $project_id);
 	$types = "ii";
-	$result = execute_query($con, $query, $params, $types);
+	$result = execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -1232,9 +1273,9 @@ function get_scheduled_tasks($con, $date, $user_id) {
 		S.`DATE` = ?;	
 	";
 
-	$params = array($user_id, $date);
+	$in_params = array($user_id, $date);
 	$types = "is";
-	$result = execute_query($con, $query, $params, $types);
+	$result = execute_query($con, $query, $in_params, $types);
 
 	return $result;
 }
@@ -1250,9 +1291,9 @@ function get_user_timezone($con, $user_id) {
 	;
 	";
 
-	$params = array($user_id);
+	$in_params = array($user_id);
 	$types = "i";
-	$result = execute_query($con, $query, $params, $types);
+	$result = execute_query($con, $query, $in_params, $types);
 
 	return $result[0]['timezone'];
 }
@@ -1262,9 +1303,9 @@ function move_task($con, $project_id, $task_id, $new_place, $user_id) {
 	CALL P_MOVE_TASK(?,?,?,?);
 	";
 
-	$params=array($project_id, $task_id, $new_place, $user_id);
+	$in_params=array($project_id, $task_id, $new_place, $user_id);
 	$types="iiii";
-	execute_query($con, $query, $params, $types);
+	execute_query($con, $query, $in_params, $types);
 }
 
 function complete_task($con, $task_id, $user_id) {
@@ -1272,9 +1313,9 @@ function complete_task($con, $task_id, $user_id) {
 	CALL P_COMPLETE_TASK(?,?);
 	";
 
-	$params=array($task_id, $user_id);
+	$in_params=array($task_id, $user_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }
@@ -1284,9 +1325,9 @@ function flip_hide_completed_tasks_of_project($con, $project_id, $user_id) {
 	CALL P_FLIP_HIDE_COMPLETED_TASKS_OF_PROJECT(?,?);
 	";
 
-	$params=array($project_id, $user_id);
+	$in_params=array($project_id, $user_id);
 	$types="ii";
-	$result=execute_query($con, $query, $params, $types);
+	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
 }

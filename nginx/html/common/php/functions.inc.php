@@ -1089,6 +1089,46 @@ function get_file_minio($con, $user_id, $file_id, $s3, $files_bucket) {
 		return false;
 }
 
+function delete_minio_object($s3, $files_bucket, $file_key) {
+    try {
+        $result = $s3->deleteObject([
+            'Bucket' => $files_bucket,
+            'Key'    => $file_key
+        ]);
+        return true; // deletion was successful
+    } catch (Aws\S3\Exception\S3Exception $e) {
+        return false; // deletion failed
+    }
+}
+
+function delete_file_minio($con, $user_id, $file_id, $s3, $files_bucket) {
+	$query="
+	CALL P_CHECK_PRIVILEGES(?,?,?,?,@IS_EDITOR);
+	";
+
+	$in_params=array($user_id, $file_id, 'FILE', 'EDIT');
+	$types="iiss";
+	$out_params=["@IS_EDITOR"];
+	$result=execute_query($con, $query, $in_params, $types, $out_params);
+
+	$is_editor=$result['@IS_EDITOR'];
+
+	if($is_editor) {
+		$minio_key = (string)get_file_info($con, $file_id, $user_id)['minio_key'];
+		$minio_delete_success=delete_minio_object($s3, $files_bucket, $minio_key);
+		if($minio_delete_success) {
+			delete_file($con, $file_id,  $_SESSION['user-details']['id']);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}
+}
+
 function get_attached_files_to_note($con, $note_id, $user_id) {
 	$query="
 	SELECT 

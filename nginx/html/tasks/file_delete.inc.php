@@ -4,7 +4,7 @@ require 'includes/php_auth_check.php';
 
 $id =$_GET['id'];
 
-if(delete_file($con, $id,  $_SESSION['user-details']['id'])) {
+if(delete_file_minio($con, $_SESSION['user-details']['id'], $id, $s3, $files_bucket)) {
 	header("location: /tasks/files.php?status=success-file-deleted");
 	exit;
 }

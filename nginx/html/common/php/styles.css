@@ -3,6 +3,11 @@ html, body {
 	margin: 0;
 }
 
+th, td, tr {
+	padding: 5px;
+	border: 1px solid black;
+}
+
 .cust-dark1 {
 	background-color: #2A2A2A;
 }

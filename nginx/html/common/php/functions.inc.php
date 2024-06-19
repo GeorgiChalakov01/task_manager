@@ -1,5 +1,5 @@
 <?php
-require_once '../common/composer/vendor/autoload.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/common/composer/vendor/autoload.php';
 
 
 function execute_query($con, $query, $in_params, $types, $out_params = null) {
@@ -73,6 +73,29 @@ function get_languages($con) {
 
 	$in_params=array();
 	$types="";
+	$result=execute_query($con, $query, $in_params, $types);
+
+	return $result;
+}
+
+function get_other_users($con, $user_id) {
+	$query="
+	SELECT 
+		ID AS id,
+		FIRST_NAME AS first_name,
+		LAST_NAME AS last_name,
+		USERNAME AS username,
+		--EMAIL AS email,
+		LANGUAGE_ISO_CODE as language_iso_code,
+		TIMEZONE AS timezone
+	FROM 
+		USERS
+	WHERE
+		ID <> ?
+	";
+
+	$in_params=array($user_id);
+	$types="i";
 	$result=execute_query($con, $query, $in_params, $types);
 
 	return $result;
@@ -377,6 +400,16 @@ function delete_category($con, $category_id, $user_id) {
 	$result=execute_query($con, $query, $in_params, $types);
 
 	return true;
+}
+
+function delete_object_privileges($con, $object_id, $object_type, $user_id) {
+	$query="
+	CALL P_DELETE_OBJECT_PRIVILEGES(?,?,?);
+	";
+
+	$in_params=array($object_id, $object_type, $user_id);
+	$types="isi";
+	$result=execute_query($con, $query, $in_params, $types);
 }
 
 function delete_file($con, $file_id, $user_id) {
@@ -1068,12 +1101,13 @@ function get_minio_file_contents($s3, $files_bucket, $file_key) {
     return $body;
 }
 
-function check_privileges($con, $user_id, $file_id, $object_type, $privilege) {
+function check_privileges($con, $user_id, $object_id, $object_type, $privilege) {
+	$object_type=strtoupper($object_type);
 	$query="
 	CALL P_CHECK_PRIVILEGES(?,?,?,?,@HAS_PRIVILEGE);
 	";
 
-	$in_params=array($user_id, $file_id, $object_type, $privilege);
+	$in_params=array($user_id, $object_id, $object_type, $privilege);
 	$types="iiss";
 	$out_params=["@HAS_PRIVILEGE"];
 	$result=execute_query($con, $query, $in_params, $types, $out_params);
@@ -1369,4 +1403,47 @@ function time_to_minutes($time) {
 	$minutes = (int) $minutes;
 	$seconds = (int) $seconds;
 	return ($hours * 60) + $minutes + ($seconds / 60);
+}
+
+function get_object_privileges ($con, $object_type, $object_id, $user_id) {
+	if(check_privileges($con, $user_id, $object_id, $object_type, 'VIEW')) {
+		$object_type_upper = strtoupper($object_type);
+		$object_type_lower = strtolower($object_type);
+
+		$object_types=array('CATEGORY', 'FILE', 'PROJECT', 'TASK', 'NOTE');
+		if(!in_array($object_type, $object_types)) return false;
+		$query="
+		SELECT
+			USER_ID AS user_id,
+			" . $object_type_upper . "_ID AS " . $object_type_lower . "_id,
+			PRIVILEGE AS privilege
+		FROM
+			" .$object_type_upper . "_PRIVILEGES
+		WHERE
+			" . $object_type_upper . "_ID = ? AND
+			USER_ID <> ?
+		;";
+
+		$in_params=array($object_id, $user_id);
+		$types="ii";
+		$result=execute_query($con, $query, $in_params, $types);
+
+		return $result;
+	}
+	else
+		return false;
+}
+
+function grant_access($con, $grantee_id, $object_id, $privilege, $object_type, $user_id) {
+	if(check_privileges($con, $user_id, $object_id, $object_type, 'EDIT')) {
+		$query="
+		CALL P_GRANT_ACCESS(?,?,?,?);
+		";
+
+		$in_params=array($grantee_id, $object_id, $privilege, $object_type);
+		$types="iiss";
+		$result=execute_query($con, $query, $in_params, $types);
+	}
+	else
+		return false;
 }

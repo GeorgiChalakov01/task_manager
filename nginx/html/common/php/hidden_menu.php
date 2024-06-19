@@ -7,6 +7,7 @@
 	<a id="complete" class="btn btn-secondary" style="background-color: blue; display: none;"><?php echo $phrases['task-view-mark-completed'];?></a>
 	<a id="unattach" href="" class="btn" style="background-color: #7CB9E8; display: none;"><?php echo $phrases['categories-hidden-menu-unattach'];?></a>
 	<button id="move" class="btn" style="background-color: #7CB9E8; color: white; width: 100%; padding: 12px 16px; display: none;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
+	<button id="share" class="btn" style="background-color: #7CB9E8; color: white; width: 100%; padding: 12px 16px; display: none;"><?php echo $phrases['categories-hidden-menu-share'];?></button>
 	<a id="edit" href="" class="btn" style="background-color: green; display: none;"><?php echo $phrases['categories-hidden-menu-edit'];?></a>
 	<a id="delete" href="" class="btn" style="background-color: red; display: none;"><?php echo $phrases['categories-hidden-menu-delete'];?></a>
 	<a id="schedule" class="btn" style="background-color: blue; display: none;"><?php echo $phrases['hidden-menu-schedule'];?></a>
@@ -17,6 +18,49 @@
 	<p><?php echo $phrases['categories-hidden-move-form-question'];?></p>
 	<input id="move_form_input" type="number" min="1" name="new_place"/>
 	<button type="submit" id="move" class="btn" style="background-color: #7CB9E8; color: white;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
+</form>
+
+<form action="" method="post" id="share_form" class="hidden-menu">
+	<p><?php echo $phrases['categories-hidden-share-form-text'];?>:</p>
+	<div style="max-height: 300px; min-height: 100px; overflow-y: scroll;">
+		<table>
+			<tr>
+				<th><?php echo $phrases['categories-hidden-viewer'];?></th>
+				<th><?php echo $phrases['categories-hidden-editor'];?></th>
+				<th><?php echo $phrases['categories-hidden-first-name'];?></th>
+				<th><?php echo $phrases['categories-hidden-last-name'];?></th>
+				<th><?php echo $phrases['categories-hidden-username'];?></th>
+			</tr>
+			<?php
+			$users = get_other_users($con, $_SESSION['user-details']['id']);
+			foreach($users as $user) {
+				echo "
+				<tr>
+					<td>
+						<input 
+							type='checkbox' 
+							id='user_checkbox_view_{$user['id']}'
+							name='user_checkbox_view_{$user['id']}'
+						/>
+					</td>
+					<td>
+						<input 
+							type='checkbox' 
+							id='user_checkbox_edit_{$user['id']}'
+							name='user_checkbox_edit_{$user['id']}'
+						/>
+					</td>
+					<td>{$user['first_name']}</td>
+					<td>{$user['last_name']}</td>
+					<td>{$user['username']}</td>
+				</tr>
+				";
+			}
+			?>
+		</table>
+	</div>
+	<br>
+	<button type="submit" id="share" class="btn" style="background-color: #7CB9E8; color: white;"><?php echo $phrases['categories-hidden-menu-share'];?></button>
 </form>
 
 <form action="" method="post" id="schedule_form" class="hidden-menu">
@@ -43,6 +87,32 @@
 <?php require 'includes/note_chooser.php';?>
 
 <script>
+	const viewCheckboxes = document.querySelectorAll('input[name^="user_checkbox_view_"]');
+	const editCheckboxes = document.querySelectorAll('input[name^="user_checkbox_edit_"]');
+
+	viewCheckboxes.forEach((viewCheckbox) => {
+		const userId = viewCheckbox.id.replace('user_checkbox_view_', '');
+		const editCheckbox = document.getElementById(`user_checkbox_edit_${userId}`);
+
+		viewCheckbox.addEventListener('change', () => {
+			if (!viewCheckbox.checked && editCheckbox.checked) {
+				editCheckbox.checked = false;
+			}
+		});
+	});
+
+	editCheckboxes.forEach((editCheckbox) => {
+		const userId = editCheckbox.id.replace('user_checkbox_edit_', '');
+		const viewCheckbox = document.getElementById(`user_checkbox_view_${userId}`);
+
+		editCheckbox.addEventListener('change', () => {
+			if (editCheckbox.checked) {
+				viewCheckbox.checked = true;
+			}
+		});
+	});
+</script>
+<script>
 var url_params = new URLSearchParams(window.location.search);
 
 var overlay = document.getElementById('overlay');
@@ -53,6 +123,7 @@ var schedule_form = document.getElementById('schedule_form');
 var schedule_form_start_input = document.getElementById('schedule_form_start');
 var schedule_form_end_input = document.getElementById('schedule_form_end');
 var note_chooser = document.getElementById("note_chooser");
+var share_form = document.getElementById('share_form');
 
 
 var open_btn = document.getElementById('open');
@@ -63,6 +134,7 @@ var edit_btn = document.getElementById('edit');
 var delete_btn = document.getElementById('delete');
 var schedule_btn = document.getElementById('schedule');
 var unschedule_btn = document.getElementById('unschedule');
+var share_btn = document.getElementById('share');
 
 function show_menu(id, object_type, id2 = null) {
 	// Show mark completed/non-completed correctly.
@@ -82,11 +154,42 @@ function show_menu(id, object_type, id2 = null) {
 		delete_btn.href = 'category_delete.inc.php?id=' + id;
 	}
 	else if(object_type === 'file'){
+		share_btn.style.display = 'block';
 		edit_btn.style.display = 'block';
 		delete_btn.style.display = 'block';
 
 		edit_btn.href = "file_edit.php?id=" + id;
 		delete_btn.href = "file_delete.inc.php?id=" + id;
+
+		share_btn.onclick = function() {
+			menu.style.display = 'none';
+
+			// Uncheck all checkboxes
+			const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+			for (let i = 0; i < checkboxes.length; i++) {
+				checkboxes[i].checked = false;
+			}
+
+			// Check the right privilege checkboxes
+			fetch('/tasks/get_object_privileges.php?object_id=' + id + '&object_type=' + object_type)
+				.then(response => response.json())
+				.then(data => {
+					data.forEach(item => {
+						if(item.file_id === id){
+							if (item.privilege === 'VIEW') {
+								document.getElementById(`user_checkbox_view_${item.user_id}`).checked = true;
+							} else if (item.privilege === 'EDIT') {
+								document.getElementById(`user_checkbox_edit_${item.user_id}`).checked = true;
+							}
+						}
+					});
+				});
+
+			share_form.style.display = 'block';
+
+			share_form.action = "object_change_privileges.php?id=" + id + "&type=" + object_type;
+		};
 	}
 	else if(object_type === 'attached_file'){
 		unattach_btn.style.display = 'block';
@@ -208,13 +311,13 @@ function show_note_chooser() {
 
 window.onclick = function(event) {
 	if (event.target.matches('.overlay')) {
-		if (menu.style.display === "block" || move_form.style.display === "block" || note_chooser.style.display === 'block' || schedule_form.style.display === "block") {
+		if (menu.style.display === "block" || move_form.style.display === "block" || note_chooser.style.display === 'block' || schedule_form.style.display === "block" || share_form.style.display === "block") {
 			overlay.style.display = "none";
 			menu.style.display = "none";
 			move_form.style.display = "none";
 			note_chooser.style.display = 'none';
 			schedule_form.style.display = 'none';
-
+			share_form.style.display = 'none';
 
 			open_btn.style.display = "none";
 			move_btn.style.display = "none";
@@ -224,6 +327,7 @@ window.onclick = function(event) {
 			delete_btn.style.display = "none";
 			schedule_btn.style.display = "none";
 			unschedule_btn.style.display = "none";
+			share_btn.style.display = "none";
 		}
 	}
 }

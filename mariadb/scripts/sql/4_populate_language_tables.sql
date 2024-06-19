@@ -162,6 +162,27 @@ INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-fro
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-menu-move", "Move");
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-menu-move", "Премести");
 
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-menu-share", "Share");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-menu-share", "Споделяне");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-share-form-text", "Share with");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-share-form-text", "Споделяне с");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-viewer", "Viewer");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-viewer", "Четене");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-editor", "Editor");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-editor", "Писане");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-first-name", "First Name");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-first-name", "Име");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-last-name", "Last Name");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-last-name", "Фамилия");
+
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-username", "Username");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-username", "Потребителско Име");
+
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-menu-open", "Open");
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-menu-open", "Отвори");
 

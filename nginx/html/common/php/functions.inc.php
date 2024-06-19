@@ -1415,7 +1415,7 @@ function get_object_privileges ($con, $object_type, $object_id, $user_id) {
 		$query="
 		SELECT
 			USER_ID AS user_id,
-			" . $object_type_upper . "_ID AS " . $object_type_lower . "_id,
+			" . $object_type_upper . "_ID AS object_id,
 			PRIVILEGE AS privilege
 		FROM
 			" .$object_type_upper . "_PRIVILEGES
@@ -1444,6 +1444,7 @@ function grant_access($con, $grantee_id, $object_id, $privilege, $object_type, $
 		$types="iiss";
 		$result=execute_query($con, $query, $in_params, $types);
 	}
-	else
+	else {
 		return false;
+	}
 }

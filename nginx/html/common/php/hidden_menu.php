@@ -6,7 +6,7 @@
 	<a id="open" href="" class="btn btn-secondary" style="display: none;"><?php echo $phrases['categories-hidden-menu-open'];?></a>
 	<a id="complete" class="btn btn-secondary" style="background-color: blue; display: none;"><?php echo $phrases['task-view-mark-completed'];?></a>
 	<a id="unattach" href="" class="btn" style="background-color: #7CB9E8; display: none;"><?php echo $phrases['categories-hidden-menu-unattach'];?></a>
-	<button id="move" class="btn" style="background-color: #7CB9E8; color: white; width: 100%; padding: 12px 16px; display: none;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
+	<button id="move" class="btn" style="background-color: #7CB9E8; color: white; width: 100%; padding: 12px 16px; display: none; margin-bottom: 9px;"><?php echo $phrases['categories-hidden-menu-move'];?></button>
 	<button id="share" class="btn" style="background-color: #7CB9E8; color: white; width: 100%; padding: 12px 16px; display: none;"><?php echo $phrases['categories-hidden-menu-share'];?></button>
 	<a id="edit" href="" class="btn" style="background-color: green; display: none;"><?php echo $phrases['categories-hidden-menu-edit'];?></a>
 	<a id="delete" href="" class="btn" style="background-color: red; display: none;"><?php echo $phrases['categories-hidden-menu-delete'];?></a>
@@ -69,16 +69,16 @@
 			<td colspan="2" class="text-center"><?php echo $phrases['schedule-from-question'];?></td>
 		</tr>
 		<tr>
-			<td class="text-center"><?php echo $phrases['schedule-from-start'];?></td>
+			<td class="text-center"><?php echo $phrases['schedule-form-start'];?></td>
 			<td class="text-center"><input id="start_time" type="time" name="start_time"/></td>
 		</tr>
 		<tr>
-			<td class="text-center"><?php echo $phrases['schedule-from-end'];?></td>
+			<td class="text-center"><?php echo $phrases['schedule-form-end'];?></td>
 			<td class="text-center"><input id="end_time" type="time" name="end_time"/></td>
 		</tr>
 		<tr>
 			<td colspan="2" class="text-center">
-				<button type="submit" id="submit" class="btn btn-primary" style="background-color: #7CB9E8; color: white;"><?php echo $phrases['schedule-from-submit'];?></button>
+				<button type="submit" id="submit" class="btn btn-primary" style="background-color: #7CB9E8; color: white;"><?php echo $phrases['schedule-form-submit'];?></button>
 			</td>
 		</tr>
 	</table>
@@ -136,6 +136,29 @@ var schedule_btn = document.getElementById('schedule');
 var unschedule_btn = document.getElementById('unschedule');
 var share_btn = document.getElementById('share');
 
+function load_privileges(id, object_type) {
+	// Uncheck all checkboxes
+	const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+	for (let i = 0; i < checkboxes.length; i++) {
+		checkboxes[i].checked = false;
+	}
+
+	fetch('/tasks/get_object_privileges.php?object_id=' + id + '&object_type=' + object_type)
+		.then(response => response.json())
+		.then(data => {
+			data.forEach(item => {
+				if(item.object_id === id){
+					if (item.privilege === 'VIEW') {
+						document.getElementById(`user_checkbox_view_${item.user_id}`).checked = true;
+					} else if (item.privilege === 'EDIT') {
+						document.getElementById(`user_checkbox_edit_${item.user_id}`).checked = true;
+					}
+				}
+			});
+		});
+}
+
 function show_menu(id, object_type, id2 = null) {
 	// Show mark completed/non-completed correctly.
 	<?php 
@@ -145,6 +168,14 @@ function show_menu(id, object_type, id2 = null) {
 				complete_btn.innerHTML = '{$phrases['task-view-mark-non-completed']}';";
 		}
 	?>
+
+
+	share_btn.onclick = function() {
+		menu.style.display = 'none';
+		load_privileges(id, object_type);
+		share_form.style.display = 'block';
+		share_form.action = "object_change_privileges.php?id=" + id + "&type=" + object_type;
+	};
 
 	if(object_type === 'category'){
 		edit_btn.style.display = 'block';
@@ -160,38 +191,9 @@ function show_menu(id, object_type, id2 = null) {
 
 		edit_btn.href = "file_edit.php?id=" + id;
 		delete_btn.href = "file_delete.inc.php?id=" + id;
-
-		share_btn.onclick = function() {
-			menu.style.display = 'none';
-
-			// Uncheck all checkboxes
-			const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-			for (let i = 0; i < checkboxes.length; i++) {
-				checkboxes[i].checked = false;
-			}
-
-			// Check the right privilege checkboxes
-			fetch('/tasks/get_object_privileges.php?object_id=' + id + '&object_type=' + object_type)
-				.then(response => response.json())
-				.then(data => {
-					data.forEach(item => {
-						if(item.file_id === id){
-							if (item.privilege === 'VIEW') {
-								document.getElementById(`user_checkbox_view_${item.user_id}`).checked = true;
-							} else if (item.privilege === 'EDIT') {
-								document.getElementById(`user_checkbox_edit_${item.user_id}`).checked = true;
-							}
-						}
-					});
-				});
-
-			share_form.style.display = 'block';
-
-			share_form.action = "object_change_privileges.php?id=" + id + "&type=" + object_type;
-		};
 	}
 	else if(object_type === 'attached_file'){
+		share_btn.style.display = 'block';
 		unattach_btn.style.display = 'block';
 		edit_btn.style.display = 'block';
 		delete_btn.style.display = 'block';
@@ -204,6 +206,7 @@ function show_menu(id, object_type, id2 = null) {
 	}
 	else if(object_type === 'note'){
 		open_btn.style.display = 'block';
+		share_btn.style.display = 'block';
 		edit_btn.style.display = 'block';
 		delete_btn.style.display = 'block';
 
@@ -222,6 +225,16 @@ function show_menu(id, object_type, id2 = null) {
 		delete_btn.href = "project_delete.inc.php?id=" + id;
 		complete_btn.href = "project_complete.inc.php?id=" + id;
 	}
+	else if(object_type === 'default_project'){
+		open_btn.style.display = 'block';
+		edit_btn.style.display = 'block';
+		share_btn.style.display = 'block';
+
+		open_btn.href = "project_view.php?id=" + id;
+		edit_btn.href = "project_edit.php?id=" + id;
+		
+		object_type = 'project';
+	}
 	else if(object_type === 'attached_note_to_project'){
 		unattach_btn.style.display = 'block';
 		open_btn.style.display = 'block';
@@ -237,6 +250,7 @@ function show_menu(id, object_type, id2 = null) {
 	}
 	else if(object_type === 'task'){
 		open_btn.style.display = 'block';
+		share_btn.style.display = 'block';
 		complete_btn.style.display = 'block';
 		move_btn.style.display = 'block';
 		edit_btn.style.display = 'block';

@@ -151,13 +151,13 @@ INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "schedule-fro
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-from-question", "Насрочване на задача.");
 
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "schedule-form-submit", "Schedule");
-INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-from-submit", "Насрочване");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-form-submit", "Насрочване");
 
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "schedule-form-start", "Start Time");
-INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-from-start", "Начално време");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-form-start", "Начално време");
 
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "schedule-form-end", "End Time");
-INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-from-end", "Крайно време");
+INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "schedule-form-end", "Крайно време");
 
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('en', "categories-hidden-menu-move", "Move");
 INSERT INTO PHRASES (LANGUAGE_ISO_CODE, `KEY`, VALUE) VALUES('bg', "categories-hidden-menu-move", "Премести");

@@ -93,16 +93,21 @@ $task_width = 300;
 			<!-- Empty Top Space Container -->
 			<div style="height: 3%; padding: 0; margin: 0;"></div>
 
-			<!-- Top Task Container -->
-			<div class="bg-dark rounded" style="height: 37%; padding: 0; margin: 0;">
-				<!-- Project Choosing Container -->
-				<div class="bg-dark rounded text-white row" style="height: 20%; width: 100%; padding: 0; margin: 0; align-items: center; border: 1px solid white;">
-					<?php
-					$projects = get_projects($con, $_SESSION['user-details']['id']);
-					foreach($projects as $project){ ?>
-						<a href="schedule.php?project_id=<?php echo $project['id']; ?>" class="col rounded" style="background-color: <?php echo $project['background_color'];?>; color: <?php echo $project['text_color'];?>; text-decoration: none; height: 20px;" href=""><?php echo $project['title'];?></a>
-					<?php } ?>
-				</div>
+<!-- Top Task Container -->
+<div class="bg-dark rounded" style="height: 37%; padding: 0; margin: 0; overflow-x: auto;">
+    <!-- Project Choosing Container -->
+    <div class="bg-dark rounded text-white" style="height: 20%; padding: 5px; margin: 0; border: 1px solid white;">
+	<div style="width: 99.8%;overflow-x: auto; overflow-y: hidden;">
+        <div class="d-flex flex-nowrap" style="height: 90%;">
+            <?php
+            $projects = get_projects($con, $_SESSION['user-details']['id']);
+            foreach($projects as $project){ ?>
+                <a href="schedule.php?project_id=<?php echo $project['id']; ?>" class="rounded flex-shrink-0" style="background-color: <?php echo $project['background_color'];?>; color: <?php echo $project['text_color'];?>; text-decoration: none; padding: 2px; margin-right: 5px;" href=""><?php echo $project['title']=='default-project-title'?$phrases[$project['title']]:$project['title'];?></a>
+            <?php } ?>
+        </div>
+        </div>
+    </div>
+
 				<!-- Task Choosing Container -->
 				<div class="bg-light rounded row" style="height: 80%; padding: 0; margin: 0; overflow: auto; border: 1px solid white;">
 					<div class="container rounded" style="min-height: 100px;">

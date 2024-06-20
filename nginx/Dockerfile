@@ -2,6 +2,7 @@ ARG ALPINE_VERSION=3.19
 FROM alpine:${ALPINE_VERSION}
 LABEL Description="Lightweight container with Nginx 1.24 & PHP 8.3 based on Alpine Linux."
 
+
 # Setup document root
 WORKDIR /var/www/html
 
@@ -50,11 +51,16 @@ RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 # Create symlink for php
 RUN ln -s /usr/bin/php83 /usr/bin/php
 
+# Copy the script to generate the db.conf.php file
+COPY scripts/generate_db_conf.sh /usr/local/bin/generate_db_conf.sh
+RUN chmod +x /usr/local/bin/generate_db_conf.sh
+
 # Switch to use a non-root user from here on
 USER nobody
 
 # Add application
 COPY --chown=nobody html/ /var/www/html/
+
 
 # Expose the port nginx is reachable on
 EXPOSE 8080

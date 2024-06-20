@@ -1,5 +1,3 @@
-FROM quay.io/minio/minio
+FROM minio/minio:latest
 
-# create and take key
-#create bucket
-#open ports if it is not done by default
+CMD ["server", "/data", "--console-address", ":9001"]

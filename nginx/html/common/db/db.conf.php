@@ -1,6 +1,6 @@
 <?php
 
-$db_ip='172.17.0.2';
+$db_ip='task_manager_mariadb';
 $db_user='TM';
 $db_password='0000';
 $db_database='TM';

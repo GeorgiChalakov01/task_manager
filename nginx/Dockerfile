@@ -51,9 +51,12 @@ RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 # Create symlink for php
 RUN ln -s /usr/bin/php83 /usr/bin/php
 
-# Copy the script to generate the db.conf.php file
+# Copy the script to generate the credential files
 COPY scripts/generate_db_conf.sh /usr/local/bin/generate_db_conf.sh
 RUN chmod +x /usr/local/bin/generate_db_conf.sh
+
+COPY scripts/generate_minio_conf.sh /usr/local/bin/generate_minio_conf.sh
+RUN chmod +x /usr/local/bin/generate_minio_conf.sh
 
 # Switch to use a non-root user from here on
 USER nobody

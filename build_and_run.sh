@@ -1,12 +1,12 @@
 #!/bin/sh
 
-db_root_password="RootSuperStrong"
-db_user="task_manager"
-db_password="SupaStrongPassFoMyadminDBuser"
+db_root_password="ak23s*g55342j!@fa"
+db_user="abvfriau"
+db_password="47aisdcj)GHUIB*G894fijabh;B"
 db_database="TM"
 
-minio_root_username="YoGRoot"
-minio_root_password="HayouSupMyMan?UFineTodaii?!?@O"
+minio_root_username="SJFDJSFkjdsbhnak"
+minio_root_password="askjdfn%8vfia8934ha)!"
 
 docker stop task_manager_nginx
 docker rm task_manager_nginx
@@ -50,10 +50,12 @@ docker run -d \
 	--name task_manager_nginx \
 	--network task_manager_network \
 	-p 8080:8080 \
-	-e MYSQL_USER=$db_user \
-	-e MYSQL_PASSWORD=$db_password \
-	-e MYSQL_DATABASE=$db_database \
-	-e MYSQL_ROOT_PASSWORD=$db_root_password \
+	-e "MYSQL_USER=$db_user" \
+	-e "MYSQL_PASSWORD=$db_password" \
+	-e "MYSQL_DATABASE=$db_database" \
+	-e "MYSQL_ROOT_PASSWORD=$db_root_password" \
+	-e "MINIO_ROOT_USER=$minio_root_username" \
+	-e "MINIO_ROOT_PASSWORD=$minio_root_password" \
 	task_manager_nginx 
 
 cd ..

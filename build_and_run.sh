@@ -45,6 +45,7 @@ docker run -d \
 	task_manager_minio 
 
 cd ../nginx/
+minio_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' task_manager_minio)
 docker build -t task_manager_nginx .
 docker run -d \
 	--name task_manager_nginx \
@@ -56,6 +57,7 @@ docker run -d \
 	-e "MYSQL_ROOT_PASSWORD=$db_root_password" \
 	-e "MINIO_ROOT_USER=$minio_root_username" \
 	-e "MINIO_ROOT_PASSWORD=$minio_root_password" \
+	-e "MINIO_IP=$minio_ip" \
 	task_manager_nginx 
 
 cd ..

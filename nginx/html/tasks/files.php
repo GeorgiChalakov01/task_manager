@@ -98,7 +98,7 @@ require 'includes/php_auth_check.php';
 							<p class="card-text" style="height: 60px; overflow: scroll;">' . $description . '</p>
 							<p class="card-text" style="height: 40px; overflow: scroll;">' . $file['name'] . '.' . $file['extension'] . '</p>
 							<p class="card-text" style="height: 40px; overflow: scroll;">' . $file['uploaded_on'] . '</p>
-							<a href="file_download.inc.php?id=' . $file['id'] . '" class="btn btn-secondary">' . $phrases['files-file-download-button'] . '</a>
+							<a href="get_file_minio.php?file_id=' . $file['id'] . '" class="btn btn-secondary">' . $phrases['files-file-download-button'] . '</a>
 						</div>
 					</div>
 				</div>';

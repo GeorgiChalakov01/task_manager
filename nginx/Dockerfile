@@ -29,6 +29,7 @@ RUN apk add --no-cache \
   php83-xml \
   php83-xmlreader \
   php83-xmlwriter \
+  php83-simplexml \
   supervisor
 
 # Configure nginx - http

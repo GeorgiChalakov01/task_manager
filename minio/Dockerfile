@@ -1,3 +1,8 @@
 FROM minio/minio:latest
 
-CMD ["server", "/data", "--console-address", ":9001"]
+
+COPY scripts/start.sh /bin/start.sh
+RUN chmod +x /bin/start.sh
+
+ENTRYPOINT ["/bin/start.sh"]
+#CMD ["server", "/data", "--console-address", ":9001"]

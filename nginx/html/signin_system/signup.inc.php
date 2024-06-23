@@ -28,7 +28,7 @@ $_SESSION['signup-form'] = array(
 
 
 //Validate the input data
-if(!preg_match("/^[a-zA-Z0-9]*$/", $username)) {
+if(!preg_match("/^[a-zA-Z0-9_.-]*$/", $username)) {
 	header('location: signup.php?error=error-forbiden-symbols-username');
 	exit;
 }

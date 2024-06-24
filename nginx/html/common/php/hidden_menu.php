@@ -291,6 +291,7 @@ function show_menu(id, object_type, id2 = null) {
 		open_btn.style.display = 'block';
 		edit_btn.style.display = 'block';
 		schedule_btn.style.display = 'block';
+		complete_btn.style.display = 'block';
 
 		open_btn.href = "task_view.php?id=" + id;
 		edit_btn.href = "task_edit.php?id=" + id;

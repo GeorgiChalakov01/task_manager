@@ -79,7 +79,7 @@ $notes = [];
 						foreach($attached_files as $file){
 							$source_image = '/common/images/file.png';
 							if(in_array($file['extension'], ['jpg', 'jpeg', 'png', 'gif', 'ico', 'webp'])) {
-								$source_image = '/common/uploaded_files/' . $file['server_name'] . '.' . $file['extension'];
+								$source_image = 'get_file_minio.php?file_id=' . $file['id'];
 							}
 							echo '<img src="' . $source_image . '" style="cursor: pointer; width: 50px; height: 100%; object-fit: cover; border-radius: 10px;" alt="File image" onclick="show_menu(' . $file['id'] . ', \'file\');">&nbsp;';
 						}

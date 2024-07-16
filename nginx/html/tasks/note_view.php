@@ -54,7 +54,7 @@ $note = get_note_info($con, $note_id, $_SESSION['user-details']['id']);
 
 						$source_image = '/common/images/file.png';
 						if(in_array($file['extension'], ['jpg', 'jpeg', 'png', 'gif', 'ico', 'webp'])) {
-							$source_image = '/common/uploaded_files/' . $file['server_name'] . '.' . $file['extension'];
+							$source_image = 'get_file_minio.php?file_id=' . $file['id'];
 						}
 		
 						echo '

@@ -1,12 +1,12 @@
 #!/bin/sh
 
-db_root_password="ak23s*g55342j!@fa"
-db_user="abvfriau"
-db_password="47aisdcj)GHUIB*G894fijabh;B"
+db_root_password="changeme"
+db_user="changeme"
+db_password="changeme"
 db_database="TM"
 
-minio_root_username="SJFDJSFkjdsbhnak"
-minio_root_password="askjdfn%8vfia8934ha)!"
+minio_root_username="changeme"
+minio_root_password="changeme"
 
 docker stop task_manager_nginx
 docker rm task_manager_nginx
@@ -18,6 +18,8 @@ docker stop task_manager_minio
 docker rm task_manager_minio
 
 docker network rm task_manager_network
+
+sleep 2
 
 
 docker network create task_manager_network

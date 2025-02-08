@@ -1,9 +1,14 @@
 DELIMITER $$
 
 
-CREATE OR REPLACE PROCEDURE P_CREATE_TEST_USER ()
+CREATE OR REPLACE PROCEDURE P_CREATE_TEST_USERS ()
 BEGIN
-	CALL P_CREATE_USER('test','test','test','test@test.test','$2y$10$HKcSWzHwOHqxf8cvaJImtOcVjxZD2W.cSNDRv/ye0xOnsbRw.VrG6',NULL,'en','Europe/Sofia',@USER_ID);
+	CALL P_CREATE_USER('test1','test1','test1','test1@test1.test1','$2y$10$HKcSWzHwOHqxf8cvaJImtOcVjxZD2W.cSNDRv/ye0xOnsbRw.VrG6',NULL,'en','Europe/Sofia',@USER_ID);
+	CALL P_CREATE_PROJECT('default-project-title','default-project-description',NULL,@USER_ID,@PROJECT_ID);
+	CALL P_CREATE_CATEGORY(@USER_ID,'default-category',1,@CATEGORY_ID);
+	CALL P_APPEND_CATEGORY(@CATEGORY_ID,@PROJECT_ID,'PROJECT',@USER_ID);
+
+	CALL P_CREATE_USER('test2','test2','test2','test2@test2.test2','$2y$10$HKcSWzHwOHqxf8cvaJImtOcVjxZD2W.cSNDRv/ye0xOnsbRw.VrG6',NULL,'en','Europe/Sofia',@USER_ID);
 	CALL P_CREATE_PROJECT('default-project-title','default-project-description',NULL,@USER_ID,@PROJECT_ID);
 	CALL P_CREATE_CATEGORY(@USER_ID,'default-category',1,@CATEGORY_ID);
 	CALL P_APPEND_CATEGORY(@CATEGORY_ID,@PROJECT_ID,'PROJECT',@USER_ID);

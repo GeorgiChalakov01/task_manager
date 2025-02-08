@@ -217,6 +217,7 @@ function show_menu(id, object_type, id2 = null) {
 	else if(object_type === 'project'){
 		open_btn.style.display = 'block';
 		complete_btn.style.display = 'block';
+		share_btn.style.display = 'block';
 		edit_btn.style.display = 'block';
 		delete_btn.style.display = 'block';
 
